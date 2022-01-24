@@ -1,0 +1,50 @@
+version : '3.8'
+
+volumes:
+  postgres_db:
+
+services:
+  postgres_db:
+    build:
+      dockerfile: Dockerfile
+    container_name: phystech-job-postgres-db
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: db_name
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+      DB_PORT: 5432
+      DB_HOST: db
+    env_file:
+      - ./.env
+    volumes:
+      - ./postgres_db/:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    restart: always
+
+  backend_app:
+    build:
+      context: ./backend_app
+      dockerfile: Dockerfile
+    container_name: phystech-job-backend-app
+    volumes:
+      - ./backend_app/:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres_db
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: phystech-job-nginx
+    depends_on:
+      - backend_app
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend_app/static/:/static
