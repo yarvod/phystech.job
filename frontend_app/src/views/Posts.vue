@@ -1,10 +1,10 @@
 <template>
     <div>
-        <h2>To Do List</h2>
+        <h2>Post List</h2>
         <router-link to="/">Home</router-link>
         <hr>
-        <AddTodo 
-            v-on:add-todo="addTodo"
+        <AddPost 
+            v-on:add-post="addPost"
         />
         <select v-model="filter">
             <option value="all">All</option>
@@ -14,64 +14,64 @@
         <hr>
         <br>
         <Loader v-if="loading" />
-        <ToDoList
-            v-else-if="filteredTodos.length" 
-            v-bind:todos="filteredTodos"
-            v-on:remove-todo="removeTodo"
+        <PostList
+            v-else-if="filteredPosts.length" 
+            v-bind:posts="filteredPosts"
+            v-on:remove-post="removePost"
         />
-        <p v-else>No todos!</p>
+        <p v-else>No posts!</p>
     </div>
 </template>
 
 
 <script>
-import ToDoList from '@/components/ToDoList'
-import AddTodo from '@/components/AddTodo'
+import PostList from '@/components/PostList'
+import AddPost from '@/components/AddPost'
 import Loader from '@/components/Loader'
 
 export default {
   name: 'App',
 	data() {
 		return {
-			todos: [],
+			posts: [],
             loading: true,
             filter: 'all'
 		}
 	},
 	mounted() {
-		fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
+		fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
 			.then(response => response.json())
 			.then(json => {
-                this.todos = json
+                this.posts = json
                 this.loading = false
             })
 
 	},
 	methods: {
-		removeTodo(id) {
-			this.todos = this.todos.filter(t => t.id !== id)
+		removePost(id) {
+			this.posts = this.posts.filter(p => p.id !== id)
 		},
-		addTodo(newTodo) {
-			this.todos.push(newTodo)
+		addPost(newPost) {
+			this.posts.push(newPost)
 		} 
 	},
   components: {
-		ToDoList: ToDoList,
-		AddTodo: AddTodo,
+		PostList: PostList,
+		AddPost: AddPost,
         Loader
   },
   computed: {
-      filteredTodos() {
+      filteredPosts() {
           if (this.filter === 'all') {
-              return this.todos;
+              return this.posts;
           }
 
           if (this.filter === 'completed') {
-              return this.todos.filter(t => t.completed)
+              return this.posts.filter(t => t.completed)
           }
 
           if (this.filter === 'not-completed') {
-              return this.todos.filter(t => !t.completed)
+              return this.posts.filter(t => !t.completed)
           }
       }
   }

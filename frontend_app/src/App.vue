@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
-		<h1>To Do Application</h1>
-		<hr>
+      <div class="header">
+        <h1>Job Application</h1>
+		    <hr>
+      </div>
 		
 		<router-view/>
 	</div>
@@ -17,4 +19,8 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+/*.header {*/
+/*  display: stick;*/
+/*}*/
 </style>
