@@ -7,3 +7,7 @@
         <router-link to="/posts"> Posts </router-link>
     </div>
 </template>
+
+
+<script>
+</script>
