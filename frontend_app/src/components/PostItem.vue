@@ -1,13 +1,13 @@
 <template>
     <li>
-        <span v-bind:class="{done: post.completed}">
-            <input v-if="post.completed" checked type="checkbox" 
-                v-on:change="post.completed = !post.completed">
-            <input v-else type="checkbox" 
-                v-on:change="post.completed = !post.completed">
+        <div>
             <strong> {{ index + 1 }} </strong>
+            <b>Title: </b>
             {{ post.title }}
-        </span>
+            <br>
+            <b>Body: </b>
+            {{ post.body }}
+        </div>
         <button class="rm"
             v-on:click="$emit('remove-post', post.id)"
         >&times;</button>
@@ -54,6 +54,11 @@ export default {
     }
 
     .done {
-        text-decoration: line-through;
+        /*text-decoration: line-through;*/
+    }
+
+    div {
+        position: relative;
+        left: 0;
     }
 </style>
