@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<ul>
+	<div class="post">
+    <ul>
 			<PostItem
 				v-for="(post, i) of posts"
 				v-bind:post="post"
@@ -16,23 +16,22 @@
 <script>
 import PostItem from '@/components/PostItem'
 export default {
-		props: ['posts'],
-    components: {
-        PostItem: PostItem
-    },
-		methods: {
-			removePost(id) {
-				this.$emit('remove-post', id)
-			}
-		}
+	props: ['posts'], components: {
+    PostItem: PostItem
+  },
+	methods: {
+		removePost(id) {
+			this.$emit('remove-post', id)
+  	}
+	}
 }
 </script>
 
 
 <style scoped>
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
 </style>
