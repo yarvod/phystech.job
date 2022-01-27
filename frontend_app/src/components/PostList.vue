@@ -1,5 +1,5 @@
 <template>
-	<div class="post">
+	<div class="postlist">
     <ul>
 			<PostItem
 				v-for="(post, i) of posts"
