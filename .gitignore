@@ -263,3 +263,5 @@ dmypy.json
 cython_debug/
 
 /postgres_db/data/
+
+/.idea

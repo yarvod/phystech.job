@@ -19,7 +19,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-*{padding:0;margin:0;border:0;top:0;left:0;}
+*{padding:0;margin:0;border:0;top:0;left:0;background:none;}
 *,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
 :focus,:active{outline:none;}
 a:focus,a:active{outline:none;}
