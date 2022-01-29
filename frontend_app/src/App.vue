@@ -33,4 +33,5 @@ a{text-decoration:none;}
 ul li{list-style:none;}
 img{vertical-align:top;}
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit;}
+.container{margin:0 5%;width:auto;height:100%;border: 1px solid black;}
 </style>

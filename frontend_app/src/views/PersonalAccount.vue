@@ -73,10 +73,6 @@
 
 
 <style>
-.container {
-  padding: 0 10%;
-}
-
 .pagename {
   height: 100px;
   display: flex;
@@ -131,8 +127,8 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: chartreuse;
   
+  background: chartreuse;
 }
 .a-posts__click {
   height: 100%;
