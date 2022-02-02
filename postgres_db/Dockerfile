@@ -1,2 +1,3 @@
-# pull official base image
-FROM postgres
+FROM postgres:14
+
+ENV TZ="Europe/Moscow"
