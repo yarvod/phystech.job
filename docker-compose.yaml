@@ -1,20 +1,21 @@
-version : '2.8'
+version : '3.8'
 
 volumes:
-  postgres_db:
+  postgres_data:
+  static:
 
 services:
   postgres_db:
     container_name: phystech-job-postgres-db
-    image: postgres:14
+    build:
+      context: ./postgres_db
     environment:
       POSTGRES_DB: db_name
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password
       DB_HOST: postgres_db
     volumes:
-      - ./postgres_db/data:/var/lib/postgresql/data/
-#      -  ./postgres_db/init/:/docker-entrypoint-initdb.d/
+      - postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
     restart: always
@@ -24,7 +25,8 @@ services:
       context: ./backend_app
     container_name: phystech-job-backend-app
     volumes:
-      - ./backend_app/:/usr/src/app/
+      - ./backend_app/:/app/
+      - static:/app/static
     ports:
       - "8000:8000"
     depends_on:
@@ -48,6 +50,7 @@ services:
     depends_on:
       - backend_app
     ports:
-      - "80:80"
+      - "80:7000"
     volumes:
-      - ./backend_app/static/:/static
+      - ./nginx:/etc/nginx/conf.d
+      - static:/static

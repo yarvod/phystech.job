@@ -262,4 +262,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-/postgres_db/data/
+/postgres_db/data
+
+*/static
