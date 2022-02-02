@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'job_site',
+    'authentication',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -171,3 +173,8 @@ REST_FRAMEWORK = {
 # По умолчанию, `django-rest-auth` использует аутентификацию через
 # обычные токены. Нам нужна аутентификация через JWT токены.
 REST_USE_JWT = True
+
+AUTH_USER_MODEL = 'users.User'
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
+}
