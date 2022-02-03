@@ -1,9 +1,9 @@
 asgiref==3.4.1
 Django==3.2.9
-djangorestframework==3.13.1
-django-allauth==0.47.0
-django-cors-headers==3.11.0
-django-rest-auth==0.9.5
+djangorestframework==3.7.7
+django-allauth==0.35.0
+django-cors-headers==2.1.0
+django-rest-auth==0.9.3
 djangorestframework-jwt==1.11.0
 psycopg2-binary==2.9
 pytz==2021.3

@@ -19,21 +19,7 @@
           </a>
         </div>
         <div class="header__section headaccount">
-          <div class="header__item headpa">
-            <form action="/account">
-              <button class="header__click" type="link" title="Личный кабинет" tabindex="6">Личный кабинет</button>
-            </form>
-          </div>
-        <!-- <div class="header__enter">
-          <form action="/enter">
-            <button type="link" title="Войти в личный кабинет" tabindex="#">Войти</button>
-          </form>
-        </div>
-        <div class="header__reg">
-          <form action="/registration">
-            <button type="link" title="Создать учётную" tabindex="#">Регистрация</button>
-          </form>
-        </div> -->
+          <AuthSection/>
         </div>
       </div>
     </div>
@@ -41,8 +27,12 @@
 </template>
 
 <script>
+import AuthSection from '@/components/AuthSection'
 export default {
-  name: "Header"
+  name: "Header",
+  components: {
+    AuthSection
+  }
 }
 </script>
 
