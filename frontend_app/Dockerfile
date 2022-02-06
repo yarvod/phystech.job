@@ -7,7 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-RUN npm install -g @vue/cli
+RUN npm install -g @vue/cli @vue/cli-service-global
+ENV PATH="${PATH}:/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/.bin"
 
 COPY . .
 
