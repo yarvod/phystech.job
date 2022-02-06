@@ -267,3 +267,5 @@ cython_debug/
 */static
 
 /.idea
+
+*/package-lock.json
