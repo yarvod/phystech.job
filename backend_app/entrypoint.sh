@@ -1,6 +1,5 @@
 #! /bin/bash
 
-python manage.py makemigrations users --no-input
 python manage.py migrate users --no-input
 python manage.py migrate --no-input
 
