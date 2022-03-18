@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3">
+  <div class="col-auto">
     <div class="border rounded shadow-sm">
       <b>Title: </b>
       {{ resume.title }}
