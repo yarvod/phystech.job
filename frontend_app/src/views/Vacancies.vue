@@ -17,7 +17,7 @@
 
 
 <script>
-import Loader from '@/components/Loader'
+// import Loader from '@/components/Loader'
 import VacancyList from "@/components/VacancyList";
 
 export default {
@@ -29,7 +29,7 @@ export default {
 	},
   components: {
 		VacancyList,
-    Loader
+    // Loader
   },
 }
 </script>

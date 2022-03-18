@@ -18,7 +18,7 @@
 
 <script>
 import ResumeList from '@/components/ResumeList'
-import Loader from '@/components/Loader'
+// import Loader from '@/components/Loader'
 
 export default {
   name: 'Resumes',
@@ -29,7 +29,7 @@ export default {
 	},
   components: {
 		ResumeList,
-    Loader
+    // Loader
   },
 }
 </script>
