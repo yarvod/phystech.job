@@ -1,7 +1,17 @@
-import { createApp } from 'vue';
+import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
-import GSignInButton from 'vue-google-signin-button'
+import {store} from './store'
+import moment from 'moment'
 
-createApp(App).use(router, GSignInButton).mount('#app');
+new Vue({
+  store,
+  router,
+  render: h => h(App)
+}).$mount('#app')
 
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+})

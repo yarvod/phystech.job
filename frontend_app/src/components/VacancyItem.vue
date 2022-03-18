@@ -1,0 +1,34 @@
+<template>
+  <div class="col-3">
+    <div class="border rounded shadow-sm">
+      <b>Title: </b>
+      {{ vacancy.title }}
+      <br>
+      <b>Company: </b>
+      {{vacancy.company_name}}
+      <br>
+      <b>Category: </b>
+      {{vacancy.category}}
+      <br>
+      <b>Created: </b>
+      {{vacancy.created | formatDate}}
+      <hr>
+      <input type="submit" class="btn btn-outline-success" name="respond" value="Откликнуться">
+      <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "VacancyItem",
+  props: {
+    vacancy: Object,
+  },
+
+}
+</script>
+
+<style scoped>
+
+</style>
