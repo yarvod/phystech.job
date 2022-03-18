@@ -1,25 +1,25 @@
-import Home from '@/views/Home';
-import { createWebHistory, createRouter } from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-const routes = [
-  {
-    path: '/',
-    component: Home
-  },
-  {
-    path: '/posts',
-    component: () => import('@/views/Posts.vue')
-  },
-  {
-    path: '/account',
-    component: () => import('@/views/PersonalAccount.vue')
-  }
-]
+Vue.use(VueRouter)
 
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
-  
-export default router;
+export default new VueRouter({
+  routes: [
+    {
+      path: '/',
+      component: () => import('@/views/Home.vue')
+    },
+    {
+      path: '/resumes',
+      component: () => import('@/views/Resumes.vue')
+    },
+    {
+      path: '/vacancies',
+      component: () => import('@/views/Vacancies.vue')
+    },
+    {
+      path: '/account',
+      component: () => import('@/views/PersonalAccount.vue')
+    }
+  ]
+})

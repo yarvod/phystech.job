@@ -49,7 +49,7 @@ services:
       context: ./nginx
     container_name: phystech-job-nginx
     depends_on:
-      - backend_app
+      - frontend_app
     ports:
       - "80:80"
     volumes:
