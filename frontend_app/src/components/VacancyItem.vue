@@ -11,7 +11,7 @@
       {{vacancy.category}}
       <br>
       <b>Created: </b>
-      {{vacancy.created | formatDate}}
+      {{vacancy.created}}
       <hr>
       <input type="submit" class="btn btn-outline-success" name="respond" value="Откликнуться">
       <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">
