@@ -14,13 +14,38 @@
 
 <script>
 import VacancyItem from "@/components/VacancyItem";
-import { mapGetters } from 'vuex'
 export default {
   name: "VacancyList",
   components: {VacancyItem},
-  computed: mapGetters(['vacancies']),
-  mounted () {
-    this.$store.dispatch('getVacancies')
+  data () {
+    return {
+      vacancies: [
+        {
+          title: 'Vacancy test 1',
+          company_name: 'Company test 1',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Vacancy test 2',
+          company_name: 'Company test 2',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Vacancy test 3',
+          company_name: 'Company test 3',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Vacancy test 4',
+          company_name: 'Company test 4',
+          category: 'IT test',
+          created: '2022.03.12'
+        }
+      ]
+    }
   },
 }
 </script>

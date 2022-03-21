@@ -8,7 +8,7 @@
       {{resume.category}}
       <br>
       <b>Created: </b>
-      {{resume.created | formatDate}}
+      {{resume.created}}
       <hr>
       <input type="submit" class="btn btn-outline-success" name="respond" value="Связаться">
       <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">

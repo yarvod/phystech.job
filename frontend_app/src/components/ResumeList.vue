@@ -14,13 +14,34 @@
 
 <script>
 import ResumeItem from "@/components/ResumeItem";
-import { mapGetters } from 'vuex'
 export default {
   name: "ResumeList",
   components: {ResumeItem},
-  computed: mapGetters(['resumes']),
-  beforeMount () {
-    this.$store.dispatch('getResumes')
+  data () {
+    return {
+      resumes: [
+        {
+          title: 'Resume test 1',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Resume test 2',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Resume test 3',
+          category: 'IT test',
+          created: '2022.03.12'
+        },
+        {
+          title: 'Resume test 4',
+          category: 'IT test',
+          created: '2022.03.12'
+        }
+      ]
+    }
   },
 }
 </script>
