@@ -1,23 +1,19 @@
 from django.urls import path
-from rest_framework import routers
-from .views import \
-    ResumeListView, ResumeDetailView, \
-    VacancyListView, VacancyDetailView
+from .views import (
+    ResumeListView, ResumeDetailView, CreateResumeView,
+    VacancyListView, VacancyDetailView, CreateVacancyView,
+    EmployerListView, EmployerDetailView,
+)
 
 
 urlpatterns = [
     path("vacancies/", VacancyListView.as_view()),
     path("vacancies/<int:pk>/", VacancyDetailView.as_view()),
+    path("vacancy/", CreateVacancyView.as_view()),
     path("resumes/", ResumeListView.as_view()),
-    path("resumes/<int:pk>/", ResumeDetailView.as_view())
+    path("resumes/<int:pk>/", ResumeDetailView.as_view()),
+    path("resume/", CreateResumeView.as_view()),
+    path("employers/", EmployerListView.as_view()),
+    path("employers/<int:pk>/", EmployerDetailView.as_view())
 ]
 
-
-# router = routers.DefaultRouter()
-#
-# router.register(r'resumes', ResumeListView)
-# router.register(r'resumes/<int:pk>/', ResumeDetailView)
-# router.register(r'vacancies', VacancyListView)
-# router.register(r'vacancies/<int:pk>/', VacancyDetailView)
-#
-# urlpatterns = router.urls

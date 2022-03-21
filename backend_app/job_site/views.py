@@ -1,38 +1,52 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Resume, Vacancy
-from .serializers import \
-    ResumeListSerializer, ResumeDetailSerializer, \
-    VacancyListSerializer, VacancyDetailSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
+from .models import Resume, Vacancy, Employer
+from .serializers import (
+    ResumeListSerializer, ResumeDetailSerializer, ResumeCreateSerializer,
+    VacancyListSerializer, VacancyDetailSerializer, VacancyCreateSerializer,
+    EmployerListSerializer, EmployerDetailSerializer,
+)
 
 
-class VacancyListView(APIView):
+class EmployerListView(ListAPIView):
 
-    def get(self, request):
-        vacancies = Vacancy.objects.all()
-        serializer = VacancyListSerializer(vacancies, many=True)
-        return Response(serializer.data)
+    queryset = Employer.objects.all()
+    serializer_class = EmployerListSerializer
 
 
-class VacancyDetailView(APIView):
-
-    def get(self, request, pk):
-        vacancies = Vacancy.objects.get(id=pk)
-        serializer = VacancyDetailSerializer(vacancies)
-        return Response(serializer.data)
+class EmployerDetailView(RetrieveAPIView):
+    queryset = Employer.objects.all()
+    serializer_class = EmployerDetailSerializer
 
 
-class ResumeListView(APIView):
+class VacancyListView(ListAPIView):
 
-    def get(self, request):
-        resumes = Resume.objects.all()
-        serializer = ResumeListSerializer(resumes, many=True)
-        return Response(serializer.data)
+    queryset = Vacancy.objects.filter(draft=False, closed=False)
+    serializer_class = VacancyListSerializer
 
 
-class ResumeDetailView(APIView):
+class VacancyDetailView(RetrieveAPIView):
 
-    def get(self, request, pk):
-        resume = Resume.objects.get(id=pk)
-        serializer = ResumeDetailSerializer(resume)
-        return Response(serializer.data)
+    queryset = Vacancy.objects.filter(draft=False, closed=False)
+    serializer_class = VacancyDetailSerializer
+
+
+class CreateVacancyView(CreateAPIView):
+    serializer_class = VacancyCreateSerializer
+
+
+class ResumeListView(ListAPIView):
+
+    queryset = Resume.objects.filter(draft=False)
+    serializer_class = ResumeListSerializer
+
+
+class ResumeDetailView(RetrieveAPIView):
+
+    queryset = Resume.objects.filter(draft=False)
+    serializer_class = ResumeDetailSerializer
+
+
+class CreateResumeView(CreateAPIView):
+    serializer_class = ResumeCreateSerializer
+

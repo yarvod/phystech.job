@@ -14,6 +14,13 @@ def fill_db():
 
     category = Category.objects.update_or_create(title='IT', slug='it')[0]
 
+    Tag.objects.update_or_create(code='python', title='Python')
+    Tag.objects.update_or_create(code='c', title='C')
+    Tag.objects.update_or_create(code='c++', title='C++')
+    Tag.objects.update_or_create(code='js', title='JavaScript')
+    Tag.objects.update_or_create(code='django', title='Django')
+
+
     for i in range(6):
         fields = dict(
             employee=employee,
