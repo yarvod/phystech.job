@@ -8,7 +8,7 @@
       {{resume.category}}
       <br>
       <b>Created: </b>
-      {{resume.created}}
+      {{resume.created | formatDate}}
       <hr>
       <input type="submit" class="btn btn-outline-success" name="respond" value="Связаться">
       <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">
@@ -19,9 +19,7 @@
 <script>
 export default {
   name: "ResumeItem",
-  props: {
-    resume: Object,
-  },
+  props: ['resume']
 
 }
 </script>

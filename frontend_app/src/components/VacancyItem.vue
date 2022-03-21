@@ -2,7 +2,7 @@
   <div class="col-auto">
     <div class="border rounded shadow-sm">
 
-      <div class="btn" v-on:click="$router.push('/')">
+      <div class="btn" v-on:click="$router.push('/vacancies/'+vacancy.id)">
         <b>Title: </b>
         {{ vacancy.title }}
         <br>
@@ -17,10 +17,10 @@
         {{vacancy.category}}
         <br>
         <b>Created: </b>
-        {{vacancy.created}}
+        {{vacancy.created | formatDate}}
       </div>
     <hr>
-    <input type="submit" class="btn btn-outline-success" name="respond" value="Откликнуться" v-on:click="$router.push('/resumes')">
+    <input type="submit" class="btn btn-outline-success" name="respond" value="Откликнуться">
     <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">
   </div>
   </div>

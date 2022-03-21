@@ -7,29 +7,26 @@
       <router-link to="/">Home</router-link>
     </div>
     <hr>
-  <!--  <div class="text-center" v-if="loading">-->
-  <!--    <Loader/>-->
-  <!--  </div>-->
-    <VacancyList/>
-  <!--  <p v-else>No Resumes!</p>-->
+    <VacancyList
+      :vacancies="vacancies"
+    />
+
   </div>
 </template>
 
 
 <script>
-// import Loader from '@/components/Loader'
 import VacancyList from "@/components/VacancyList";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'Vacancies',
-	data() {
-		return {
-      loading: true,
-		}
-	},
+  computed: mapGetters(['vacancies']),
+  mounted () {
+    this.$store.dispatch('getVacancies')
+  },
   components: {
 		VacancyList,
-    // Loader
   },
 }
 </script>
