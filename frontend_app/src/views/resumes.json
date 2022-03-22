@@ -1,28 +1,32 @@
 {
     "data": [
       {
-        "title": "Vacancy test 1",
+        "id": 1,
+        "title": "Resume test 1",
         "category": "IT test",
         "first_name": "Alex",
         "second_name": "Ivanov",
         "created": "2022.03.12"
       },
       {
-        "title": "Vacancy test 2",
+        "id": 2,
+        "title": "Resume test 2",
         "category": "IT test",
         "first_name": "Alex",
         "second_name": "Ivanov",
         "created": "2022.03.12"
       },
       {
-        "title": "Vacancy test 3",
+        "id": 3,
+        "title": "Resume test 3",
         "category": "IT test",
         "first_name": "Alex",
         "second_name": "Ivanov",
         "created": "2022.03.12"
       },
       {
-        "title": "Vacancy test 4",
+        "id": 4,
+        "title": "Resume test 4",
         "category": "IT test",
         "first_name": "Alex",
         "second_name": "Ivanov",

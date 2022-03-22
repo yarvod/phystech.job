@@ -1,17 +1,19 @@
 <template>
-  <div class="col-auto">
+  <div class="col-auto mt-2 mb-2">
     <div class="border rounded shadow-sm">
-      <b>Title: </b>
-      {{ resume.title }}
-      <br>
-      <b>Category: </b>
-      {{resume.category}}
-      <br>
-      <b>Created: </b>
-      {{resume.created}}
+      <div class="btn" v-on:click="$router.push({name: 'resume_details', params: {resumeId: resume.id, resume: resume}})">
+        <b>Title: </b>
+        {{ resume.title }}
+        <br>
+        <b>Category: </b>
+        {{resume.category}}
+        <br>
+        <b>Created: </b>
+        {{resume.created}}
+      </div>
       <hr>
-      <input type="submit" class="btn btn-outline-success" name="respond" value="Связаться">
-      <input type="submit" class="btn btn-outline-danger" name="like" value="В избранное">
+      <button class="btn btn-outline-success m-1" size="md" name="connect"> Связатся </button>
+      <button class="btn btn-outline-danger m-1" size="md" name="like"> В избранное </button>
     </div>
   </div>
 </template>
