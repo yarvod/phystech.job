@@ -17,7 +17,7 @@
         {{vacancy.category}}
         <br>
         <b>Created: </b>
-        {{vacancy.created | formatDate}}
+        {{vacancy.created}}
       </div>
     <hr>
     <input type="submit" class="btn btn-outline-success" name="respond" value="Откликнуться">

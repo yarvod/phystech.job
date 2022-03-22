@@ -9,7 +9,7 @@
     <hr>
 
     <ResumeList
-      :resumes="resumes"
+      :resumes="resumes_json"
     />
 
   </div>
@@ -19,7 +19,7 @@
 <script>
 import ResumeList from '@/components/ResumeList'
 import { mapGetters } from "vuex";
-
+import json from '@/views/resumes.json'
 export default {
   name: 'Resumes',
   computed: {
@@ -31,5 +31,10 @@ export default {
   components: {
 		ResumeList,
   },
+  data () {
+    return {
+      resumes_json: json.data
+    }
+  }
 }
 </script>

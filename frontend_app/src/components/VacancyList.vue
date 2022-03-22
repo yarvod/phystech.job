@@ -18,7 +18,7 @@ import VacancyItem from "@/components/VacancyItem";
 export default {
   name: "VacancyList",
   components: {VacancyItem},
-  props: ['vacancies']
+  props: ['vacancies'],
 }
 </script>
 

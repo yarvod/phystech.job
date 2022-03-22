@@ -1,0 +1,33 @@
+{
+    "data": [
+      {
+        "title": "Vacancy test 1",
+        "category": "IT test",
+        "first_name": "Alex",
+        "second_name": "Ivanov",
+        "created": "2022.03.12"
+      },
+      {
+        "title": "Vacancy test 2",
+        "category": "IT test",
+        "first_name": "Alex",
+        "second_name": "Ivanov",
+        "created": "2022.03.12"
+      },
+      {
+        "title": "Vacancy test 3",
+        "category": "IT test",
+        "first_name": "Alex",
+        "second_name": "Ivanov",
+        "created": "2022.03.12"
+      },
+      {
+        "title": "Vacancy test 4",
+        "category": "IT test",
+        "first_name": "Alex",
+        "second_name": "Ivanov",
+        "created": "2022.03.12"
+      }
+    ]
+  }
+  

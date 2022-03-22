@@ -8,7 +8,7 @@
     </div>
     <hr>
     <VacancyList
-      :vacancies="vacancies"
+      :vacancies="vacancies_json"
     />
 
   </div>
@@ -18,7 +18,7 @@
 <script>
 import VacancyList from "@/components/VacancyList";
 import { mapGetters } from "vuex";
-
+import json from '@/views/vacancies.json';
 export default {
   name: 'Vacancies',
   computed: mapGetters(['vacancies']),
@@ -28,5 +28,10 @@ export default {
   components: {
 		VacancyList,
   },
+  data () {
+    return {
+      vacancies_json: json.data
+    }
+  }
 }
 </script>

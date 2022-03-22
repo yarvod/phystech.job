@@ -269,3 +269,7 @@ cython_debug/
 /.idea
 
 *package-lock.json
+
+postgres_db/init/init-user-db.sh
+*.DS_Store
+backend_app/client_secret.json
