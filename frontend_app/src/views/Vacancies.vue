@@ -8,7 +8,7 @@
     </div>
     <hr>
     <VacancyList
-      :vacancies="vacancies_json"
+      :vacancies="vacancies"
     />
 
   </div>
@@ -19,11 +19,12 @@
 import VacancyList from "@/components/VacancyList";
 import { mapGetters } from "vuex";
 import json from '@/views/vacancies.json';
+
 export default {
   name: 'Vacancies',
   computed: mapGetters(['vacancies']),
-  mounted () {
-    this.$store.dispatch('getVacancies')
+  async mounted () {
+    await this.$store.dispatch('getVacancies')
   },
   components: {
 		VacancyList,

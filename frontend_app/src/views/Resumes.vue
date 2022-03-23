@@ -9,7 +9,7 @@
     <hr>
 
     <ResumeList
-      :resumes="resumes_json"
+      :resumes="resumes"
     />
 
   </div>
@@ -23,10 +23,12 @@ import json from '@/views/resumes.json'
 export default {
   name: 'Resumes',
   computed: {
-    ...mapGetters(['resumes'])
+    ...mapGetters([
+      'resumes'
+    ])
   },
-  mounted() {
-    this.$store.dispatch('getResumes')
+  async mounted() {
+    await this.$store.dispatch('getResumes')
   },
   components: {
 		ResumeList,

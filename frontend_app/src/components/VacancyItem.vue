@@ -2,7 +2,7 @@
   <div class="col-auto mt-2 mb-2">
     <div class="border rounded shadow-sm m-2">
 
-      <div class="btn" v-on:click="$router.push({name: 'vacancy_details', params: {vacancyId: vacancy.id, vacancy: vacancy}})">
+      <div class="btn" v-on:click="$router.push({name: 'vacancy_details', params: {vacancyId: vacancy.id}})">
         <b>Title: </b>
         {{ vacancy.title }}
         <br>

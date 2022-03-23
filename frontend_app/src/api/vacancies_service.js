@@ -4,11 +4,6 @@ export default {
   async getVacancies() {
     return await Api().get('/vacancies/')
   },
-  list () {
-    return Api().get('/vacancies/').then(response => {
-      return response.data
-    })
-  },
   async getVacancy(id) {
     return await Api().get(`/vacancies/${id}/`)
   },

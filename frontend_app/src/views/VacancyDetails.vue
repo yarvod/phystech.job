@@ -21,9 +21,27 @@
 </template>
 
 <script>
+import vacancy_service from '@/api/vacancies_service'
+
 export default {
-  name: "VacancyDetail",
-  props: ['vacancy', 'id']
+  name: "VacancyDetails",
+  props: ['vacancyId'],
+  data() {
+    return {
+      vacancy :{}
+    }
+  },
+  async mounted () {
+    await this.getVacancy()
+  },
+  methods : {
+    getVacancy() {
+      vacancy_service.getVacancy(this.$route.params.vacancyId).
+        then(response => {
+          this.vacancy = response.data
+      })
+    }
+  }
 }
 </script>
 

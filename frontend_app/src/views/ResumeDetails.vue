@@ -21,9 +21,28 @@
 </template>
 
 <script>
+import resumes_service from '@/api/resumes_service';
+
 export default {
   name: "ResumeDetails",
-  props: ['resume', 'id']
+  data() {
+    return {
+      resume: {}
+    }
+  },
+  async mounted() {
+    await this.getResume()
+  },
+  methods: {
+    getResume() {
+      resumes_service.getResume(this.$route.params.resumeId).
+        then(response => {
+          this.resume = response.data
+      })
+    }
+  }
+
+
 }
 </script>
 

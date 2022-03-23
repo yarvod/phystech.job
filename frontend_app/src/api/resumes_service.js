@@ -4,11 +4,6 @@ export default {
   async getResumes () {
     return await Api().get('/resumes/')
   },
-  list () {
-    return Api().get('/resumes/').then(response => {
-      return response.data
-    })
-  },
   async getResume (id) {
     return await Api().get(`/resumes/${id}/`)
   },
