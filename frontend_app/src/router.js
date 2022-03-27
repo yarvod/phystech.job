@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {store} from "@/store";
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
+const router = new VueRouter({
   routes: [
     {
       path: '/',
@@ -12,7 +13,8 @@ export default new VueRouter({
     },
     {
       path: '/resumes',
-      component: () => import('@/views/Resumes.vue')
+      component: () => import('@/views/Resumes.vue'),
+      name: 'resumes'
     },
     {
       path: '/resumes/:resumeId/details',
@@ -22,7 +24,8 @@ export default new VueRouter({
     },
     {
       path: '/vacancies',
-      component: () => import('@/views/Vacancies.vue')
+      component: () => import('@/views/Vacancies.vue'),
+      name: 'vacancies'
     },
     {
       path: '/vacancies/:vacancyId/details',
@@ -32,7 +35,18 @@ export default new VueRouter({
     },
     {
       path: '/account',
-      component: () => import('@/views/PersonalAccount.vue')
+      component: () => import('@/views/Account.vue'),
+      name: 'account'
     }
-  ]
+  ],
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
+//     next({ name: 'LogIn', query: { to: to.path } });
+//   } else {
+//     next()
+//   }
+// })
+
+export default router;

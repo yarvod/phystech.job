@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Vacancy, Resume, Employer
+from .models import Vacancy, Resume, Employer, Employee
 
 
 class EmployerListSerializer(serializers.ModelSerializer):
@@ -9,8 +10,18 @@ class EmployerListSerializer(serializers.ModelSerializer):
 
 
 class EmployerDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+
     class Meta:
         model = Employer
+        fields = '__all__'
+
+
+class EmployeeDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = Employee
         fields = '__all__'
 
 
@@ -72,3 +83,11 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         model = Vacancy
         exclude = ('draft', 'closed', 'views', 'likes', 'responders')
 
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    employer = EmployerDetailSerializer(read_only=True)
+    employee = EmployeeDetailSerializer(read_only=True, source='Employee')
+
+    class Meta:
+        model = User
+        fields = '__all__'

@@ -1,10 +1,12 @@
-from rest_framework.response import Response
+from django.contrib.auth.models import User
+from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from .models import Resume, Vacancy, Employer
 from .serializers import (
     ResumeListSerializer, ResumeDetailSerializer, ResumeCreateSerializer,
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateSerializer,
     EmployerListSerializer, EmployerDetailSerializer,
+    UserDetailSerializer
 )
 
 
@@ -23,6 +25,7 @@ class VacancyListView(ListAPIView):
 
     queryset = Vacancy.objects.filter(draft=False, closed=False)
     serializer_class = VacancyListSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class VacancyDetailView(RetrieveAPIView):
@@ -49,4 +52,9 @@ class ResumeDetailView(RetrieveAPIView):
 
 class CreateResumeView(CreateAPIView):
     serializer_class = ResumeCreateSerializer
+
+
+class UserDetailView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
 
