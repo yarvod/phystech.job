@@ -1,6 +1,8 @@
 <template>
 	<div id="app">
-    <Header/>
+    <Header
+      :user="$store.getters.user"
+    />
     <router-view/>
 
 	</div>
@@ -9,6 +11,7 @@
 <script>
 import Header from "@/components/Header";
 import axios from "axios";
+import {mapGetters} from "vuex";
 
 export default {
   components: {

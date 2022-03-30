@@ -68,6 +68,7 @@ class Vacancy(models.Model):
 
     draft = models.BooleanField(default=False)
     closed = models.BooleanField(default=False)
+    # active = models.BooleanField(default=True)
 
     category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='vacancies')
     tags = models.ManyToManyField(Tag, blank=True, related_name='vacancies')

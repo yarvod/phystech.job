@@ -79,6 +79,12 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
 class EmployeeDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     resumes = ResumeDetailSerializer(read_only=True, many=True)
+    liked_vacancies = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_liked_vacancies(obj):
+        vacancies = VacancyDetailSerializer(obj.liked_vacancies.all(), many=True).data
+        return vacancies
 
     class Meta:
         model = Employee

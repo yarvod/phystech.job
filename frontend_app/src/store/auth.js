@@ -9,7 +9,7 @@ const state = {
 const getters = {
   isAuthenticated: state => state.isAuthenticated,
   token: state => state.token,
-  user: state => state.user
+  user: state => state.user.data
 }
 
 const mutations = {

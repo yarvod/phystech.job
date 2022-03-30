@@ -10,7 +10,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
 
-          <template v-if="$store.getters.isAuthenticated">
+          <template v-if="$store.getters.isAuthenticated && user">
             <b-nav-item-dropdown right>
               <template #button-content>
                 <em type="bright">{{ user.username }}</em>
@@ -59,16 +59,15 @@
 
 <script>
 import user_service from "@/api/user_service";
-import axios from "axios";
 
 export default {
   name: "Header",
+  props: ['user'],  // передаем юзера из App
   data () {
     return {
       username: '',
       password: '',
-      errors: [],
-      user: {}
+      errors: []
     }
   },
   methods: {
@@ -80,11 +79,12 @@ export default {
       }
       await user_service.LogIn(formData)
         .then(response => {
-          const token = response.data.auth_token
-          this.$store.commit('setToken', token)
+          const token = response.data.auth_token  // получаем токен из бэка
+          this.$store.commit('setToken', token)  // сохраняем токен в сторе
 
-          localStorage.setItem("token", token)
-          this.$router.push({name: 'home'})
+          localStorage.setItem("token", token)  // сохраняем токен в хранилище
+          this.$store.dispatch('getMe')  // получаем юзера из бэка и кладем в стор
+          this.$router.push({name: 'home'})  // переходим на домашнюю страницу
         })
         .catch(error => {
           if (error.response) {
@@ -97,7 +97,7 @@ export default {
               console.log(JSON.stringify(error))
             }
         })
-      await this.getUser()
+
     },
     async LogOut () {
       this.onReset()
@@ -109,7 +109,7 @@ export default {
     onReset () {
       this.username = ''
       this.password = ''
-    }
-  }
+    },
+  },
 }
 </script>

@@ -42,6 +42,15 @@
                     <p>I'm the second tab</p>
                   </div>
                 </div>
+
+                <div class="row">
+                  <VacancyItem
+                    v-for="vacancy of user.employee.liked_vacancies"
+                    :key="vacancy.id"
+                    :vacancy="vacancy"
+                  />
+                </div>
+
               </div>
             </b-tab>
 
@@ -86,8 +95,9 @@
 <script>
 
 import ResumeItem from "@/components/ResumeItem";
+import VacancyItem from "@/components/VacancyItem";
 export default {
-  components: {ResumeItem},
+  components: {VacancyItem, ResumeItem},
   data() {
     return {
       user: {
@@ -97,7 +107,7 @@ export default {
   },
   async mounted() {
       await this.$store.dispatch('getMe')
-      this.user = await this.$store.getters.user.data
+      this.user = await this.$store.getters.user
     }
 }
 
