@@ -1,28 +1,7 @@
+import djoser.serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Vacancy, Resume, Employer, Employee
-
-
-class EmployerListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Employer
-        fields = '__all__'
-
-
-class EmployerDetailSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
-
-    class Meta:
-        model = Employer
-        fields = '__all__'
-
-
-class EmployeeDetailSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
-
-    class Meta:
-        model = Employee
-        fields = '__all__'
 
 
 class ResumeListSerializer(serializers.ModelSerializer):
@@ -40,7 +19,6 @@ class ResumeDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employee = serializers.CharField(source='employee.user.username')
     likes = serializers.SlugRelatedField(slug_field='company_name', many=True, read_only=True)
-    responders = EmployerDetailSerializer(read_only=True, many=True)
 
     class Meta:
         model = Resume
@@ -84,10 +62,33 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         exclude = ('draft', 'closed', 'views', 'likes', 'responders')
 
 
-class UserDetailSerializer(serializers.ModelSerializer):
+class EmployerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+
+class EmployerDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+
+class EmployeeDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+    resumes = ResumeDetailSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+
+class UserDetailSerializer(djoser.serializers.UserSerializer):
     employer = EmployerDetailSerializer(read_only=True)
     employee = EmployeeDetailSerializer(read_only=True, source='Employee')
 
     class Meta:
         model = User
-        fields = '__all__'
+        exclude = ['password']

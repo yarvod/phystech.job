@@ -11,7 +11,9 @@ import Header from "@/components/Header";
 import axios from "axios";
 
 export default {
-  components: {Header},
+  components: {
+    Header
+  },
   beforeCreate() {
     this.$store.commit('storeToken')
     const token = this.$store.state.token
@@ -21,6 +23,11 @@ export default {
         axios.defaults.headers.common['Authorization'] = ""
     }
   },
+  async created () {
+    if (this.$store.getters.isAuthenticated) {
+      await this.$store.dispatch('getMe');
+    }
+  }
 }
 </script>
 

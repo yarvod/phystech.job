@@ -13,7 +13,7 @@
           <template v-if="$store.getters.isAuthenticated">
             <b-nav-item-dropdown right>
               <template #button-content>
-                <em>{{ user.username }}</em>
+                <em type="bright">{{ user.username }}</em>
               </template>
               <b-dropdown-item @click="$router.push({name: 'account'})">Профиль</b-dropdown-item>
               <b-dropdown-item @click="LogOut">Выйти</b-dropdown-item>
@@ -109,16 +109,6 @@ export default {
     onReset () {
       this.username = ''
       this.password = ''
-    },
-    async getUser () {
-      await this.$store.dispatch('getMe');
-      this.user = this.$store.getters.user.data
-    }
-  },
-  async mounted () {
-    if (this.$store.getters.isAuthenticated) {
-      await this.getUser()
-
     }
   }
 }

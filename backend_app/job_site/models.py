@@ -30,7 +30,7 @@ class Tag(models.Model):
 
 class Resume(models.Model):
 
-    employee = models.ForeignKey('Employee', on_delete=models.CASCADE)
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='resumes')
 
     title = models.CharField(max_length=255)
     body = models.TextField()
@@ -53,7 +53,18 @@ class Vacancy(models.Model):
     employer = models.ForeignKey('Employer', on_delete=models.CASCADE, related_name='vacancies')
 
     title = models.CharField(max_length=255)
-    body = models.TextField()
+    about = models.TextField(null=True, blank=True)
+    duties = models.TextField(null=True, blank=True)  # обязанности
+    requirements = models.TextField(null=True, blank=True)  # требования
+    skills = models.TextField(null=True, blank=True)   #  навыки
+    conditions = models.TextField(null=True, blank=True)  # условия
+
+    salary_min = models.PositiveIntegerField(null=True, blank=True)
+    salary_max = models.PositiveIntegerField(null=True, blank=True)
+
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    distant_work = models.BooleanField(default=False)
 
     draft = models.BooleanField(default=False)
     closed = models.BooleanField(default=False)

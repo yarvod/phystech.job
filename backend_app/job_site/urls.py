@@ -3,7 +3,8 @@ from .views import (
     ResumeListView, ResumeDetailView, CreateResumeView,
     VacancyListView, VacancyDetailView, CreateVacancyView,
     EmployerListView, EmployerDetailView,
-    UserDetailView
+    EmployeeDetailView,
+    UserDetailView,
 )
 
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path("resume/", CreateResumeView.as_view()),
     path("employers/", EmployerListView.as_view()),
     path("employers/<int:pk>/", EmployerDetailView.as_view()),
+    path("employees/<int:pk>/", EmployeeDetailView.as_view()),
     path("users/<int:pk>/", UserDetailView.as_view())
 ]
 

@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
-from .models import Resume, Vacancy, Employer
+from .models import Resume, Vacancy, Employer, Employee
 from .serializers import (
     ResumeListSerializer, ResumeDetailSerializer, ResumeCreateSerializer,
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateSerializer,
     EmployerListSerializer, EmployerDetailSerializer,
-    UserDetailSerializer
+    EmployeeDetailSerializer,
+    UserDetailSerializer,
 )
 
 
@@ -19,6 +20,11 @@ class EmployerListView(ListAPIView):
 class EmployerDetailView(RetrieveAPIView):
     queryset = Employer.objects.all()
     serializer_class = EmployerDetailSerializer
+
+
+class EmployeeDetailView(RetrieveAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeDetailSerializer
 
 
 class VacancyListView(ListAPIView):

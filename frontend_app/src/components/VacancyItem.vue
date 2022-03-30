@@ -13,7 +13,7 @@
         {{vacancy.category}}
         <br>
         <b>Created: </b>
-        {{vacancy.created}}
+        {{vacancy.created|formatDate}}
       </div>
       <hr>
       <button class="btn btn-outline-success m-1" size="md" name="respond"> Откликнуться </button>

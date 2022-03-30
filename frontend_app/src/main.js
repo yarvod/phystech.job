@@ -23,6 +23,7 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 new Vue({
+  axios,
   store,
   router,
   render: h => h(App)
