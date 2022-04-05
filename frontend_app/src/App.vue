@@ -11,7 +11,6 @@
 <script>
 import Header from "@/components/Header";
 import axios from "axios";
-import {mapGetters} from "vuex";
 
 export default {
   components: {
