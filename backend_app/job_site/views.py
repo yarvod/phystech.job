@@ -29,14 +29,14 @@ class EmployeeDetailView(RetrieveAPIView):
 
 class VacancyListView(ListAPIView):
 
-    queryset = Vacancy.objects.filter(draft=False, closed=False)
+    queryset = Vacancy.objects.filter(is_published=True)
     serializer_class = VacancyListSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class VacancyDetailView(RetrieveAPIView):
 
-    queryset = Vacancy.objects.filter(draft=False, closed=False)
+    queryset = Vacancy.objects.filter(is_published=True)
     serializer_class = VacancyDetailSerializer
 
 
@@ -46,13 +46,13 @@ class CreateVacancyView(CreateAPIView):
 
 class ResumeListView(ListAPIView):
 
-    queryset = Resume.objects.filter(draft=False)
+    queryset = Resume.objects.filter(is_published=True)
     serializer_class = ResumeListSerializer
 
 
 class ResumeDetailView(RetrieveAPIView):
 
-    queryset = Resume.objects.filter(draft=False)
+    queryset = Resume.objects.filter(is_published=True)
     serializer_class = ResumeDetailSerializer
 
 

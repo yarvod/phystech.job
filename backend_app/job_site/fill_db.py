@@ -79,15 +79,17 @@ def fill_db():
 
     fields = dict(
         employee=ee1,
-        body=f'Резюме {ee1.user.first_name}а. ' * 10,
-        category=c1
+        about_me=f'Резюме {ee1.user.first_name}а. ' * 10,
+        category=c1,
+        is_published=True
     )
     Resume.objects.update_or_create(title=f'Резюме {ee1.user.first_name}а. ', defaults=fields)
 
     fields = dict(
         employee=ee2,
-        body=f'Резюме {ee2.user.first_name}а. ' * 10,
-        category=c2
+        about_me=f'Резюме {ee2.user.first_name}а. ' * 10,
+        category=c2,
+        is_published=True
     )
     Resume.objects.update_or_create(title=f'Резюме {ee2.user.first_name}а. ', defaults=fields)
 
@@ -96,14 +98,16 @@ def fill_db():
     fields = dict(
         employer=er1,
         about=f'Вакансия {er1.user.first_name}а .' * 10,
-        category=c3
+        category=c3,
+        is_published=True
     )
     Vacancy.objects.update_or_create(title=f'Вакансия {er1.user.first_name}а .', defaults=fields)
 
     fields = dict(
         employer=er2,
         about=f'Вакансия {er1.user.first_name}а .' * 10,
-        category=c4
+        category=c4,
+        is_published=True
     )
     Vacancy.objects.update_or_create(title=f'Вакансия {er2.user.first_name}а .', defaults=fields)
 

@@ -8,7 +8,6 @@ class ResumeListSerializer(serializers.ModelSerializer):
     """Список всех резюме"""
     category = serializers.CharField(source='category.title')
     employee = serializers.CharField(source='employee.user.username')
-    likes = serializers.SlugRelatedField(slug_field='company_name', many=True, read_only=True)
 
     class Meta:
         model = Resume
@@ -18,18 +17,22 @@ class ResumeListSerializer(serializers.ModelSerializer):
 class ResumeDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employee = serializers.CharField(source='employee.user.username')
-    likes = serializers.SlugRelatedField(slug_field='company_name', many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.employers_who_liked.distinct().count()
 
     class Meta:
         model = Resume
-        exclude = ('draft',)
+        exclude = ('published',)
 
 
 class ResumeCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        exclude = ('draft', 'views', 'likes', 'responders', 'employee')
+        exclude = ('published', 'views', 'employee')
 
 
 class VacancyListSerializer(serializers.ModelSerializer):
@@ -37,7 +40,11 @@ class VacancyListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employer = serializers.CharField(source='employer.user.username')
     company_name = serializers.CharField(source='employer.company_name')
-    # likes = serializers.SlugRelatedField(slug_field='user.username', many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.employees_who_liked.distinct().count()
 
     class Meta:
         model = Vacancy
@@ -48,18 +55,17 @@ class VacancyDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employer = serializers.CharField(source='employer.user.username')
     company_name = serializers.CharField(source='employer.company_name')
-    # likes = serializers.SlugRelatedField(slug_field='', many=True, read_only=True)
 
     class Meta:
         model = Vacancy
-        exclude = ('draft',)
+        exclude = ('published',)
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vacancy
-        exclude = ('draft', 'closed', 'views', 'likes', 'responders')
+        exclude = ('views',)
 
 
 class EmployerListSerializer(serializers.ModelSerializer):
@@ -79,12 +85,7 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
 class EmployeeDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     resumes = ResumeDetailSerializer(read_only=True, many=True)
-    liked_vacancies = serializers.SerializerMethodField()
-
-    @staticmethod
-    def get_liked_vacancies(obj):
-        vacancies = VacancyDetailSerializer(obj.liked_vacancies.all(), many=True).data
-        return vacancies
+    favorite_vacancies = VacancyDetailSerializer(read_only=True, many=True)
 
     class Meta:
         model = Employee

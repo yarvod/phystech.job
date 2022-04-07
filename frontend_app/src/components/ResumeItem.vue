@@ -19,7 +19,15 @@
                 @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})">
           Подробнее
         </b-button>
-        <button class="btn btn-outline-danger m-1" size="md" name="like"> В избранное </button>
+<!--        <input id="toggle-heart" type="checkbox"/>-->
+<!--        <label for="toggle-heart" aria-label="like">❤</label>-->
+        <b-form-checkbox
+          id="checkbox-1"
+          v-model="like"
+          name="checkbox-1"
+        >
+          like
+        </b-form-checkbox>
       </div>
 
     </div>
@@ -29,7 +37,7 @@
 <script>
 export default {
   name: "ResumeItem",
-  props: ['resume'],
+  props: ['resume']
 }
 </script>
 

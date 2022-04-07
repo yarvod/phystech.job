@@ -27,24 +27,33 @@ class Tag(models.Model):
     title = models.CharField(max_length=50)
     code = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Resume(models.Model):
 
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='resumes')
 
     title = models.CharField(max_length=255)
-    body = models.TextField()
+    about_me = models.TextField(null=True, blank=True)
+    work_experiance = models.TextField(null=True, blank=True)
+    education = models.TextField(null=True, blank=True)
+    skills = models.TextField(null=True, blank=True)
+
+    location = models.CharField(max_length=100, null=True, blank=True)
+    ready_relocate = models.BooleanField(default=False)
+    ready_distant_work = models.BooleanField(default=False)
+
     file = models.FileField(null=True, blank=True)
 
-    draft = models.BooleanField(default=False)
-
-    likes = models.ManyToManyField('Employer', blank=True, related_name='liked_resumes')
-    responders = models.ManyToManyField('Employer', blank=True, related_name='responded_resumes')
     views = models.IntegerField(default=0)
 
     category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='resumes')
     tags = models.ManyToManyField(Tag, blank=True, related_name='resumes')
 
+    is_published = models.BooleanField(default=False)
+    published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
 
@@ -66,17 +75,13 @@ class Vacancy(models.Model):
 
     distant_work = models.BooleanField(default=False)
 
-    draft = models.BooleanField(default=False)
-    closed = models.BooleanField(default=False)
-    # active = models.BooleanField(default=True)
-
     category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='vacancies')
     tags = models.ManyToManyField(Tag, blank=True, related_name='vacancies')
 
-    likes = models.ManyToManyField('Employee', blank=True, related_name='liked_vacancies')
-    responders = models.ManyToManyField('Employee', blank=True, related_name='responded_vacancies')
     views = models.IntegerField(default=0)
 
+    is_published = models.BooleanField(default=False)
+    published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -86,6 +91,8 @@ class Vacancy(models.Model):
 class Employee(models.Model):
     user = models.OneToOneField(User, related_name='Employee', on_delete=models.CASCADE)
 
+    favorite_vacancies = models.ManyToManyField('Vacancy', blank=True, related_name='employees_who_like')
+
     def __str__(self):
         return self.user.username
 
@@ -93,6 +100,8 @@ class Employee(models.Model):
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=255)
+
+    favorite_resumes = models.ManyToManyField('Resume', blank=True, related_name='employers_who_liked')
 
     def __str__(self):
         return self.company_name

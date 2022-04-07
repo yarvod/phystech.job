@@ -16,7 +16,7 @@ export default {
   components: {
     Header
   },
-  beforeCreate() {
+  beforeMount() {
     this.$store.commit('storeToken')
     const token = this.$store.state.token
     if (token) {
@@ -25,7 +25,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = ""
     }
   },
-  async created () {
+  async mounted () {
     if (this.$store.getters.isAuthenticated) {
       await this.$store.dispatch('getMe');
     }
