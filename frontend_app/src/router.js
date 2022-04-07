@@ -22,6 +22,18 @@ const router = new VueRouter({
       name: 'resume_details'
     },
     {
+      path: '/account/resumes/:resumeId/edit',
+      component: () => import('@/views/Resume.vue'),
+      props: {isResumeEdit:true},
+      name: 'resume_edit'
+    },
+    {
+      path: '/account/resume/add',
+      component: () => import('@/views/Resume.vue'),
+      props: true,
+      name: 'resume_add'
+    },
+    {
       path: '/vacancies',
       component: () => import('@/views/Vacancies.vue'),
       name: 'vacancies'

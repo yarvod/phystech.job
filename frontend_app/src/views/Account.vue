@@ -58,7 +58,12 @@
               <div class="container">
                 <div class="row">
                   <div class="col">
-                    <b-button variant="outline-success" @click="$router.push({name:'edit'})">Добавить резюме</b-button>
+                    <b-button
+                        variant="outline-success"
+                        @click="$router.push({name:'resume_add'})"
+                    >
+                      Добавить резюме
+                    </b-button>
                   </div>
                 </div>
 
