@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col">
 
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-form @submit="onSubmit">
           <b-form-group id="title-group" label="Название:" label-for="title">
             <b-form-input
               id="title"
@@ -67,8 +67,19 @@
             <b-form-checkbox v-model="resume.ready_distant_work">Удаленная работа</b-form-checkbox>
           </b-form-group>
 
-          <b-button type="submit" variant="primary">Submit</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button>
+          <hr>
+
+
+          <div class="row">
+            <div class="col-auto">
+               <b-button type="submit" variant="outline-primary">Сохранить</b-button>
+            </div>
+            <div class="col-auto">
+              <b-form-checkbox type="checkbox" v-model="resume.is_published">Опубликовать</b-form-checkbox>
+            </div>
+          </div>
+
+
         </b-form>
 
       </div>
@@ -79,6 +90,7 @@
 </template>
 
 <script>
+import tags_service from "@/api/tags_service";
 export default {
   name: "Resume",
   props: {
@@ -90,23 +102,33 @@ export default {
   data() {
     return {
       resume: {},
-      show: true
+      tags: {},
+      user: {}
     }
+  },
+  async mounted () {
+    await tags_service.getTags()
+      .then(response => {this.tags = response.data})
+    await this.$store.dispatch('getMe')
+      .then(this.user = this.$store.getters.user)
   },
   methods: {
     onSubmit(event) {
       event.preventDefault()
-      alert(JSON.stringify(this.form))
+      if (this.isResumeEdit) {
+
+      } else {
+        this.resume.category = 'it'
+        this.resume.employee = this.user.employee.id
+        this.resume.tags = ['python']
+        this.$store.dispatch('createResume', {resume: this.resume})
+        this.onReset()
+      }
     },
-    onReset(event) {
+    onReset() {
       event.preventDefault()
       // Reset our form values
-
-      // Trick to reset/clear native browser form validation state
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
-      })
+      this.resume = {}
     }
   }
 }

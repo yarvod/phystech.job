@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
-from .models import Resume, Vacancy, Employer, Employee
+from .models import Resume, Vacancy, Employer, Employee, Tag
 from .serializers import (
-    ResumeListSerializer, ResumeDetailSerializer, ResumeCreateSerializer,
+    ResumeListSerializer, ResumeDetailSerializer, ResumeCreateUpdateSerializer,
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateSerializer,
     EmployerListSerializer, EmployerDetailSerializer,
     EmployeeDetailSerializer,
     UserDetailSerializer,
+    TagListSerializer
 )
 
 
@@ -57,10 +58,21 @@ class ResumeDetailView(RetrieveAPIView):
 
 
 class CreateResumeView(CreateAPIView):
-    serializer_class = ResumeCreateSerializer
+    serializer_class = ResumeCreateUpdateSerializer
 
 
 class UserDetailView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
+
+class TagListView(ListAPIView):
+
+    queryset = Tag.objects.all()
+    serializer_class = TagListSerializer
+
+
+class TagDetailView(RetrieveAPIView):
+
+    queryset = Tag.objects.all()
+    serializer_class = TagListSerializer

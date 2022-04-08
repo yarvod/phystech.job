@@ -11,6 +11,6 @@ export default {
     return await Api().delete(`/resumes/${id}/`)
   },
   async createResume (resume) {
-    return await Api().post('/resumes/', resume)
+    return await Api().post('/resume/', resume)
   },
 }

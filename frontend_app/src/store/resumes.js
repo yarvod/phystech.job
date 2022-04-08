@@ -37,7 +37,13 @@ const actions = {
   getResumes: async (context) => {
     let {data} = await resumes_service.getResumes();
     context.commit(SET_RESUMES, data)
-  }
+  },
+  createResume: async (context, payload) => {
+    let response = await resumes_service.createResume(payload.resume)
+      .then(
+        context.dispatch('getResumes')
+      )
+}
 }
 
 

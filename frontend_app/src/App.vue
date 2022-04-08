@@ -24,12 +24,10 @@ export default {
     } else {
         axios.defaults.headers.common['Authorization'] = ""
     }
-  },
-  async mounted () {
     if (this.$store.getters.isAuthenticated) {
-      await this.$store.dispatch('getMe');
+      this.$store.dispatch('getMe');
     }
-  }
+  },
 }
 </script>
 

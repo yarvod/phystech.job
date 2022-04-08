@@ -1,7 +1,7 @@
 import djoser.serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Vacancy, Resume, Employer, Employee
+from .models import Vacancy, Resume, Employer, Employee, Tag, Category
 
 
 class ResumeListSerializer(serializers.ModelSerializer):
@@ -28,11 +28,14 @@ class ResumeDetailSerializer(serializers.ModelSerializer):
         exclude = ('published',)
 
 
-class ResumeCreateSerializer(serializers.ModelSerializer):
+class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
+    employee = serializers.SlugRelatedField(slug_field='id', queryset=Employee.objects.all())
+    tags = serializers.SlugRelatedField(slug_field='code', queryset=Tag.objects.all(), many=True)
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
     class Meta:
         model = Resume
-        exclude = ('published', 'views', 'employee')
+        exclude = ('published', 'created', 'views')
 
 
 class VacancyListSerializer(serializers.ModelSerializer):
@@ -99,3 +102,10 @@ class UserDetailSerializer(djoser.serializers.UserSerializer):
     class Meta:
         model = User
         exclude = ['password']
+
+
+class TagListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
