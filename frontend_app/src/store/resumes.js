@@ -39,11 +39,17 @@ const actions = {
     context.commit(SET_RESUMES, data)
   },
   createResume: async (context, payload) => {
-    let response = await resumes_service.createResume(payload.resume)
+    await resumes_service.createResume(payload.resume)
       .then(
         context.dispatch('getResumes')
       )
-}
+  },
+  updateResume: async (context, payload) => {
+    await resumes_service.updateResume(payload.resume)
+      .then(
+        context.dispatch('getResumes')
+      )
+  }
 }
 
 

@@ -35,7 +35,7 @@ class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        exclude = ('published', 'created', 'views')
+        exclude = ('created', 'views')
 
 
 class VacancyListSerializer(serializers.ModelSerializer):

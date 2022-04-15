@@ -30,7 +30,7 @@ const router = new VueRouter({
     {
       path: '/account/resume/add',
       component: () => import('@/views/Resume.vue'),
-      props: true,
+      props: {isResumeEdit:false},
       name: 'resume_add'
     },
     {

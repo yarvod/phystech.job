@@ -13,4 +13,7 @@ export default {
   async createResume (resume) {
     return await Api().post('/resume/', resume)
   },
+  async updateResume (resume) {
+    return await Api().patch(`/resume/${resume.id}/`, resume)
+  },
 }

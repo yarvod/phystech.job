@@ -11,7 +11,9 @@
         {{resume.created | formatDate}}
       <hr>
       <b-button variant="outline-primary" class="m-1"
-                v-if="$route.path.search('/account') !== -1">
+                v-if="$route.path.search('/account') !== -1"
+                @click="$router.push({name: 'resume_edit', params: {resumeId: resume.id}})"
+      >
         Редактировать
       </b-button>
       <div v-else>
@@ -19,8 +21,6 @@
                 @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})">
           Подробнее
         </b-button>
-<!--        <input id="toggle-heart" type="checkbox"/>-->
-<!--        <label for="toggle-heart" aria-label="like">❤</label>-->
         <b-form-checkbox
           id="checkbox-1"
           v-model="like"

@@ -14,7 +14,7 @@
             content-class="mt-3"
             justified
           >
-            <b-tab title="Личная информация" active>
+            <b-tab title="Личная информация">
               <div class="container">
                 <div class="row">
                   <div class="col">

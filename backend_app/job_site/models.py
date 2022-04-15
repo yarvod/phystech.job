@@ -91,7 +91,7 @@ class Vacancy(models.Model):
 class Employee(models.Model):
     user = models.OneToOneField(User, related_name='Employee', on_delete=models.CASCADE)
 
-    favorite_vacancies = models.ManyToManyField('Vacancy', blank=True, related_name='employees_who_like')
+    favorite_vacancies = models.ManyToManyField('Vacancy', blank=True, related_name='employees_who_liked')
 
     def __str__(self):
         return self.user.username
