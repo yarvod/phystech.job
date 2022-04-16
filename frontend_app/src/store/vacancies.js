@@ -37,6 +37,18 @@ const actions = {
   getVacancies: async (context) => {
     let {data} = await vacancies_service.getVacancies();
     context.commit(SET_VACANCIES, data)
+  },
+  createVacancy: async (context, payload) => {
+    await vacancies_service.createVacancy(payload.vacancy)
+      .then(
+        context.dispatch('getVacancies')
+      )
+  },
+  updateVacancy: async (context, payload) => {
+    await vacancies_service.updateVacancy(payload.vacancy)
+      .then(
+        context.dispatch('getVacancies')
+      )
   }
 }
 

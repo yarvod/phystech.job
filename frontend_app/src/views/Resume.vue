@@ -153,12 +153,10 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault()
-      console.log('edit ', this.isResumeEdit)
       if (this.isResumeEdit) {
         this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
         this.resume.tags = ['python']
-        console.log('resume ', this.resume)
         this.$store.dispatch('updateResume', {resume: this.resume})
       } else {
         this.resume.category = 'it'

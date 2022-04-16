@@ -1,7 +1,13 @@
 import djoser.serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Vacancy, Resume, Employer, Employee, Tag, Category
+from .models import (
+    Employer, Vacancy,
+    Employee, Resume,
+    Freelancer, Service,
+    Client, Task,
+    Tag, Category,
+)
 
 
 class ResumeListSerializer(serializers.ModelSerializer):
@@ -25,7 +31,7 @@ class ResumeDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        exclude = ('published',)
+        fields = '__all__'
 
 
 class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
@@ -35,7 +41,7 @@ class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        exclude = ('created', 'views')
+        exclude = ('views')
 
 
 class VacancyListSerializer(serializers.ModelSerializer):
@@ -61,13 +67,78 @@ class VacancyDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vacancy
-        exclude = ('published',)
+        fields = '__all__'
 
 
-class VacancyCreateSerializer(serializers.ModelSerializer):
+class VacancyCreateUpdateSerializer(serializers.ModelSerializer):
+    employer = serializers.SlugRelatedField(slug_field='id', queryset=Employer.objects.all())
+    tags = serializers.SlugRelatedField(slug_field='code', queryset=Tag.objects.all(), many=True)
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
     class Meta:
         model = Vacancy
+        exclude = ('views',)
+
+
+class ServiceListSerializer(serializers.ModelSerializer):
+    """Список всех сервисов"""
+    category = serializers.CharField(source='category.title')
+    freelancer = serializers.CharField(source='freelancer.user.username')
+    likes = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.clients_who_liked.distinct().count()
+
+    class Meta:
+        model = Service
+        fields = '__all__'
+
+
+class ServiceDetailSerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source='category.title')
+    freelancer = serializers.CharField(source='freelancer.user.username')
+
+    class Meta:
+        model = Vacancy
+        exclude = ('published',)
+
+
+class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        exclude = ('views',)
+
+
+class TaskListSerializer(serializers.ModelSerializer):
+    """Список всех сервисов"""
+    category = serializers.CharField(source='category.title')
+    client = serializers.CharField(source='client.user.username')
+    likes = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.freelancers_who_liked.distinct().count()
+
+    class Meta:
+        model = Task
+        fields = '__all__'
+
+
+class TaskDetailSerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source='category.title')
+    client = serializers.CharField(source='client.user.username')
+
+    class Meta:
+        model = Task
+        exclude = ('published',)
+
+
+class TaskCreateUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Task
         exclude = ('views',)
 
 
@@ -79,9 +150,17 @@ class EmployerListSerializer(serializers.ModelSerializer):
 
 class EmployerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
+    vacancies = VacancyDetailSerializer(read_only=True, many=True)
+    favorite_resumes = ResumeDetailSerializer(read_only=True, many=True)
 
     class Meta:
         model = Employer
+        fields = '__all__'
+
+
+class EmployeeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
         fields = '__all__'
 
 
@@ -95,9 +174,43 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FreelancerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Freelancer
+        fields = '__all__'
+
+
+class FreelancerDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+    services = ServiceDetailSerializer(read_only=True, many=True)
+    favorite_tasks = TaskDetailSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+
+class ClientListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
+class ClientDetailSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+    tasks = TaskDetailSerializer(read_only=True, many=True)
+    favorite_services = ServiceDetailSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
 class UserDetailSerializer(djoser.serializers.UserSerializer):
     employer = EmployerDetailSerializer(read_only=True)
-    employee = EmployeeDetailSerializer(read_only=True, source='Employee')
+    employee = EmployeeDetailSerializer(read_only=True)
+    freelancer = FreelancerDetailSerializer(read_only=True)
+    client = ClientDetailSerializer(read_only=True)
 
     class Meta:
         model = User

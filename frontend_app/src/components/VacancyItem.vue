@@ -1,23 +1,42 @@
 <template>
   <div class="col-auto mt-2 mb-2">
     <div class="border rounded shadow-sm m-2">
-
-      <div class="btn" v-on:click="$router.push({name: 'vacancy_details', params: {vacancyId: vacancy.id}})">
-        <b>Title: </b>
-        {{ vacancy.title }}
-        <br>
-        <b>Company: </b>
-         {{vacancy.company_name}}
-        <br>
-        <b>Category: </b>
-        {{vacancy.category}}
-        <br>
-        <b>Created: </b>
-        {{vacancy.created|formatDate}}
+      <b>Title: </b>
+      {{ vacancy.title }}
+      <br>
+      <b>Company: </b>
+       {{vacancy.company_name}}
+      <br>
+      <b>Category: </b>
+      {{vacancy.category}}
+      <br>
+      <div v-if="vacancy.is_published">
+        <b>Опубликовано: </b>
+        {{vacancy.published|formatDate}}
+      </div>
+      <div v-else>
+        <b>Не опубликовано</b>
       </div>
       <hr>
-      <button class="btn btn-outline-success m-1" size="md" name="respond"> Откликнуться </button>
-      <button class="btn btn-outline-danger m-1" size="md" name="like"> В избранное </button>
+      <b-button variant="outline-primary" class="m-1"
+        v-if="$route.path.search('/account') !== -1"
+        @click="$router.push({name: 'vacancy_edit', params: {vacancyId: vacancy.id}})"
+      >
+        Редактировать
+      </b-button>
+      <div v-else>
+        <b-button variant="outline-primary" class="m-1"
+                @click="$router.push({name: 'vacancy_details', params: {vacancyId: vacancy.id}})">
+          Подробнее
+        </b-button>
+        <b-form-checkbox
+          id="checkbox-1"
+          v-model="like"
+          name="checkbox-1"
+        >
+          like
+        </b-form-checkbox>
+      </div>
 
     </div>
   </div>
@@ -27,9 +46,12 @@
 <script>
 export default {
   name: "VacancyItem",
-  props: {
-    vacancy: Object,
-  },
+  props: ['vacancy'],
+  data () {
+    return {
+      like: Boolean
+    }
+  }
 
 }
 </script>

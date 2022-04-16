@@ -14,6 +14,7 @@
             content-class="mt-3"
             justified
           >
+
             <b-tab title="Личная информация">
               <div class="container">
                 <div class="row">
@@ -35,26 +36,49 @@
               </div>
             </b-tab>
 
+
             <b-tab title="Избранное">
               <div class="container">
                 <div class="row">
                   <div class="col">
-                    <p>I'm the second tab</p>
+                    <p>Здесь все, что вам понравилось</p>
                   </div>
                 </div>
 
                 <div class="row">
-                  <VacancyItem
-                    v-for="vacancy of user.employee.liked_vacancies"
+                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">
+                    <VacancyItem
+                    v-for="vacancy of user.employer.vacancies"
                     :key="vacancy.id"
                     :vacancy="vacancy"
                   />
+                  </div>
+
+                  <div v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')">
+                    <ResumeItem
+                    v-for="resume of user.employer.resumes"
+                    :key="resume.id"
+                    :resume="resume"
+                  />
+                  </div>
                 </div>
 
               </div>
             </b-tab>
 
-            <b-tab title="Мои резюме">
+
+            <b-tab title="Отклики">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p>Здесь отображаются отклики на ваши заявки и посты</p>
+                  </div>
+                </div>
+              </div>
+            </b-tab>
+
+
+            <b-tab title="Мои резюме" v-if="user.employee">
               <div class="container">
                 <div class="row">
                   <div class="col">
@@ -74,15 +98,66 @@
                     :resume="resume"
                   />
                 </div>
-
               </div>
             </b-tab>
 
-            <b-tab title="Отклики">
+
+            <b-tab title="Мои вакансии" v-if="user.employer">
               <div class="container">
                 <div class="row">
                   <div class="col">
-                    <p>I'm the second tab</p>
+                    <p>Вы можете разместить вакансии</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <b-button
+                        variant="outline-success"
+                        @click="$router.push({name:'vacancy_add'})"
+                    >
+                      Добавить вакансию
+                    </b-button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <VacancyItem
+                  v-for="vacancy of user.employer.vacancies"
+                  :key="vacancy.id"
+                  :vacancy="vacancy"
+                  />
+                </div>
+              </div>
+            </b-tab>
+
+
+            <b-tab title="Мои услуги" v-if="user.freelancer">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p>Вы можете разместить услуги, которые можете предоставить</p>
+                  </div>
+                </div>
+              </div>
+            </b-tab>
+
+
+            <b-tab title="Мои заказы" v-if="user.client">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p>Вы можете разместить заказ на исполнение</p>
+                  </div>
+                </div>
+              </div>
+            </b-tab>
+
+
+            <b-tab title="Мои подписки">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p>Вы можете подписаться на категории и получать рассылку по электронной почте</p>
                   </div>
                 </div>
               </div>
@@ -106,14 +181,20 @@ export default {
   data() {
     return {
       user: {
-        employee: {}
-      }
+        employee: {},
+        employer: {},
+        freelancer: {},
+        client: {}
+      },
+      like_filter: ''
     }
   },
   async mounted() {
       await this.$store.dispatch('getMe')
-      this.user = await this.$store.getters.user
-    }
+      this.user = await this.$store.getters.user;
+    },
+  methods: {
+  }
 }
 
 </script>

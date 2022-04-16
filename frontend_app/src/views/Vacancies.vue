@@ -18,7 +18,6 @@
 <script>
 import VacancyList from "@/components/VacancyList";
 import { mapGetters } from "vuex";
-import json from '@/views/vacancies.json';
 
 export default {
   name: 'Vacancies',
@@ -31,7 +30,7 @@ export default {
   },
   data () {
     return {
-      vacancies_json: json.data
+
     }
   }
 }

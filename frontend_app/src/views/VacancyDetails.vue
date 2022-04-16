@@ -17,7 +17,7 @@
         <br>
         <b>Зарплата: </b> {{vacancy.salary_min}} - {{vacancy.salary_max}}
         <br>
-        <b>Опубликовано: </b> {{vacancy.created|formatDate}}
+        <b>Опубликовано: </b> {{vacancy.published|formatDate}}
       </div>
     </div>
     <div class="row" v-if="vacancy.about">

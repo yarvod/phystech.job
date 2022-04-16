@@ -1,18 +1,18 @@
 <template>
   <div class="col-auto mt-2 mb-2">
     <div class="border rounded shadow-sm m-2">
-        <b>Title: </b>
-        {{ resume.title }}
-        <br>
-        <b>Category: </b>
-        {{resume.category}}
-        <br>
-        <b>Created: </b>
-        {{resume.created | formatDate}}
+      <b>Title: </b>
+      {{ resume.title }}
+      <br>
+      <b>Category: </b>
+      {{resume.category}}
+      <br>
+      <b>Created: </b>
+      {{resume.created | formatDate}}
       <hr>
       <b-button variant="outline-primary" class="m-1"
-                v-if="$route.path.search('/account') !== -1"
-                @click="$router.push({name: 'resume_edit', params: {resumeId: resume.id}})"
+        v-if="$route.path.search('/account') !== -1"
+        @click="$router.push({name: 'resume_edit', params: {resumeId: resume.id}})"
       >
         Редактировать
       </b-button>
@@ -37,7 +37,12 @@
 <script>
 export default {
   name: "ResumeItem",
-  props: ['resume']
+  props: ['resume'],
+  data () {
+    return {
+      like: Boolean
+    }
+  }
 }
 </script>
 

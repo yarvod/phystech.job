@@ -11,6 +11,12 @@ export default {
     return await Api().delete(`/vacancies/${id}/`)
   },
   async createVacancy(vacancy) {
-    return await Api().post('/vacancies/', vacancy)
+    return await Api().post('/vacancy/', vacancy)
+  },
+  async updateVacancy (vacancy) {
+    return await Api().patch(`/vacancy/${vacancy.id}/`, vacancy)
+  },
+  async getVacancyDetail(id) {
+    return await Api().get(`/vacancy/${id}/`)
   },
 }

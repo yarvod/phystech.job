@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 from django.urls import reverse
@@ -87,6 +88,52 @@ class Vacancy(models.Model):
     class Meta:
         verbose_name_plural = 'Vacancies'
 
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
+
+
+class Service(models.Model):
+
+    freelancer = models.ForeignKey('Freelancer', on_delete=models.PROTECT, related_name='services')
+
+    title = models.CharField(max_length=255)
+    about = models.TextField(null=True, blank=True)
+
+    salary = models.PositiveIntegerField()
+
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='services')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='services')
+
+    views = models.IntegerField(default=0)
+
+    is_published = models.BooleanField(default=False)
+    published = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class Task(models.Model):
+    client = models.ForeignKey('Client', on_delete=models.PROTECT, related_name='tasks')
+
+    title = models.CharField(max_length=255)
+    about = models.TextField(null=True, blank=True)
+
+    salary = models.PositiveIntegerField()
+
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='tasks')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='tasks')
+
+    views = models.IntegerField(default=0)
+
+    is_published = models.BooleanField(default=False)
+    published = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
 
 class Employee(models.Model):
     user = models.OneToOneField(User, related_name='Employee', on_delete=models.CASCADE)
@@ -110,6 +157,11 @@ class Employer(models.Model):
 class Freelancer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    favorite_tasks = models.ManyToManyField('Task', blank=True, related_name='freelancers_who_liked')
+
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    favorite_services = models.ManyToManyField('Service', blank=True, related_name='clients_who_liked')
+
