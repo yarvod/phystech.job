@@ -2,6 +2,7 @@
 	<div id="app">
     <Header
       :user="$store.getters.user"
+      :show_login="Boolean($route.params.show_login)"
     />
     <router-view/>
 
@@ -16,8 +17,8 @@ export default {
   components: {
     Header
   },
-  beforeMount() {
-    this.$store.commit('storeToken')
+  async beforeMount() {
+    await this.$store.commit('storeToken')
     const token = this.$store.state.token
     if (token) {
         axios.defaults.headers.common['Authorization'] = "Token " + token
@@ -25,7 +26,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = ""
     }
     if (this.$store.getters.isAuthenticated) {
-      this.$store.dispatch('getMe');
+      await this.$store.dispatch('getMe')
     }
   },
 }

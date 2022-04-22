@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {store} from "@/store/index";
+
 
 Vue.use(VueRouter)
 
@@ -25,25 +27,37 @@ const router = new VueRouter({
       path: '/account/resumes/:resumeId/edit',
       component: () => import('@/views/Resume.vue'),
       props: {isResumeEdit:true},
-      name: 'resume_edit'
+      name: 'resume_edit',
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: '/account/resume/add',
       component: () => import('@/views/Resume.vue'),
       props: {isResumeEdit:false},
-      name: 'resume_add'
+      name: 'resume_add',
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: '/account/vacancies/:vacancyId/edit',
       component: () => import('@/views/Vacancy'),
       props: {isVacancyEdit:true},
-      name: 'vacancy_edit'
+      name: 'vacancy_edit',
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: '/account/vacancy/add',
       component: () => import('@/views/Vacancy'),
       props: {isVacancyEdit:false},
-      name: 'vacancy_add'
+      name: 'vacancy_add',
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: '/vacancies',
@@ -59,16 +73,26 @@ const router = new VueRouter({
     {
       path: '/account',
       component: () => import('@/views/Account.vue'),
-      name: 'account'
+      name: 'account',
+      // meta: {
+      //   requiresAuth: true
+      // }
     }
   ],
 })
 
+
 // router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
-//     next({ name: 'LogIn', query: { to: to.path } });
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     // this route requires auth, check if logged in
+//     // if not, redirect to login page.
+//     if (!store.getters.user) {
+//       next({ name: 'home' , params: {show_login: true}})
+//     } else {
+//       next() // go to wherever I'm going
+//     }
 //   } else {
-//     next()
+//     next() // does not require auth, make sure to always call next()!
 //   }
 // })
 

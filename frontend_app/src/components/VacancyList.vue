@@ -1,14 +1,13 @@
 <template>
 
-  <div class="container">
-    <div class="row">
-      <VacancyItem
+  <b-card-group deck>
+    <VacancyItem
         v-for="vacancy of vacancies"
         :key="vacancy.id"
         :vacancy="vacancy"
-      />
-    </div>
-  </div>
+        :edit="false"
+    />
+  </b-card-group>
 
 </template>
 

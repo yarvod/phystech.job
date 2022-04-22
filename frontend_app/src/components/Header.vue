@@ -22,7 +22,7 @@
 
           <template v-else>
             <b-button id="popover-button-variant" tabindex="0" size="md">Аккаунт</b-button>
-            <b-popover target="popover-button-variant" variant="primary" triggers="focus" placement="bottom" size="xl">
+            <b-popover :show="show_login" target="popover-button-variant" variant="primary" triggers="focus" placement="bottom" size="xl">
               <template #title>Вход</template>
               <div class="text-center">
                 <b-form @submit.prevent="submitForm">
@@ -62,7 +62,7 @@ import user_service from "@/api/user_service";
 
 export default {
   name: "Header",
-  props: ['user'],  // передаем юзера из App
+  props: ['user', 'show_login'],  // передаем юзера из App
   data () {
     return {
       username: '',

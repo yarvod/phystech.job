@@ -1,18 +1,18 @@
 <template>
-  <div class="container">
-    <div class="row">
+  <b-container>
+    <b-row>
       <h2 class="text-center">Список резюме</h2>
-    </div>
-    <div class="row">
-      <router-link to="/">Home</router-link>
-    </div>
+    </b-row>
+    <b-row>
+      <a class="cancel-link" @click="$router.back()">Назад</a>
+    </b-row>
     <hr>
 
     <ResumeList
       :resumes="resumes"
     />
 
-  </div>
+  </b-container>
 </template>
 
 

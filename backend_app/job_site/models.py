@@ -1,7 +1,5 @@
 from django.utils import timezone
 from django.contrib.auth.models import User
-
-from django.urls import reverse
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -57,6 +55,14 @@ class Resume(models.Model):
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Resume {self.title}"
+
 
 class Vacancy(models.Model):
 
@@ -93,6 +99,9 @@ class Vacancy(models.Model):
             self.published = timezone.now()
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"Vacancy {self.title}"
+
 
 class Service(models.Model):
 
@@ -114,6 +123,9 @@ class Service(models.Model):
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Service {self.title}"
+
 
 class Task(models.Model):
     client = models.ForeignKey('Client', on_delete=models.PROTECT, related_name='tasks')
@@ -134,34 +146,43 @@ class Task(models.Model):
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Task {self.title}"
+
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, related_name='Employee', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='employee', on_delete=models.CASCADE)
 
     favorite_vacancies = models.ManyToManyField('Vacancy', blank=True, related_name='employees_who_liked')
 
     def __str__(self):
-        return self.user.username
+        return f"Employee {self.user.username}"
 
 
 class Employer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='employer', on_delete=models.CASCADE)
     company_name = models.CharField(max_length=255)
 
     favorite_resumes = models.ManyToManyField('Resume', blank=True, related_name='employers_who_liked')
 
     def __str__(self):
-        return self.company_name
+        return f"Employer {self.user.username}, Company {self.company_name}"
 
 
 class Freelancer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='freelancer', on_delete=models.CASCADE)
 
     favorite_tasks = models.ManyToManyField('Task', blank=True, related_name='freelancers_who_liked')
 
+    def __str__(self):
+        return f"Freelancer {self.user.username}"
+
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='client', on_delete=models.CASCADE)
 
     favorite_services = models.ManyToManyField('Service', blank=True, related_name='clients_who_liked')
+
+    def __str__(self):
+        return f"Client {self.user.username}"
 

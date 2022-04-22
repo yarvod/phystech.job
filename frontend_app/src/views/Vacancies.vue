@@ -4,7 +4,7 @@
       <h2 class="text-center">Список вакансий</h2>
     </div>
     <div class="row">
-      <router-link to="/">На главную</router-link>
+      <a class="cancel-link" @click="$router.back()">Назад</a>
     </div>
     <hr>
     <VacancyList

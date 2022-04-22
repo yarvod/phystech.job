@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col">
+  <b-container>
+    <b-row>
+      <b-col>
         <h2>Мой профиль</h2>
         <hr>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col>
           <b-tabs
             active-nav-item-class="font-weight-bold text-uppercase"
             content-class="mt-3"
@@ -45,23 +45,24 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">
-                    <VacancyItem
-                    v-for="vacancy of user.employer.vacancies"
-                    :key="vacancy.id"
-                    :vacancy="vacancy"
-                  />
-                  </div>
+<!--                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">-->
+<!--                    <ResumeItem-->
+<!--                    v-for="resume of user.employer.favorite_resumes"-->
+<!--                    :key="resume.id"-->
+<!--                    :resume="resume"-->
+<!--                    :edit="false"-->
+<!--                    :like="true"-->
+<!--                    />-->
+<!--                  </div>-->
 
-                  <div v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')">
-                    <ResumeItem
-                    v-for="resume of user.employer.resumes"
-                    :key="resume.id"
-                    :resume="resume"
+                <b-card-group v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')" deck>
+                  <VacancyItem
+                  v-for="vacancy of user.employee.favorite_vacancies"
+                  :key="vacancy.id"
+                  :vacancy="vacancy"
+                  :edit="false"
                   />
-                  </div>
-                </div>
+                </b-card-group>
 
               </div>
             </b-tab>
@@ -79,26 +80,29 @@
 
 
             <b-tab title="Мои резюме" v-if="user.employee">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
+              <b-container class="container">
+                <b-row>
+                  <b-col>
                     <b-button
                         variant="outline-success"
                         @click="$router.push({name:'resume_add'})"
                     >
                       Добавить резюме
                     </b-button>
-                  </div>
-                </div>
+                  </b-col>
+                </b-row>
 
-                <div class="row">
+                <br>
+
+                <b-card-group deck>
                   <ResumeItem
                     v-for="resume of user.employee.resumes"
                     :key="resume.id"
                     :resume="resume"
+                    :edit="true"
                   />
-                </div>
-              </div>
+                </b-card-group>
+              </b-container>
             </b-tab>
 
 
@@ -164,10 +168,10 @@
             </b-tab>
 
           </b-tabs>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
-  </div>
+  </b-container>
 
 </template>
 

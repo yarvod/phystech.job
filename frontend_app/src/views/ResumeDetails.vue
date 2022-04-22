@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row h2 text-center">Resume Details</div>
   <div class="row">
-    <router-link to="/resumes">К списку резюме</router-link>
+    <a class="cancel-link" @click="$router.back()">Назад</a>
   </div>
   <hr>
   <div class="row">

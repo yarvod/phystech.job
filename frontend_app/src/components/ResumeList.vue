@@ -1,14 +1,13 @@
 <template>
 
-  <div class="container">
-    <div class="row">
-      <ResumeItem
-        v-for="resume of resumes"
-        :key="resume.id"
-        :resume="resume"
-      />
-    </div>
-  </div>
+  <b-card-group deck>
+    <ResumeItem
+      v-for="resume of resumes"
+      :key="resume.id"
+      :resume="resume"
+      :edit="false"
+    />
+  </b-card-group>
 
 </template>
 

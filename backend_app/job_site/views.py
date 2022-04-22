@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, viewsets
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView
 from .models import (
     Employer, Vacancy,
@@ -37,8 +37,9 @@ class EmployeeListView(ListAPIView):
     serializer_class = EmployeeListSerializer
 
 
-class EmployeeDetailView(RetrieveAPIView):
-    queryset = Employee.objects.all()
+class EmployeeDetailView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all()\
+        .prefetch_related('favorite_vacancies')
     serializer_class = EmployeeDetailSerializer
 
 
