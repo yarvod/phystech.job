@@ -1,0 +1,227 @@
+<template>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2 v-if="isVacancyEdit">Редактирование вакансии</h2>
+        <h2 v-else>Добавление вакансии</h2>
+      </div>
+    </div>
+    <router-link to="/account">Назад</router-link>
+
+    <hr>
+
+    <div class="row">
+      <div class="col">
+
+        <b-form @submit="onSubmit">
+          <b-form-group id="title-group" label="Название:" label-for="title">
+            <b-form-input
+              id="title"
+              :value="vacancy.title"
+              v-model="vacancy.title"
+              placeholder="Введите название"
+              required
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group id="about-group" label="О вакансии:" label-for="about">
+            <b-form-textarea
+              id="about"
+              :value="vacancy.about"
+              v-model="vacancy.about"
+              placeholder="Расскажите о вакании"
+              required
+            >
+            </b-form-textarea>
+          </b-form-group>
+
+          <b-form-group id="duties-group" label="Обязанности" label-for="duties">
+            <b-form-textarea
+              id="duties"
+              :value="vacancy.duties"
+              v-model="vacancy.duties"
+              placeholder="Расскажите об обязанностях сотрудника"
+              required
+            >
+            </b-form-textarea>
+          </b-form-group>
+
+          <b-form-group id="requirements-group" label="Требования" label-for="requirements">
+            <b-form-textarea
+              id="requirements"
+              :value="vacancy.requirements"
+              v-model="vacancy.requirements"
+              placeholder="Расскажите о требованиях к сотруднику"
+              required
+            >
+            </b-form-textarea>
+          </b-form-group>
+
+          <b-form-group id="conditions-group" label="Условия работы:" label-for="conditions">
+            <b-form-textarea
+              id="conditions"
+              :value="vacancy.conditions"
+              v-model="vacancy.conditions"
+              placeholder="Расскажите об условиях работы"
+              required
+            >
+            </b-form-textarea>
+          </b-form-group>
+          
+          <b-form-group id="location-group" label="Адрес:" label-for="location">
+            <b-form-input
+              id="location"
+              type="text"
+              :value="vacancy.location"
+              v-model="vacancy.location"
+              placeholder="Страна, город ..."
+              required
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Зарплата:" label-for="salary">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <label label-for="salary_min">От</label>
+                  <b-form-input
+                      id="salary_min"
+                      type="number"
+                      step="1000"
+                      min="0"
+                      v-model="vacancy.salary_min"
+                  ></b-form-input>
+                </div>
+                <div class="col">
+                  <label label-for="salary_max">До</label>
+                  <b-form-input
+                      id="salary_max"
+                      type="number"
+                      step="1000"
+                      min="0"
+                      v-model="vacancy.salary_max"
+                  ></b-form-input>
+                </div>
+              </div>
+            </div>
+
+          </b-form-group>
+
+          <b-form-group>
+            <b-form-checkbox
+                v-model="vacancy.distant_work"
+                value="true"
+                unchecked-value="false"
+            >
+              Удаленная работа
+            </b-form-checkbox>
+          </b-form-group>
+
+          <hr>
+
+          <div class="row">
+            <div class="col-auto">
+               <b-button type="submit" variant="outline-primary" @click="onSubmit">Сохранить</b-button>
+            </div>
+            <div class="col-auto">
+              <b-form-checkbox
+                  v-model="vacancy.is_published"
+                  value="true"
+                  unchecked-value="false"
+              >
+                Опубликовать
+              </b-form-checkbox>
+            </div>
+            <div v-if="isVacancyEdit" class="col-auto offset-7 text-right">
+              <b-button variant="outline-danger" @click="onDelete()">Удалить</b-button>
+            </div>
+          </div>
+
+
+        </b-form>
+
+      </div>
+    </div>
+
+  </div>
+
+</template>
+
+<script>
+import tags_service from "@/api/tags_service";
+import vacancies_service from "@/api/vacancies_service";
+import router from "@/router";
+export default {
+  name: "Vacancy",
+  props: [
+    'isVacancyEdit',
+  ],
+  data() {
+    return {
+      vacancy: {
+        title: '',
+        about: '',
+        duties: '',
+        requirements: '',
+        skills: '',
+        conditions: '',
+        location: '',
+        published: '',
+        salary_min: null,
+        salary_max: null,
+        distant_work: false,
+        is_published: false,
+      },
+      tags: {},
+      user: {}
+    }
+  },
+  async mounted () {
+    await tags_service.getTags()
+      .then(response => {this.tags = response.data})
+    await this.$store.dispatch('getMe')
+      .then(this.user = this.$store.getters.user)
+    if (this.$route.path.search('/account') !== -1 && this.$route.params.vacancyId) {
+      let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
+      this.vacancy = data
+    }
+    else if (this.$route.params.vacancyId) {
+      let {data} = await vacancies_service.getVacancy(this.$route.params.vacancyId);
+      this.vacancy = data
+    }
+  },
+  methods: {
+    onSubmit(event) {
+      event.preventDefault()
+      if (this.isVacancyEdit) {
+        this.vacancy.category = 'it'
+        this.vacancy.employer = this.user.employer.id
+        this.vacancy.tags = ['python']
+        this.$store.dispatch('updateVacancy', {vacancy: this.vacancy})
+      } else {
+        this.vacancy.category = 'it'
+        this.vacancy.employer = this.user.employer.id
+        this.vacancy.tags = ['python']
+        this.$store.dispatch('createVacancy', {vacancy: this.vacancy})
+        this.onReset()
+      }
+      router.push({name: 'account'})
+    },
+    onReset() {
+      event.preventDefault()
+      // Reset our form values
+      this.vacancy = {}
+    },
+    onDelete() {
+
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

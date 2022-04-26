@@ -1,6 +1,13 @@
 from django.contrib import admin
+from mptt.admin import MPTTModelAdmin
 
-from .models import Vacancy, Resume, Employee, Employer, Category
+from .models import (
+    Employer, Vacancy,
+    Employee, Resume,
+    Freelancer, Service,
+    Client, Task,
+    Tag, Category,
+)
 
 
 @admin.register(Vacancy)
@@ -42,6 +49,19 @@ class EmployerAdmin(BaseUserAdmin):
     pass
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(Client)
+class ClientAdmin(BaseUserAdmin):
+    pass
+
+
+@admin.register(Freelancer)
+class FreelancerAdmin(BaseUserAdmin):
+    pass
+
+
+admin.site.register(Category, MPTTModelAdmin)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
     pass

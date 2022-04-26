@@ -1,7 +1,9 @@
-import vacancies from './vacancies'
-import resumes from './resumes'
-import Vue from 'vue'
+import Vue from 'vue';
 import Vuex from "vuex";
+import vacancies from './vacancies';
+import resumes from './resumes';
+import auth from "./user";
+
 
 Vue.use(Vuex)
 
@@ -13,5 +15,6 @@ export const store = new Vuex.Store({
   modules: {
     vacancies,
     resumes,
+    auth,
   },
 })

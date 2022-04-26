@@ -1,8 +1,8 @@
-import resumes from '@/api/resumes'
+import resumes_service from '@/api/resumes_service'
 
 const ADD_RESUME = 'ADD_RESUME'
 const REMOVE_RESUME = 'REMOVE_RESUME'
-const SET_RESUME = 'SET_RESUME'
+const SET_RESUMES = 'SET_RESUMES'
 
 const state = {
   resumes: []
@@ -16,28 +16,39 @@ const getters = {
 // Мутации
 const mutations = {
   // Добавляем резюме в список
-  [ADD_RESUME] (state, resume) {
-    state.resumes = [resume, ...state.resumes]
+  [ADD_RESUME] (state, payload) {
+    state.resumes = [payload, ...state.resumes]
   },
   // Убираем резюме из списка
-  [REMOVE_RESUME] (state, { id }) {
+  [REMOVE_RESUME] (state, payload) {
     state.resumes = state.resumes.filter(resume => {
-      return resume.id !== id
+      return resume.id !== payload
     })
   },
   // Задаем список резюме
-  [SET_RESUME] (state, { resumes }) {
-    state.resumes = resumes
+  [SET_RESUMES] (state, payload) {
+    state.resumes = payload
   }
 }
 
 
 // Действия
 const actions = {
-  getResumes ({ commit }) {
-    resumes.list().then(resumes => {
-      commit(SET_RESUME, { resumes })
-    })
+  getResumes: async (context) => {
+    let {data} = await resumes_service.getResumes();
+    context.commit(SET_RESUMES, data)
+  },
+  createResume: async (context, payload) => {
+    await resumes_service.createResume(payload.resume)
+      .then(
+        context.dispatch('getResumes')
+      )
+  },
+  updateResume: async (context, payload) => {
+    await resumes_service.updateResume(payload.resume)
+      .then(
+        context.dispatch('getResumes')
+      )
   }
 }
 

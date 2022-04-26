@@ -1,15 +1,15 @@
-import vacancies from '@/api/vacancies'
+import vacancies_service from '@/api/vacancies_service'
 
 const ADD_VACANCY = 'ADD_VACANCY'
 const REMOVE_VACANCY = 'REMOVE_VACANCY'
-const SET_VACANCY = 'SET_VACANCY'
+const SET_VACANCIES = 'SET_VACANCIES'
 
 const state = {
-  vacancies: []
+  vacancies: [],
 }
 
 const getters = {
-  vacancies: state => state.vacancies  // список вакансий из состояния
+  vacancies: state => state.vacancies,  // список вакансий из состояния
 }
 
 
@@ -26,18 +26,29 @@ const mutations = {
     })
   },
   // Задаем список вакансйи
-  [SET_VACANCY] (state, { vacancies }) {
-    state.vacancies = vacancies
-  }
+  [SET_VACANCIES] (state, payload) {
+    state.vacancies = payload
+  },
 }
 
 
 // Действия
 const actions = {
-  getVacancies ({ commit }) {
-    vacancies.list().then(vacancies => {
-      commit(SET_VACANCY, { vacancies })
-    })
+  getVacancies: async (context) => {
+    let {data} = await vacancies_service.getVacancies();
+    context.commit(SET_VACANCIES, data)
+  },
+  createVacancy: async (context, payload) => {
+    await vacancies_service.createVacancy(payload.vacancy)
+      .then(
+        context.dispatch('getVacancies')
+      )
+  },
+  updateVacancy: async (context, payload) => {
+    await vacancies_service.updateVacancy(payload.vacancy)
+      .then(
+        context.dispatch('getVacancies')
+      )
   }
 }
 

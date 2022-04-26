@@ -4,32 +4,34 @@
       <h2 class="text-center">Список вакансий</h2>
     </div>
     <div class="row">
-      <router-link to="/">Home</router-link>
+      <a class="cancel-link" @click="$router.back()">Назад</a>
     </div>
     <hr>
-  <!--  <div class="text-center" v-if="loading">-->
-  <!--    <Loader/>-->
-  <!--  </div>-->
-    <VacancyList/>
-  <!--  <p v-else>No Resumes!</p>-->
+    <VacancyList
+      :vacancies="vacancies"
+    />
+
   </div>
 </template>
 
 
 <script>
-// import Loader from '@/components/Loader'
 import VacancyList from "@/components/VacancyList";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'Vacancies',
-	data() {
-		return {
-      loading: true,
-		}
-	},
+  computed: mapGetters(['vacancies']),
+  async mounted () {
+    await this.$store.dispatch('getVacancies')
+  },
   components: {
 		VacancyList,
-    // Loader
   },
+  data () {
+    return {
+
+    }
+  }
 }
 </script>

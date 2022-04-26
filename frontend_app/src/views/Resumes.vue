@@ -1,35 +1,41 @@
 <template>
-  <div class="container">
-    <div class="row">
+  <b-container>
+    <b-row>
       <h2 class="text-center">Список резюме</h2>
-    </div>
-    <div class="row">
-      <router-link to="/">Home</router-link>
-    </div>
+    </b-row>
+    <b-row>
+      <a class="cancel-link" @click="$router.back()">Назад</a>
+    </b-row>
     <hr>
-  <!--  <div class="text-center" v-if="loading">-->
-  <!--    <Loader/>-->
-  <!--  </div>-->
-    <ResumeList/>
-  <!--  <p v-else>No Resumes!</p>-->
-  </div>
+
+    <ResumeList
+      :resumes="resumes"
+    />
+
+  </b-container>
 </template>
 
 
 <script>
 import ResumeList from '@/components/ResumeList'
-// import Loader from '@/components/Loader'
-
+import { mapGetters } from "vuex";
 export default {
   name: 'Resumes',
-	data() {
-		return {
-      loading: true,
-		}
-	},
+  computed: {
+    ...mapGetters([
+      'resumes'
+    ])
+  },
+  async mounted() {
+    await this.$store.dispatch('getResumes')
+  },
   components: {
 		ResumeList,
-    // Loader
   },
+  data () {
+    return {
+
+    }
+  }
 }
 </script>
