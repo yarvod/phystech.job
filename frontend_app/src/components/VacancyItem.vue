@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import employees_service from "@/api/employees_service";
 export default {
   name: "VacancyItem",
   props: ['vacancy', 'edit'],

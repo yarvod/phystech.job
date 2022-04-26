@@ -61,7 +61,6 @@
 
 <script>
 import vacancy_service from '@/api/vacancies_service'
-import employees_service from "@/api/employees_service";
 
 export default {
   name: "VacancyDetails",
