@@ -21,33 +21,12 @@
           </template>
 
           <template v-else>
-            <b-button id="popover-button-variant" tabindex="0" size="md">Аккаунт</b-button>
-            <b-popover :show="show_login" target="popover-button-variant" variant="primary" triggers="focus" placement="bottom" size="xl">
-              <template #title>Вход</template>
-              <div class="text-center">
-                <b-form @submit.prevent="submitForm">
-                  <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-                    <b-form-input v-model="username" placeholder="username" type="text"></b-form-input>
-                  </b-input-group>
-                    <br>
-                  <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-                    <b-form-input v-model="password" placeholder="password" type="password"></b-form-input>
-                  </b-input-group>
-                  <div v-if="errors.length">
-                    <br>
-                    <b-alert variant="danger" show v-for="error in errors" v-bind:key="error"> {{ error }} </b-alert>
-                  </div>
-                  <br>
-                  <b-button size="md" class="my-2 my-sm-0" type="submit">Войти</b-button>
-                </b-form>
-                <hr>
-                <div class="">
-                  <b>Еще нет аккаунта?</b>
-                  <br>
-                  <button size="md" class="my-2 my-sm-0 btn btn-outline-primary">Регистрация</button>
-                </div>
-              </div>
-            </b-popover>
+            <b-button class="mx-1" @click="$router.push({name: 'login'})">Вход</b-button>
+            <b-button variant="primary"
+                      @click="$router.push({name: 'login'})"
+            >
+              Регистрация
+            </b-button>
           </template>
 
         </b-navbar-nav>
@@ -58,11 +37,10 @@
 </template>
 
 <script>
-import user_service from "@/api/user_service";
 
 export default {
   name: "Header",
-  props: ['user', 'show_login'],  // передаем юзера из App
+  props: ['user'],  // передаем юзера из App
   data () {
     return {
       username: '',
@@ -71,45 +49,11 @@ export default {
     }
   },
   methods: {
-    async submitForm () {
-      localStorage.removeItem("token")
-      const formData = {
-        username: this.username,
-        password: this.password
-      }
-      await user_service.LogIn(formData)
-        .then(response => {
-          const token = response.data.auth_token  // получаем токен из бэка
-          this.$store.commit('setToken', token)  // сохраняем токен в сторе
-
-          localStorage.setItem("token", token)  // сохраняем токен в хранилище
-          this.$store.dispatch('getMe')  // получаем юзера из бэка и кладем в стор
-          this.$router.push({name: 'home'})  // переходим на домашнюю страницу
-        })
-        .catch(error => {
-          if (error.response) {
-            for (const property in error.response.data) {
-                this.errors.push(`${property}: ${error.response.data[property]}`)
-            }
-          } else {
-              this.errors.push('Something went wrong. Please try again')
-
-              console.log(JSON.stringify(error))
-            }
-        })
-
-    },
-    async LogOut () {
-      this.onReset()
+    async LogOut() {
       await this.$store.dispatch('LogOut');
       localStorage.removeItem("token");  // Do not remove token from local storage before logout!!!!
       await this.$router.push({name: 'home'});
-
-    },
-    onReset () {
-      this.username = ''
-      this.password = ''
-    },
-  },
+    }
+  }
 }
 </script>

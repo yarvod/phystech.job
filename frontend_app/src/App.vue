@@ -2,7 +2,7 @@
 	<div id="app">
     <Header
       :user="$store.getters.user"
-      :show_login="Boolean($route.params.show_login)"
+      :show_login="$route.params.show_login"
     />
     <router-view/>
 

@@ -10,7 +10,14 @@ const router = new VueRouter({
     {
       path: '/',
       component: () => import('@/views/Home.vue'),
-      name: 'home'
+      name: 'home',
+      props: true
+    },
+    {
+      path: '/login',
+      component: () => import('@/views/Login.vue'),
+      name: 'login',
+      props: true
     },
     {
       path: '/resumes',
@@ -21,43 +28,46 @@ const router = new VueRouter({
       path: '/resumes/:resumeId/details',
       component: () => import('@/views/ResumeDetails.vue'),
       props: true,
-      name: 'resume_details'
+      name: 'resume_details',
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account/resumes/:resumeId/edit',
       component: () => import('@/views/Resume.vue'),
       props: {isResumeEdit:true},
       name: 'resume_edit',
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account/resume/add',
       component: () => import('@/views/Resume.vue'),
       props: {isResumeEdit:false},
       name: 'resume_add',
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account/vacancies/:vacancyId/edit',
       component: () => import('@/views/Vacancy'),
       props: {isVacancyEdit:true},
       name: 'vacancy_edit',
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account/vacancy/add',
       component: () => import('@/views/Vacancy'),
       props: {isVacancyEdit:false},
       name: 'vacancy_add',
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/vacancies',
@@ -68,32 +78,52 @@ const router = new VueRouter({
       path: '/vacancies/:vacancyId/details',
       component: () => import('@/views/VacancyDetails.vue'),
       props: true,
-      name: 'vacancy_details'
+      name: 'vacancy_details',
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account',
       component: () => import('@/views/Account.vue'),
       name: 'account',
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        requiresAuth: true
+      }
     }
   ],
 })
 
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     // this route requires auth, check if logged in
-//     // if not, redirect to login page.
-//     if (!store.getters.user) {
-//       next({ name: 'home' , params: {show_login: true}})
-//     } else {
-//       next() // go to wherever I'm going
-//     }
-//   } else {
-//     next() // does not require auth, make sure to always call next()!
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (!store.getters.isAuthenticated) {
+      router.push({name: 'login'})
+     } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location, onComplete, onAbort) {
+    const result = originalPush.call(
+        this,
+        location,
+        onComplete,
+        onAbort
+    );
+    if (result) {
+        return result.catch(err => {
+            if (err.name !== 'NavigationDuplicated') {
+                throw err;
+            }
+        });
+    }
+    return result;
+};
+
 
 export default router;
