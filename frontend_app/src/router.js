@@ -97,7 +97,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    if (!store.getters.isAuthenticated) {
+    if (!localStorage.getItem('token')) {
       router.push({name: 'login'})
      } else {
       next()

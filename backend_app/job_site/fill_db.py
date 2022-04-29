@@ -11,7 +11,7 @@ def fill_db():
             first_name='Иван',
             last_name='Иванов',
             email='ivan@mail.ru',
-            password='ivanpassword'
+            password='1111'
         )
         u1.save()
 
@@ -22,7 +22,7 @@ def fill_db():
             first_name='Алексей',
             last_name='Алексеев',
             email='alex@mail.ru',
-            password='alexpassword'
+            password='1111'
         )
         u2.save()
 
@@ -33,7 +33,7 @@ def fill_db():
             first_name='Михаил',
             last_name='Михайлов',
             email='mike@mail.ru',
-            password='mikepassword'
+            password='1111'
         )
         u3.save()
 
@@ -44,7 +44,7 @@ def fill_db():
             first_name='Александр',
             last_name='Александров',
             email='sasha@mail.ru',
-            password='sashapassword'
+            password='1111'
         )
         u4.save()
 

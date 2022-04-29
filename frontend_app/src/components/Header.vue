@@ -22,11 +22,6 @@
 
           <template v-else>
             <b-button class="mx-1" @click="$router.push({name: 'login'})">Вход</b-button>
-            <b-button variant="primary"
-                      @click="$router.push({name: 'login'})"
-            >
-              Регистрация
-            </b-button>
           </template>
 
         </b-navbar-nav>
