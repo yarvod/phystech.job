@@ -4,6 +4,7 @@ import router from './router';
 import {store} from './store'
 import moment from 'moment'
 import axios from "axios";
+import VeeValidate from "vee-validate";
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -21,6 +22,11 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VeeValidate, {
+  inject: true,
+  fieldsBagName: "veeFields",
+  errorBagName: "veeErrors"
+})
 
 new Vue({
   axios,
