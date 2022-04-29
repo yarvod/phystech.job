@@ -1,7 +1,9 @@
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from django.core.validators import RegexValidator
+from users.models import User
 
 
 class Category(MPTTModel):

@@ -48,9 +48,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'mptt',
 
     'job_site',
-    'mptt',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -177,6 +178,7 @@ DJOSER = {
     },
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),

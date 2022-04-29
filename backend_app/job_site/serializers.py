@@ -1,7 +1,7 @@
 from collections import defaultdict
 import logging
 import djoser.serializers
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework import serializers
 from .models import (
     Employer, Vacancy,

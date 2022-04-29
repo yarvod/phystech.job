@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework import permissions, viewsets
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView
 from .models import (
