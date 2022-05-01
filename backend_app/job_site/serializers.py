@@ -291,7 +291,6 @@ class UserDetailSerializer(djoser.serializers.UserSerializer):
 
         return f
 
-
     class Meta:
         model = User
         exclude = ['password']

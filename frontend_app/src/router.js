@@ -90,6 +90,11 @@ const router = new VueRouter({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/auth/users/activate/:uid/:token',
+      component: () => import('@/views/Activate'),
+      name: 'user_activate'
     }
   ],
 })

@@ -29,7 +29,7 @@
 
             <b-tab title="Регистрация">
 
-              <b-form @submit.prevent="submitRegistration" novalidate>
+              <b-form ref="RegForm" @submit.prevent="submitRegistration">
 
                 <h4> Выберете, что вас интересует: </h4>
                 <hr>
@@ -79,6 +79,8 @@
                     </b-card-text>
                   </b-card>
                 </b-card-group>
+                <br>
+                <b-alert variant="danger" :show="Boolean(roleError)"> {{roleError}} </b-alert>
 
                 <br>
                 <h4>Заполните форму:</h4>
@@ -109,16 +111,14 @@
                       v-model="reg_form.password"
                       type="password"
                       placeholder="Enter a password"
-                      v-validate="{ required: true, min: 3 }"
-                      :state="validateState('input-pass1')"
-                      aria-describedby="input-pass1-feedback"
+                      aria-describedby="password-help-block"
                       name="password1"
+                      required
                     ></b-form-input>
-                    <b-form-invalid-feedback id="input-pass1-feedback">{{ veeErrors.first('input-pass1') }}</b-form-invalid-feedback>
-  <!--                  <b-form-text id="password-help-block">-->
-  <!--                    Your password must be 8-20 characters long, contain letters and numbers, and must not-->
-  <!--                    contain spaces, special characters, or emoji.-->
-  <!--                  </b-form-text>-->
+                    <b-form-text id="password-help-block">
+                      Your password must be 8-20 characters long, contain letters and numbers, and must not
+                      contain spaces, special characters, or emoji.
+                    </b-form-text>
 
                     <b-form-input
                       id="input-pass2"
@@ -126,11 +126,12 @@
                       v-model="reg_form.confirmPassword"
                       type="password"
                       placeholder="Enter a password again"
-                      v-validate="{ required: true, min: 3 }"
-                      :state="validateState('input-pass2')"
-                      data-vv-name="password2"
+                      required
                     ></b-form-input>
-  <!--                  <b-form-invalid-feedback id="input-pass2-feedback">{{ veeErrors.first('input-pass2') }}</b-form-invalid-feedback>-->
+                    <br>
+                    <b-alert :show="Boolean(passwordError)" variant="danger">
+                      {{ passwordError }}
+                    </b-alert>
 
                   </b-form-group>
 
@@ -150,8 +151,23 @@
                     ></b-form-input>
                   </b-form-group>
 
+                  <b-form-group v-if="reg_form.as_employer" id="input-comp" label="Ваша компания:" label-for="input-company">
+                    <b-form-input
+                      id="input-company"
+                      v-model="reg_form.company_name"
+                      placeholder="Как называется ваша компания/команда/организация?"
+                      required
+                    ></b-form-input>
+                    <b-form-input
+                      class="mt-1"
+                      id="input-company"
+                      v-model="reg_form.company_website"
+                      placeholder="Ваш веб-сайт"
+                    ></b-form-input>
+                  </b-form-group>
 
-                  <b-button type="submit" variant="primary" @click="submitRegistration" :disabled="Boolean(passwordError)">
+
+                  <b-button type="submit" variant="primary" :disabled="Boolean(passwordError)">
                     Продолжить
                   </b-button>
             </b-form>
@@ -182,14 +198,25 @@ export default {
         password: '',
         confirmPassword: '',
         as_employee: false,
-        as_employer: false
+        as_employer: false,
+        as_client: false,
+        as_freelancer: false
       },
+      try_submit: false
     }
   },
   computed: {
     passwordError () {
-      if (this.reg_form.password !== this.reg_form.confirmPassword) {
+      if (this.reg_form.confirmPassword && this.reg_form.password !== this.reg_form.confirmPassword) {
         return 'Пароли должны совпадать!'
+      }
+      else {
+        return ''
+      }
+    },
+    roleError () {
+      if (this.try_submit && !(this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)) {
+        return 'Выберете свою роль!'
       }
       else {
         return ''
@@ -232,27 +259,16 @@ export default {
     onReset() {
       this.username = '';
       this.password = '';
-      this.$nextTick(() => {
-        this.$validator.reset();
-      });
     },
-    validateState(ref) {
-      if (
-        this.veeFields[ref] &&
-        (this.veeFields[ref].dirty || this.veeFields[ref].validated)
-      ) {
-        return !this.veeErrors.has(ref);
-      }
-      return null;
-    },
-    submitRegistration() {
-      this.$validator.validateAll().then(result => {
-        if (!result) {
-          return;
-        }
-        alert("Form submitted!");
-      });
+    submitRegistration () {
+      this.try_submit = true
       console.log(JSON.stringify(this.reg_form))
+      user_service.createUser({
+        email: this.reg_form.email,
+        username: this.reg_form.email.split('@')[0],
+        password: this.reg_form.password
+      })
+      this.$refs.RegForm.reset()
     }
   }
 }

@@ -171,7 +171,7 @@ EMAIL_PORT = 587
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'auth/users/activate/{uid}/{token}',
+    'ACTIVATION_URL': '#/auth/users/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'current_user': 'job_site.serializers.UserDetailSerializer',

@@ -12,5 +12,11 @@ export default {
   },
   async getMe () {
     return await Api().get(`/auth/users/me/`)
+  },
+  async activate (data) {
+    return await Api().post(`/auth/users/activation/`, data)
+  },
+  async createUser (data) {
+    return await Api().post(`/auth/users/`, data)
   }
 }
