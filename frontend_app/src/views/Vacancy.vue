@@ -169,7 +169,6 @@ export default {
         skills: '',
         conditions: '',
         location: '',
-        published: '',
         salary_min: null,
         salary_max: null,
         distant_work: false,

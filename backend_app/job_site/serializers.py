@@ -154,6 +154,7 @@ class EmployerListSerializer(serializers.ModelSerializer):
 
 class EmployerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
+    vacancies = VacancyDetailSerializer(read_only=True, many=True)
     favorite_resumes_id = serializers.SlugRelatedField(source='favorite_resumes',
                                                        slug_field='id', queryset=Resume.objects.all(), many=True)
     favorite_resumes = ResumeDetailSerializer(many=True, required=False)
@@ -177,9 +178,7 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-
-class Meta:
+    class Meta:
         model = Employer
         fields = '__all__'
 

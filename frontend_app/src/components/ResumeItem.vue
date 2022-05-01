@@ -29,9 +29,9 @@
         </b-button>
 
         <b-checkbox
-            v-if="this.$store.getters.user && !this.$store.getters.user.employee"
-           v-model="liked"
-           @change="onlike"
+          v-if="this.$store.getters.user && !this.$store.getters.user.employee"
+          v-model="liked"
+          @change="onlike"
         >
           like
         </b-checkbox>
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onlike () {
-      employers_service.updateEmployer(this.$store.getters.user.employer.id, this.resume.id)
+      this.$store.dispatch('setResumeLike', {id: this.$store.getters.user.employer.id, f_v_id: this.resume.id})
     },
     setlike () {
       let f_r = this.$store.getters.user.favorites.resumes;

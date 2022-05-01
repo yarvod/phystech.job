@@ -2,10 +2,10 @@
 
   <b-card-group deck>
     <VacancyItem
-        v-for="vacancy of vacancies"
-        :key="vacancy.id"
-        :vacancy="vacancy"
-        :edit="false"
+      v-for="vacancy of vacancies"
+      :key="vacancy.id"
+      :vacancy="vacancy"
+      :edit="false"
     />
   </b-card-group>
 

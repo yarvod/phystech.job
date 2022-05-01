@@ -1,5 +1,6 @@
 import user_service from '@/api/user_service';
 import employees_service from "@/api/employees_service";
+import employers_service from '../api/employers_service';
 
 const state = {
   user: {},
@@ -52,8 +53,12 @@ const actions = {
     await user_service.LogIn(data);
     await context.getMe(context);
   },
-  async setLike (context, payload) {
-    await employees_service.updateEmployee(payload.id, payload.f_v_id)
+  async setVacancyLike (context, payload) {
+    await employees_service.setFavoriteVacancy(payload.id, payload.f_v_id)
+    await this.dispatch('getMe')
+  },
+  async setResumeLike (context, payload) {
+    await employers_service.setFavoriteResume(payload.id, payload.f_r_id)
     await this.dispatch('getMe')
   }
 }

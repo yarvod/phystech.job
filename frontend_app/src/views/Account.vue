@@ -27,7 +27,7 @@
                       <br>
                       <b>E-mail: </b> {{user.email}}
                       <br>
-                      <b>Телефон: </b> {{user.phonenumber}}
+                      <b>Телефон: </b> {{user.phone_number}}
                       <hr>
                       <b-button variant="outline-primary" class="m-1">Редактировать</b-button>
 
@@ -107,31 +107,29 @@
 
 
             <b-tab title="Мои вакансии" v-if="user.employer">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <p>Вы можете разместить вакансии</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
+              <b-container>
+                <b-row>
+                  <b-col>
                     <b-button
-                        variant="outline-success"
-                        @click="$router.push({name:'vacancy_add'})"
+                      variant="outline-success"
+                      @click="$router.push({name:'vacancy_add'})"
                     >
                       Добавить вакансию
                     </b-button>
-                  </div>
-                </div>
+                  </b-col>
+                </b-row>
 
-                <div class="row">
+                <br>
+
+                <b-card-group deck>
                   <VacancyItem
-                  v-for="vacancy of user.employer.vacancies"
-                  :key="vacancy.id"
-                  :vacancy="vacancy"
+                    v-for="vacancy of user.employer.vacancies"
+                    :key="vacancy.id"
+                    :vacancy="vacancy"
+                    :edit="true"
                   />
-                </div>
-              </div>
+                </b-card-group>
+              </b-container>
             </b-tab>
 
 

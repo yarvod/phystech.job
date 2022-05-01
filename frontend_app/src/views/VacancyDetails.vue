@@ -84,7 +84,7 @@ export default {
       })
     },
     onlike () {
-      this.$store.dispatch('setLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
+      this.$store.dispatch('setVacancyLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
     },
     setlike () {
       let f_v = this.$store.getters.user.favorites.vacancies;

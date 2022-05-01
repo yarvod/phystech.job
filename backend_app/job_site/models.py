@@ -1,8 +1,6 @@
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
-from django.core.validators import RegexValidator
 from users.models import User
 
 
@@ -47,6 +45,9 @@ class Resume(models.Model):
     ready_distant_work = models.BooleanField(default=False)
 
     file = models.FileField(null=True, blank=True)
+
+    salary_min = models.PositiveIntegerField(null=True, blank=True)
+    salary_max = models.PositiveIntegerField(null=True, blank=True)
 
     views = models.IntegerField(default=0)
 
