@@ -234,7 +234,7 @@ export default {
     disableEmployee () {
       return this.reg_form.as_employer;
     },
-    validatedRegForm () {
+    validatedRegForm () {  //TODO: create new validation
       return !this.passwordError && this.isRole
     }
   },
