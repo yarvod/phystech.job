@@ -145,7 +145,7 @@
                     <b-form-input
                       class="mt-1"
                       id="input-name"
-                      v-model="reg_form.second_name"
+                      v-model="reg_form.last_name"
                       placeholder="Фамилия"
                       required
                     ></b-form-input>
@@ -197,6 +197,9 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
+        first_name: '',
+        last_name: '',
+        phone_number: '',
         as_employee: false,
         as_employer: false,
         as_client: false,
@@ -214,8 +217,11 @@ export default {
         return ''
       }
     },
+    isRole () {
+      return (this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)
+    },
     roleError () {
-      if (this.try_submit && !(this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)) {
+      if (this.try_submit && !this.isRole) {
         return 'Выберете свою роль!'
       }
       else {
@@ -227,6 +233,9 @@ export default {
     },
     disableEmployee () {
       return this.reg_form.as_employer;
+    },
+    validatedRegForm () {
+      return !this.passwordError && this.isRole
     }
   },
   methods: {
@@ -243,7 +252,7 @@ export default {
 
             localStorage.setItem("token", token)  // сохраняем токен в хранилище
             this.$store.dispatch('getMe')  // получаем юзера из бэка и кладем в стор
-            this.$router.push({name: 'home'})  // переходим на домашнюю страницу
+            this.$router.push({name: 'home'})  //FIXME: переход на желаему страницу
           })
           .catch(error => {
             if (error.response.data['non_field_errors']) {
@@ -262,13 +271,18 @@ export default {
     },
     submitRegistration () {
       this.try_submit = true
-      console.log(JSON.stringify(this.reg_form))
-      user_service.createUser({
-        email: this.reg_form.email,
-        username: this.reg_form.email.split('@')[0],
-        password: this.reg_form.password
-      })
-      this.$refs.RegForm.reset()
+      if (this.validatedRegForm) {
+        user_service.createUser({
+          email: this.reg_form.email,
+          username: this.reg_form.email.split('@')[0],
+          password: this.reg_form.password,
+          first_name: this.reg_form.first_name,
+          last_name: this.reg_form.last_name,
+          phone_number: this.reg_form.phone_number
+        })
+        this.$refs.RegForm.reset()
+      }
+      
     }
   }
 }

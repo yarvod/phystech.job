@@ -11,4 +11,4 @@ class User(AbstractUser):
                                          "allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
 
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'phone_number']
