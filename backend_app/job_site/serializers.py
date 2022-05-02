@@ -182,6 +182,12 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
         model = Employer
         fields = '__all__'
 
+class EmployerCreateUpdateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
 
 class EmployeeListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -220,6 +226,11 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
         model = Employee
         fields = '__all__'
 
+class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = Employee
+            fields = '__all__'
+
 
 class FreelancerListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -237,6 +248,12 @@ class FreelancerDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FreelancerCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = Freelancer
+            fields = '__all__'
+
+
 class ClientListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
@@ -251,6 +268,12 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
+
+
+class ClientCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = Client
+            fields = '__all__'
 
 
 class UserDetailSerializer(djoser.serializers.UserSerializer):
