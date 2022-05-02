@@ -183,13 +183,14 @@ export default {
       .then(response => {this.tags = response.data})
     await this.$store.dispatch('getMe')
       .then(this.user = this.$store.getters.user)
-    if (this.$route.path.search('/account') !== -1 && this.$route.params.vacancyId) {
-      let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
-      this.vacancy = data
-    }
-    else if (this.$route.params.vacancyId) {
-      let {data} = await vacancies_service.getVacancy(this.$route.params.vacancyId);
-      this.vacancy = data
+    if (this.$route.params.vacancyId) {
+      if (this.isVacancyEdit) {
+        this.vacancy = this.user.employer.vacancies.find(vac => vac,id == this.$route.params.vacancyId)
+      }
+      else {
+        let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
+        this.vacancy = data
+      }
     }
   },
   methods: {

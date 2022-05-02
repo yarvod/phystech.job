@@ -146,8 +146,13 @@ export default {
     await this.$store.dispatch('getMe')
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.resumeId) {
-      let {data} = await resumes_service.getResume(this.$route.params.resumeId);
-      this.resume = data
+      if (this.isResumeEdit) {
+        this.resume = this.user.employee.resumes.find(res => res.id == this.$route.params.resumeId)
+      }
+      else {
+        let {data} = await resumes_service.getResume(this.$route.params.resumeId);
+        this.resume = data;
+      }
     }
   },
   methods: {
