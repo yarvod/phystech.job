@@ -7,7 +7,7 @@
         <h2 v-else>Добавление резюме</h2>
       </div>
     </div>
-    <router-link to="/account">Назад</router-link>
+    <b-link @click="$router.back()">Назад</b-link>
 
     <hr>
 

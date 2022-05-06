@@ -4,7 +4,7 @@
       <h2 class="text-center">Список резюме</h2>
     </b-row>
     <b-row>
-      <a class="cancel-link" @click="$router.back()">Назад</a>
+      <b-link @click="$router.back()">Назад</b-link>
     </b-row>
     <hr>
 

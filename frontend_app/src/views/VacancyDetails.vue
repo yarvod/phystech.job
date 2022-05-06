@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row h2 text-center">Vacancy Details</div>
     <div class="row">
-      <a class="cancel-link" @click="$router.back()">Назад</a>
+      <b-link @click="$router.back()">Назад</b-link>
     </div>
     <hr>
     <div class="row">

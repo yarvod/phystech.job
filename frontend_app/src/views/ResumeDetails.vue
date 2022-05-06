@@ -2,7 +2,7 @@
 <b-container>
   <b-row class="h2 text-center">Resume Details</b-row>
   <b-row>
-    <a class="cancel-link" @click="$router.back()">Назад</a>
+    <b-link @click="$router.back()">Назад</b-link>
   </b-row>
   <hr>
   <b-row>
