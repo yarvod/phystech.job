@@ -120,12 +120,12 @@ class UpdateResumeView(RetrieveUpdateAPIView):
 
 
 class ServiceListView(ListAPIView):
-    queryset = Resume.objects.filter(is_published=True)
+    queryset = Service.objects.filter(is_published=True)
     serializer_class = ServiceListSerializer
 
 
 class ServiceDetailView(RetrieveAPIView):
-    queryset = Resume.objects.filter(is_published=True)
+    queryset = Service.objects.filter(is_published=True)
     serializer_class = ServiceDetailSerializer
 
 
