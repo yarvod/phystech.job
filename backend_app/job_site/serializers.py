@@ -104,7 +104,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
     freelancer = serializers.CharField(source='freelancer.user.username')
 
     class Meta:
-        model = Vacancy
+        model = Service
         exclude = ('published',)
 
 
