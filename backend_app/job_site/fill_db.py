@@ -65,6 +65,16 @@ def fill_db():
     er2.company_name = 'Компания Александра'
     er2.save()
 
+    fr1 = Freelancer.objects.filter(user__username=u1.username).first()
+    if not fr1:
+        fr1 = Freelancer(user=u1)
+        fr1.save()
+
+    ct1 = Client.objects.filter(user__username=u1.username).first()
+    if not ct1:
+        fr1 = Client(user=u1)
+        fr1.save()
+
     c1 = Category.objects.update_or_create(title='IT', slug='it')[0]
     c2 = Category.objects.update_or_create(title='Science', slug='sc')[0]
     c3 = Category.objects.update_or_create(title='Business', slug='bz')[0]
