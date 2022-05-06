@@ -15,8 +15,8 @@ from .serializers import (
     TaskListSerializer, TaskDetailSerializer, TaskCreateUpdateSerializer,
     EmployerListSerializer, EmployerDetailSerializer, EmployerCreateUpdateSerializer, 
     EmployeeListSerializer, EmployeeDetailSerializer, EmployeeCreateUpdateSerializer, 
-    ClientListSerializer, ClientDetailSerializer,
-    FreelancerListSerializer, FreelancerDetailSerializer,
+    ClientListSerializer, ClientDetailSerializer, ClientCreateUpdateSerializer,
+    FreelancerListSerializer, FreelancerDetailSerializer,FreelancerCreateUpdateSerializer,
     UserDetailSerializer,
     TagListSerializer
 )
@@ -61,6 +61,10 @@ class ClientDetailView(RetrieveAPIView):
     serializer_class = ClientDetailSerializer
 
 
+class ClientCreateView(CreateAPIView):
+    serializer_class = ClientCreateUpdateSerializer
+
+
 class FreelancerListView(ListAPIView):
     queryset = Freelancer.objects.all()
     serializer_class = FreelancerListSerializer
@@ -69,6 +73,10 @@ class FreelancerListView(ListAPIView):
 class FreelancerDetailView(RetrieveAPIView):
     queryset = Freelancer.objects.all()
     serializer_class = FreelancerDetailSerializer
+
+
+class FreelancerCreateView(CreateAPIView):
+    serializer_class = FreelancerCreateUpdateSerializer
 
 
 class VacancyListView(ListAPIView):
