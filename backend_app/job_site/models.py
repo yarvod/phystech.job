@@ -113,7 +113,7 @@ class Service(models.Model):
     title = models.CharField(max_length=255)
     about = models.TextField(null=True, blank=True)
 
-    salary = models.PositiveIntegerField()
+    salary = models.PositiveIntegerField(null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
@@ -136,7 +136,7 @@ class Task(models.Model):
     title = models.CharField(max_length=255)
     about = models.TextField(null=True, blank=True)
 
-    salary = models.PositiveIntegerField()
+    salary = models.PositiveIntegerField(null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
