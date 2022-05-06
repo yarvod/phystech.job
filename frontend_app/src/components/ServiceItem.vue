@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import clients_service from "@/api/clients_service";
+
 export default {
-  name: "serviceItem",
+  name: "ServiceItem",
   props: ['service', 'edit'],
   data () {
     return {

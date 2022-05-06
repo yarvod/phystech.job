@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import employers_service from "@/api/employers_service";
+
 export default {
   name: "resumeItem",
   props: ['resume', 'edit'],
