@@ -242,16 +242,37 @@ class FreelancerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     services = ServiceDetailSerializer(read_only=True, many=True)
     favorite_tasks = TaskDetailSerializer(read_only=True, many=True)
-
+    favorite_tasks_id = serializers.SlugRelatedField(source='favorite_tasks',
+                                                         slug_field='id', queryset=Task.objects.all(), many=True)
     class Meta:
-        model = Employee
+        model = Freelancer
         fields = '__all__'
+
+    def update(self, instance, validated_data):
+        f_t = validated_data.pop('favorite_tasks')
+        debug('f_t', f_t)
+        try:
+            f_t = f_t[0]
+            f_t_id = f_t.id
+            debug('f_t_id ', f_t_id)
+        except:
+            return instance
+
+        try:
+            t = instance.favorite_tasks.get(id=f_t_id)
+            debug('t ', t)
+            instance.favorite_tasks.remove(t)
+        except:
+            instance.favorite_tasks.add(f_t_id)
+
+        instance.save()
+        return instance
 
 
 class FreelancerCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-            model = Freelancer
-            fields = '__all__'
+        model = Freelancer
+        fields = '__all__'
 
 
 class ClientListSerializer(serializers.ModelSerializer):
@@ -264,16 +285,38 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     tasks = TaskDetailSerializer(read_only=True, many=True)
     favorite_services = ServiceDetailSerializer(read_only=True, many=True)
+    favorite_services_id = serializers.SlugRelatedField(source='favorite_services',
+                                                         slug_field='id', queryset=Service.objects.all(), many=True)
 
     class Meta:
         model = Client
         fields = '__all__'
 
+    def update(self, instance, validated_data):
+        f_s = validated_data.pop('favorite_services')
+        debug('f_s', f_s)
+        try:
+            f_s = f_s[0]
+            f_s_id = f_s.id
+            debug('f_s_id ', f_s_id)
+        except:
+            return instance
+
+        try:
+            s = instance.favorite_services.get(id=f_s_id)
+            debug('s ', s)
+            instance.favorite_services.remove(s)
+        except:
+            instance.favorite_services.add(f_s_id)
+
+        instance.save()
+        return instance
+
 
 class ClientCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-            model = Client
-            fields = '__all__'
+        model = Client
+        fields = '__all__'
 
 
 class UserDetailSerializer(djoser.serializers.UserSerializer):
