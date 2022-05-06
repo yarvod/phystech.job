@@ -22,6 +22,16 @@ class ResumeAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'employee', 'created')
 
 
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'freelancer', 'created')
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'client', 'created')
+
+
 class BaseUserAdmin(admin.ModelAdmin):
     list_display = ('get_username', 'get_first_name', 'get_last_name')
 
