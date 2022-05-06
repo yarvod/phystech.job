@@ -126,6 +126,11 @@ class Service(models.Model):
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Service {self.title}"
 
@@ -148,6 +153,11 @@ class Task(models.Model):
     is_published = models.BooleanField(default=False)
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Task {self.title}"
