@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {store} from "@/store/index";
 
 
 Vue.use(VueRouter)
@@ -18,6 +17,38 @@ const router = new VueRouter({
       component: () => import('@/views/Login.vue'),
       name: 'login',
       props: true
+    },
+    {
+      path: '/services',
+      component: () => import('@/views/Services.vue'),
+      name: 'services'
+    },
+    {
+      path: '/services/:serviceId/details',
+      component: () => import('@/views/ServiceDetails.vue'),
+      props: true,
+      name: 'service_details',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/account/services/:serviceId/edit',
+      component: () => import('@/views/Service.vue'),
+      props: {isServiceEdit:true},
+      name: 'service_edit',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/account/service/add',
+      component: () => import('@/views/Service.vue'),
+      props: {isServiceEdit:false},
+      name: 'service_add',
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/resumes',
