@@ -9,7 +9,7 @@
               <div class="text-center">
                 <b-form @submit.prevent="submitLogin">
                   <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-                    <b-form-input v-model="login_username" placeholder="username" type="text" required></b-form-input>
+                    <b-form-input v-model="login_email" placeholder="email" type="text" required></b-form-input>
                   </b-input-group>
                     <br>
                   <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
@@ -189,7 +189,7 @@ export default {
   name: "Login",
   data () {
     return {
-      login_username: '',
+      login_email: '',
       login_password: '',
       login_error: '',
       showLoginError: false,
@@ -242,7 +242,7 @@ export default {
     async submitLogin() {
       localStorage.removeItem("token")
       const formData = {
-        username: this.login_username,
+        email: this.login_email,
         password: this.login_password
       }
       await user_service.LogIn(formData)
@@ -253,6 +253,7 @@ export default {
             localStorage.setItem("token", token)  // сохраняем токен в хранилище
             this.$store.dispatch('getMe')  // получаем юзера из бэка и кладем в стор
             this.$router.push({name: 'home'})  //FIXME: переход на желаему страницу
+            this.onReset()
           })
           .catch(error => {
             if (error.response.data['non_field_errors']) {
@@ -266,8 +267,8 @@ export default {
 
     },
     onReset() {
-      this.username = '';
-      this.password = '';
+      this.login_email = '';
+      this.login_password = '';
     },
     submitRegistration () {
       this.try_submit = true
