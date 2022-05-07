@@ -19,6 +19,38 @@ const router = new VueRouter({
       props: true
     },
     {
+      path: '/tasks',
+      component: () => import('@/views/Tasks.vue'),
+      name: 'tasks'
+    },
+    {
+      path: '/tasks/:taskId/details',
+      component: () => import('@/views/TaskDetails.vue'),
+      props: true,
+      name: 'task_details',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/account/tasks/:taskId/edit',
+      component: () => import('@/views/Task.vue'),
+      props: {isTaskEdit:true},
+      name: 'task_edit',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/account/task/add',
+      component: () => import('@/views/Task.vue'),
+      props: {isTaskEdit:false},
+      name: 'task_add',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/services',
       component: () => import('@/views/Services.vue'),
       name: 'services'
