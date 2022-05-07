@@ -53,7 +53,7 @@
           </b-card-text>
           <button class="btn btn-outline-success"> Разместить услугу </button>
           <br>
-          <router-link to="/">К списку задач для иполнения</router-link>
+          <router-link to="/tasks">К списку задач для иполнения</router-link>
         </b-card>
 
       </b-card-group>
