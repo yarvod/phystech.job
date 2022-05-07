@@ -29,7 +29,7 @@
         </b-button>
 
         <b-checkbox
-          v-if="this.$store.getters.user && !this.$store.getters.user.client"
+          v-if="this.$store.getters.user && this.$store.getters.user.client"
           v-model="liked"
           @change="onlike"
         >
