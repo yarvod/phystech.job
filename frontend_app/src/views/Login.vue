@@ -279,9 +279,13 @@ export default {
           password: this.reg_form.password,
           first_name: this.reg_form.first_name,
           last_name: this.reg_form.last_name,
-          phone_number: this.reg_form.phone_number
-        })
-        this.$refs.RegForm.reset()
+          phone_number: this.reg_form.phone_number,
+          as_employee: this.reg_form.as_employee,
+          as_employer: this.reg_form.as_employer,
+          as_client: this.reg_form.as_client,
+          as_freelancer: this.reg_form.as_freelancer
+        });
+        this.$refs.RegForm.reset();
       }
       
     }
