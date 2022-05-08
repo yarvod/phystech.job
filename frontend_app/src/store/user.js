@@ -2,6 +2,7 @@ import user_service from '@/api/user_service';
 import employees_service from "@/api/employees_service";
 import employers_service from '../api/employers_service';
 import clients_service from "@/api/clients_service";
+import freelancers_service from "@/api/freelancers_service";
 
 const state = {
   user: {},
@@ -67,7 +68,7 @@ const actions = {
     await this.dispatch('getMe')
   },
   async setTaskLike (context, payload) {
-    await freelancers_service.setFavoriteTask(payload.id, payload.f_s_id)
+    await freelancers_service.setFavoriteTask(payload.id, payload.f_t_id)
     await this.dispatch('getMe')
   }
 }

@@ -45,15 +45,14 @@
                   </div>
                 </div>
 
-<!--                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">-->
-<!--                    <ResumeItem-->
-<!--                    v-for="resume of user.employer.favorite_resumes"-->
-<!--                    :key="resume.id"-->
-<!--                    :resume="resume"-->
-<!--                    :edit="false"-->
-<!--                    :like="true"-->
-<!--                    />-->
-<!--                  </div>-->
+                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">
+                    <ResumeItem
+                      v-for="resume of user.employer.favorite_resumes"
+                      :key="resume.id"
+                      :resume="resume"
+                      :edit="false"
+                    />
+                  </div>
 
                 <b-card-group v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')" deck>
                   <VacancyItem
@@ -61,6 +60,24 @@
                   :key="vacancy.id"
                   :vacancy="vacancy"
                   :edit="false"
+                  />
+                </b-card-group>
+
+                <b-card-group v-if="user.freelancer && (like_filter === 'Tasks' || like_filter === '')" deck>
+                  <TaskItem
+                    v-for="task of user.freelancer.favorite_tasks"
+                    :key="task.id"
+                    :task="task"
+                    :edit="false"
+                  />
+                </b-card-group>
+
+                <b-card-group v-if="user.client && (like_filter === 'Services' || like_filter === '')" deck>
+                  <ServiceItem
+                    v-for="service of user.client.favorite_services"
+                    :key="service.id"
+                    :service="service"
+                    :edit="false"
                   />
                 </b-card-group>
 
@@ -178,8 +195,10 @@
 
 import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
+import ServiceItem from "@/components/ServiceItem";
+import TaskItem from "@/components/TaskItem";
 export default {
-  components: {VacancyItem, ResumeItem},
+  components: {VacancyItem, ResumeItem, ServiceItem, TaskItem},
   data() {
     return {
       user: {

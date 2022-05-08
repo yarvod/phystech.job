@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onlike () {
-      this.$store.dispatch('setResumeLike', {id: this.$store.getters.user.employer.id, f_v_id: this.resume.id})
+      this.$store.dispatch('setResumeLike', {id: this.$store.getters.user.employer.id, f_r_id: this.resume.id})
     },
     setlike () {
       let f_r = this.$store.getters.user.favorites.resumes;

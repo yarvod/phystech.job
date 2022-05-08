@@ -27,7 +27,7 @@ class EmployerListView(ListAPIView):
     serializer_class = EmployerListSerializer
 
 
-class EmployerDetailView(RetrieveAPIView):
+class EmployerDetailView(RetrieveUpdateAPIView):
     queryset = Employer.objects.all()
     serializer_class = EmployerDetailSerializer
 
@@ -56,7 +56,7 @@ class ClientListView(ListAPIView):
     serializer_class = ClientListSerializer
 
 
-class ClientDetailView(RetrieveAPIView):
+class ClientDetailView(RetrieveUpdateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientDetailSerializer
 
@@ -70,7 +70,7 @@ class FreelancerListView(ListAPIView):
     serializer_class = FreelancerListSerializer
 
 
-class FreelancerDetailView(RetrieveAPIView):
+class FreelancerDetailView(RetrieveUpdateAPIView):
     queryset = Freelancer.objects.all()
     serializer_class = FreelancerDetailSerializer
 

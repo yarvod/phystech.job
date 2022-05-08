@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$store.getters.user && !this.edit && !this.$store.getters.user.client) {
+    if (this.$store.getters.user && !this.edit && this.$store.getters.user.client) {
       this.setlike()
     }
   }

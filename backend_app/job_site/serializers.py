@@ -105,7 +105,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        exclude = ('published',)
+        fields = '__all__'
 
 
 class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
@@ -136,7 +136,7 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        exclude = ('published',)
+        fields = '__all__'
 
 
 class TaskCreateUpdateSerializer(serializers.ModelSerializer):
@@ -153,7 +153,7 @@ class EmployerListSerializer(serializers.ModelSerializer):
 
 
 class EmployerDetailSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
+    user = serializers.CharField(source='user.username', required=False)
     vacancies = VacancyDetailSerializer(read_only=True, many=True)
     favorite_resumes_id = serializers.SlugRelatedField(source='favorite_resumes',
                                                        slug_field='id', queryset=Resume.objects.all(), many=True)
@@ -239,7 +239,7 @@ class FreelancerListSerializer(serializers.ModelSerializer):
 
 
 class FreelancerDetailSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
+    user = serializers.CharField(source='user.username', required=False)
     services = ServiceDetailSerializer(read_only=True, many=True)
     favorite_tasks = TaskDetailSerializer(read_only=True, many=True)
     favorite_tasks_id = serializers.SlugRelatedField(source='favorite_tasks',
@@ -282,7 +282,7 @@ class ClientListSerializer(serializers.ModelSerializer):
 
 
 class ClientDetailSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
+    user = serializers.CharField(source='user.username', required=False)
     tasks = TaskDetailSerializer(read_only=True, many=True)
     favorite_services = ServiceDetailSerializer(read_only=True, many=True)
     favorite_services_id = serializers.SlugRelatedField(source='favorite_services',
