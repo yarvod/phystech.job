@@ -122,7 +122,6 @@ export default {
         is_published: false
       },
       tags: [],
-      tag_search: '',
       user: {}
     }
   },

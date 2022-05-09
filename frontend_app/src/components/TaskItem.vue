@@ -11,9 +11,17 @@
       </template>
 
       <b-card-text>
-        <b>Category: </b>
+        <b>Категория: </b>
         {{task.category}}
         <br>
+        <b-row v-if="task.tags">
+          <b-col>
+             <b>Тэги:</b>
+            <b-link class="m-1" v-for="tag in task.tags" :key="tag">
+              {{ tag }}
+            </b-link>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>
