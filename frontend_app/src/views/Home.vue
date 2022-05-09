@@ -51,7 +51,7 @@
           <b-card-text>
             Я специалист и могу предоставить свою услугу
           </b-card-text>
-          <button class="btn btn-outline-success"> Разместить услугу </button>
+          <button class="btn btn-outline-success" @click="$router.push({name: 'service_add'})"> Разместить услугу </button>
           <br>
           <router-link to="/tasks">К списку задач для иполнения</router-link>
         </b-card>

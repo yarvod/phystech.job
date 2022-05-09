@@ -151,24 +151,56 @@
 
 
             <b-tab title="Мои услуги" v-if="user.freelancer">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <p>Вы можете разместить услуги, которые можете предоставить</p>
-                  </div>
-                </div>
-              </div>
+              <b-container>
+                <b-row>
+                  <b-col>
+                    <b-button
+                      variant="outline-success"
+                      @click="$router.push({name:'service_add'})"
+                    >
+                      Добавить услугу
+                    </b-button>
+                  </b-col>
+                </b-row>
+
+                <br>
+
+                <b-card-group deck>
+                  <ServiceItem
+                    v-for="service of user.freelancer.services"
+                    :key="service.id"
+                    :service="service"
+                    :edit="true"
+                  />
+                </b-card-group>
+              </b-container>
             </b-tab>
 
 
             <b-tab title="Мои задачи" v-if="user.client">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <p>Вы можете разместить заказ на исполнение</p>
-                  </div>
-                </div>
-              </div>
+              <b-container>
+                <b-row>
+                  <b-col>
+                    <b-button
+                      variant="outline-success"
+                      @click="$router.push({name:'task_add'})"
+                    >
+                      Добавить задачу
+                    </b-button>
+                  </b-col>
+                </b-row>
+
+                <br>
+
+                <b-card-group deck>
+                  <TaskItem
+                    v-for="task of user.client.tasks"
+                    :key="task.id"
+                    :task="task"
+                    :edit="true"
+                  />
+                </b-card-group>
+              </b-container>
             </b-tab>
 
 
