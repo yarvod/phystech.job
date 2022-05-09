@@ -80,11 +80,11 @@ def fill_db():
     c3 = Category.objects.update_or_create(title='Business', slug='bz')[0]
     c4 = Category.objects.update_or_create(title='Management', slug='mn')[0]
 
-    Tag.objects.update_or_create(code='python', title='Python')
-    Tag.objects.update_or_create(code='c', title='C')
-    Tag.objects.update_or_create(code='c++', title='C++')
-    Tag.objects.update_or_create(code='js', title='JavaScript')
-    Tag.objects.update_or_create(code='django', title='Django')
+    Tag.objects.update_or_create(title='Python')
+    Tag.objects.update_or_create(title='C')
+    Tag.objects.update_or_create(title='C++')
+    Tag.objects.update_or_create(title='JavaScript')
+    Tag.objects.update_or_create(title='Django')
 
 
     fields = dict(
