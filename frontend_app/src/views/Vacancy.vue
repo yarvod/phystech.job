@@ -1,18 +1,18 @@
 <template>
 
-  <div class="container">
-    <div class="row">
-      <div class="col">
+  <b-container>
+    <b-row>
+      <b-col>
         <h2 v-if="isVacancyEdit">Редактирование вакансии</h2>
         <h2 v-else>Добавление вакансии</h2>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
     <b-link @click="$router.back()">Назад</b-link>
 
     <hr>
 
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col>
 
         <b-form @submit="onSubmit">
           <b-form-group id="title-group" label="Название:" label-for="title">
@@ -83,9 +83,9 @@
           </b-form-group>
 
           <b-form-group label="Зарплата:" label-for="salary">
-            <div class="container">
-              <div class="row">
-                <div class="col">
+            <b-container>
+              <b-row>
+                <b-col>
                   <label label-for="salary_min">От</label>
                   <b-form-input
                       id="salary_min"
@@ -94,8 +94,8 @@
                       min="0"
                       v-model="vacancy.salary_min"
                   ></b-form-input>
-                </div>
-                <div class="col">
+                </b-col>
+                <b-col>
                   <label label-for="salary_max">До</label>
                   <b-form-input
                       id="salary_max"
@@ -104,9 +104,9 @@
                       min="0"
                       v-model="vacancy.salary_max"
                   ></b-form-input>
-                </div>
-              </div>
-            </div>
+                </b-col>
+              </b-row>
+            </b-container>
 
           </b-form-group>
 
@@ -128,11 +128,11 @@
 
           <hr>
 
-          <div class="row">
-            <div class="col-auto">
+          <b-row>
+            <b-col cols="auto">
                <b-button type="submit" variant="outline-primary" @click="onSubmit">Сохранить</b-button>
-            </div>
-            <div class="col-auto">
+            </b-col>
+            <b-col cols="auto">
               <b-form-checkbox
                   v-model="vacancy.is_published"
                   value="true"
@@ -140,18 +140,18 @@
               >
                 Опубликовать
               </b-form-checkbox>
-            </div>
-            <div v-if="isVacancyEdit" class="col-auto offset-7 text-right">
+            </b-col>
+            <b-col v-if="isVacancyEdit" cols="auto text-right">
               <b-button variant="outline-danger" @click="onDelete()">Удалить</b-button>
-            </div>
-          </div>
+            </b-col>
+          </b-row>
 
         </b-form>
 
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
-  </div>
+  </b-container>
 
 </template>
 
@@ -199,10 +199,11 @@ export default {
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.vacancyId) {
       if (this.isVacancyEdit) {
-        this.vacancy = this.user.employer.vacancies.find(vac => vac.id === this.$route.params.vacancyId)
+        let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
+        this.vacancy = data
       }
       else {
-        let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
+        let {data} = await vacancies_service.getVacancy(this.$route.params.vacancyId);
         this.vacancy = data
       }
     }
