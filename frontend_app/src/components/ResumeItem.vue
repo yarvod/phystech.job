@@ -3,15 +3,23 @@
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
-      img-src="https://placekitten.com/500/350"
-      img-alt="Image"
-      img-top
       :title=resume.title
     >
+      <template #header>
+        <b>Резюме</b>
+      </template>
       <b-card-text>
-        <b>Category: </b>
+        <b>Категория: </b>
         {{resume.category}}
         <br>
+        <b-row v-if="resume.tags">
+          <b-col>
+             <b>Тэги:</b>
+            <b-link class="m-1" v-for="tag in resume.tags" :key="tag">
+              {{ tag }}
+            </b-link>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>

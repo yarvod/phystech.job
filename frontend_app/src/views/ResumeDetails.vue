@@ -1,6 +1,6 @@
 <template>
 <b-container>
-  <b-row class="h2 text-center">Resume Details</b-row>
+  <b-row class="h2 text-center">Подробнее о резюме</b-row>
   <b-row>
     <b-link @click="$router.back()">Назад</b-link>
   </b-row>
@@ -19,6 +19,16 @@
       {{resume.published}}
     </b-col>
   </b-row>
+
+  <b-row v-if="resume.tags">
+      <b-col>
+         <b>Тэги:</b>
+        <b-link class="m-1" v-for="tag in resume.tags" :key="tag">
+          {{ tag }}
+        </b-link>
+      </b-col>
+    </b-row>
+
   <b-row v-if="resume.about_me">
     <b-col>
       <b class="text-underlined">Обо мне:</b>
