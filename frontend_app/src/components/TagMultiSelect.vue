@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-group label="Tagged input using dropdown" label-for="tags-with-dropdown">
+    <b-form-group label="Тэги:" label-for="tags-with-dropdown">
       <b-form-tags id="tags-with-dropdown" v-model="value" no-outer-focus class="mb-2">
         <template v-slot="{tagVariant}">
           <ul v-if="value.length > 0" class="list-inline d-inline-block mb-2">
@@ -18,11 +18,11 @@
 
           <b-dropdown size="sm" variant="outline-secondary" block menu-class="w-100">
             <template #button-content>
-              <b-icon icon="tag-fill"></b-icon> Choose tags
+              <b-icon icon="tag-fill"></b-icon> Выберете тэги
             </template>
             <b-dropdown-form @submit.stop.prevent="() => {}">
               <b-form-group
-                label="Search tags"
+                label="Поиск"
                 label-for="tag-search-input"
                 label-cols-md="auto"
                 class="mb-0"
@@ -47,7 +47,7 @@
               {{ option }}
             </b-dropdown-item-button>
             <b-dropdown-text v-if="availableOptions.length === 0">
-              There are no tags available to select
+              Нет доступных тегов :(
             </b-dropdown-text>
           </b-dropdown>
         </template>
