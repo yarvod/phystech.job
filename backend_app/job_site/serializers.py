@@ -166,13 +166,14 @@ class EmployerListSerializer(serializers.ModelSerializer):
 
 class EmployerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
+    company_name = serializers.CharField(required=False)
     vacancies = VacancyDetailSerializer(read_only=True, many=True)
     favorite_resumes_id = serializers.SlugRelatedField(source='favorite_resumes',
                                                        slug_field='id', queryset=Resume.objects.all(), many=True)
     favorite_resumes = ResumeDetailSerializer(many=True, required=False)
 
     def update(self, instance, validated_data):
-        f_r = validated_data.pop('favorite_vacancies')
+        f_r = validated_data.pop('favorite_resumes')
         debug('f_r', f_r)
         try:
             f_r = f_r[0]
