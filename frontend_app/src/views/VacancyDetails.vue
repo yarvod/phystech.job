@@ -58,7 +58,7 @@
       <b-col>
         <b-button variant="outline-success" class="m-1">Откликнуться</b-button>
         <b-checkbox
-          v-if="!this.$store.getters.user || !this.$store.getters.user.employer"
+          v-if="this.$store.getters.user && this.$store.getters.user.employee && !this.$store.getters.user.employer"
           v-model="liked"
           @change="onlike"
         >
