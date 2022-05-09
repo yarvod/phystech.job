@@ -18,6 +18,7 @@ class ResumeListSerializer(serializers.ModelSerializer):
     """Список всех резюме"""
     category = serializers.CharField(source='category.title')
     employee = serializers.CharField(source='employee.user.username')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Resume
@@ -27,6 +28,7 @@ class ResumeListSerializer(serializers.ModelSerializer):
 class ResumeDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employee = serializers.CharField(source='employee.user.username')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
 
     @staticmethod
@@ -40,7 +42,7 @@ class ResumeDetailSerializer(serializers.ModelSerializer):
 
 class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
     employee = serializers.SlugRelatedField(slug_field='id', queryset=Employee.objects.all())
-    tags = serializers.SlugRelatedField(slug_field='code', queryset=Tag.objects.all(), many=True)
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
     class Meta:
@@ -53,6 +55,7 @@ class VacancyListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employer_id = serializers.CharField(source='employer.id')
     company_name = serializers.CharField(source='employer.company_name')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
 
     @staticmethod
@@ -68,6 +71,7 @@ class VacancyDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     employer_id = serializers.CharField(source='employer.id')
     company_name = serializers.CharField(source='employer.company_name')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Vacancy
@@ -76,8 +80,8 @@ class VacancyDetailSerializer(serializers.ModelSerializer):
 
 class VacancyCreateUpdateSerializer(serializers.ModelSerializer):
     employer = serializers.SlugRelatedField(slug_field='id', queryset=Employer.objects.all())
-    tags = serializers.SlugRelatedField(slug_field='code', queryset=Tag.objects.all(), many=True)
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Vacancy
@@ -89,6 +93,7 @@ class ServiceListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     freelancer = serializers.CharField(source='freelancer.user.username')
     likes = serializers.SerializerMethodField()
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     @staticmethod
     def get_likes(obj):
@@ -102,6 +107,7 @@ class ServiceListSerializer(serializers.ModelSerializer):
 class ServiceDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     freelancer = serializers.CharField(source='freelancer.user.username')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Service
@@ -109,6 +115,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
 
 class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Service
@@ -120,6 +127,7 @@ class TaskListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     client = serializers.CharField(source='client.user.username')
     likes = serializers.SerializerMethodField()
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     @staticmethod
     def get_likes(obj):
@@ -133,6 +141,7 @@ class TaskListSerializer(serializers.ModelSerializer):
 class TaskDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     client = serializers.CharField(source='client.user.username')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Task
@@ -140,6 +149,7 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
 
 class TaskCreateUpdateSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
         model = Task
@@ -365,4 +375,4 @@ class TagListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('title',)

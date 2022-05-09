@@ -161,7 +161,7 @@
             </b-tab>
 
 
-            <b-tab title="Мои заказы" v-if="user.client">
+            <b-tab title="Мои задачи" v-if="user.client">
               <div class="container">
                 <div class="row">
                   <div class="col">

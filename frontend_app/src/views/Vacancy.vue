@@ -185,7 +185,7 @@ export default {
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.vacancyId) {
       if (this.isVacancyEdit) {
-        this.vacancy = this.user.employer.vacancies.find(vac => vac,id == this.$route.params.vacancyId)
+        this.vacancy = this.user.employer.vacancies.find(vac => vac.id === this.$route.params.vacancyId)
       }
       else {
         let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);

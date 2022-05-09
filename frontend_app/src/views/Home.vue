@@ -39,7 +39,7 @@
           <b-card-text>
             У меня есть задача, для которой требуется услуга специалиста
           </b-card-text>
-          <button class="btn btn-outline-success"> Разместить задачу </button>
+          <button class="btn btn-outline-success" @click="$router.push({name: 'task_add'})"> Разместить задачу </button>
           <br>
           <router-link to="/services">К списку услуг специалистов</router-link>
         </b-card>
