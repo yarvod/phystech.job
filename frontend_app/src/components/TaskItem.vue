@@ -3,11 +3,13 @@
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
-      img-src="https://placekitten.com/500/350"
-      img-alt="Image"
-      img-top
       :title=task.title
     >
+
+      <template #header>
+        <b>Задача</b>
+      </template>
+
       <b-card-text>
         <b>Category: </b>
         {{task.category}}

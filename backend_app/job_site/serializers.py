@@ -116,6 +116,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
 class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
     class Meta:
         model = Service
@@ -150,6 +151,7 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
 class TaskCreateUpdateSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
     class Meta:
         model = Task
