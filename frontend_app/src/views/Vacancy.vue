@@ -110,6 +110,12 @@
 
           </b-form-group>
 
+          <TagMultiSelect
+              :options="tags"
+              :value="vacancy.tags"
+              v-model="vacancy.tags"
+          />
+
           <b-form-group>
             <b-form-checkbox
                 v-model="vacancy.distant_work"
@@ -140,7 +146,6 @@
             </div>
           </div>
 
-
         </b-form>
 
       </div>
@@ -153,12 +158,16 @@
 <script>
 import tags_service from "@/api/tags_service";
 import vacancies_service from "@/api/vacancies_service";
+import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
 export default {
   name: "Vacancy",
   props: [
     'isVacancyEdit',
   ],
+  components: {
+    TagMultiSelect
+  },
   data() {
     return {
       vacancy: {
@@ -173,14 +182,19 @@ export default {
         salary_max: null,
         distant_work: false,
         is_published: false,
+        tags: []
       },
-      tags: {},
+      tags: [],
       user: {}
     }
   },
   async mounted () {
+    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {this.tags = response.data})
+      .then(response => {raw_tags = response.data})
+    for (var key in raw_tags) {
+      this.tags.push(raw_tags[key].title)
+    }
     await this.$store.dispatch('getMe')
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.vacancyId) {
@@ -199,12 +213,10 @@ export default {
       if (this.isVacancyEdit) {
         this.vacancy.category = 'it'
         this.vacancy.employer = this.user.employer.id
-        this.vacancy.tags = ['python']
         this.$store.dispatch('updateVacancy', {vacancy: this.vacancy})
       } else {
         this.vacancy.category = 'it'
         this.vacancy.employer = this.user.employer.id
-        this.vacancy.tags = ['python']
         this.$store.dispatch('createVacancy', {vacancy: this.vacancy})
         this.onReset()
       }
