@@ -75,12 +75,14 @@ export default {
     },
     availableOptions() {
       const criteria = this.criteria
+      // Filter out already selected options
+      const options = this.options.filter(opt => this.value.indexOf(opt) === -1)
       if (criteria) {
         // Show only options that match criteria
-        return this.options.filter(opt => opt.toLowerCase().indexOf(criteria) > -1);
+        return options.filter(opt => opt.toLowerCase().indexOf(criteria) > -1);
       }
       // Show all options available
-      return this.options.slice(0,4)
+      return options.slice(0,4)
     },
     searchDesc() {
       if (this.criteria && this.availableOptions.length === 0) {
