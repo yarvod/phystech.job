@@ -16,4 +16,7 @@ export default {
   async updateService (service) {
     return await Api().patch(`/service/${service.id}/`, service)
   },
+  async getServiceDetail (id) {
+    return await Api().get(`/service/${id}/`)
+  },
 }

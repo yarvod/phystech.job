@@ -3,15 +3,25 @@
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
-      img-src="https://placekitten.com/500/350"
-      img-alt="Image"
-      img-top
       :title=service.title
     >
+
+      <template #header>
+        Услуга
+      </template>
+
       <b-card-text>
-        <b>Category: </b>
+        <b>Категория: </b>
         {{service.category}}
         <br>
+        <b-row v-if="service.tags">
+          <b-col>
+            <b>Тэги:</b>
+            <b-link class="m-1" v-for="tag in service.tags" :key="tag">
+              {{ tag }}
+            </b-link>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>
@@ -77,11 +87,6 @@ export default {
       this.setlike()
     }
   }
-
-
-
-
-
 }
 </script>
 
