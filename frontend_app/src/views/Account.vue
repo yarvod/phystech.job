@@ -16,24 +16,122 @@
           >
 
             <b-tab title="Личная информация">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-
-                      <br>
-                      <b>Username: </b> {{user.username}}
-                      <br>
+              <b-container>
+                <b-row>
+                  <h4>Общая информация</h4>
+                </b-row>
+                <b-row>
+                  <b-col>
                       <b>Имя: </b> {{user.first_name}} {{user.last_name}}
                       <br>
                       <b>E-mail: </b> {{user.email}}
                       <br>
                       <b>Телефон: </b> {{user.phone_number}}
-                      <hr>
-                      <b-button variant="outline-primary" class="m-1">Редактировать</b-button>
+                      <br>
+                      <b>Телеграм:</b> {{user.telegram}}
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <h4>Возможности</h4>
+                </b-row>
 
-                  </div>
-                </div>
-              </div>
+                <b-card-group deck>
+
+                  <b-card v-if="!user.as_employer">
+                    <template #header>
+                      <b v-if="user.as_employee">
+                        Вы соискатель!
+                      </b>
+                      <b v-else>
+                        Вы пока не соискатель
+                      </b>
+                    </template>
+                    <b-card-text>
+                       <div>
+                        <div v-if="!user.as_employee">
+                          Вы пока не можете резмещать резюме и откликаться на вакансии
+                          <br>
+                          <b-link> Стать соискателем! </b-link>
+                        </div>
+                        <div v-else>
+                          Вы можете размещать резюме и откликаться на вакансии!
+                        </div>
+                      </div>
+                    </b-card-text>
+                  </b-card>
+
+                   <b-card v-if="!user.as_employee">
+                     <template #header>
+                       <b v-if="user.as_employer">
+                         Вы работодатель!
+                       </b>
+                       <b v-else>
+                         Вы пока не работодатель
+                       </b>
+                     </template>
+                    <b-card-text>
+                      <div>
+                        <div v-if="!user.as_employer">
+                          Вы пока не можете размещать вакансии и просматривать резюме
+                          <br>
+                          <b-link> Стать работодателем! </b-link>
+                        </div>
+                        <div v-else>
+                          Вы можете размещать вакансии и просматривать резюме!
+                        </div>
+                      </div>
+                    </b-card-text>
+                  </b-card>
+
+                  <b-card>
+                    <template #header>
+                      <b v-if="user.as_client">
+                        Вы клиент!
+                      </b>
+                      <b v-else>
+                        Вы пока не клиент
+                      </b>
+                    </template>
+                    <b-card-text>
+                      <div v-if="!user.as_client">
+                        Вы пока не можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров
+                        <br>
+                        <b-link> Стать клиентом! </b-link>
+                      </div>
+                      <div v-else>
+                        Вы можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров!
+                      </div>
+                    </b-card-text>
+                  </b-card>
+
+                  <b-card>
+                    <template #header>
+                      <b v-if="user.as_freelancer">
+                        Вы специалист/фрилансер!
+                      </b>
+                      <b v-else>
+                        Вы пока не специалист/фрилансер
+                      </b>
+                    </template>
+                    <b-card-text>
+                      <div v-if="!user.as_freelancer">
+                        Вы пока не можете размещать свои услуги и выполнять задачи клиентов
+                        <br>
+                        <b-link> Стать специалистом/фрилансером! </b-link>
+                      </div>
+                      <div v-else>
+                        Вы можете размещать свои услуги для клиентов и искать задачи для исполнения!
+                      </div>
+                    </b-card-text>
+                  </b-card>
+
+                </b-card-group>
+
+                <hr>
+                <b-row>
+                  <b-button variant="outline-primary" class="m-1">Редактировать</b-button>
+                </b-row>
+              </b-container>
             </b-tab>
 
 
