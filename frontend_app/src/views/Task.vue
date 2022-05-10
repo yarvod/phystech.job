@@ -136,7 +136,8 @@ export default {
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.taskId) {
       if (this.isTaskEdit) {
-        this.task = this.user.client.tasks.find(task => task.id === this.$route.params.taskId)
+        let {data} = await tasks_service.getTaskDetail(this.$route.params.taskId);
+        this.task = data;
       }
       else {
         let {data} = await tasks_service.getTask(this.$route.params.taskId);

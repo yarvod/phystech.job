@@ -16,4 +16,7 @@ export default {
   async updateTask (task) {
     return await Api().patch(`/task/${task.id}/`, task)
   },
+  async getTaskDetail(id) {
+    return await Api().get(`/task/${id}/`)
+  },
 }
