@@ -162,7 +162,8 @@ export default {
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {
-        this.resume = this.user.employee.resumes.find(res => res.id === this.$route.params.resumeId)
+        let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
+        this.resume = data
       }
       else {
         let {data} = await resumes_service.getResume(this.$route.params.resumeId);

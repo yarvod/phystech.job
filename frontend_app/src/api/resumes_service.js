@@ -16,4 +16,7 @@ export default {
   async updateResume (resume) {
     return await Api().patch(`/resume/${resume.id}/`, resume)
   },
+  async getResumeDetail(id) {
+    return await Api().get(`/resume/${id}/`)
+  },
 }
