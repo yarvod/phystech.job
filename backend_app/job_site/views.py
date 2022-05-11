@@ -17,7 +17,6 @@ from .serializers import (
     EmployeeListSerializer, EmployeeDetailSerializer, EmployeeCreateUpdateSerializer, 
     ClientListSerializer, ClientDetailSerializer, ClientCreateUpdateSerializer,
     FreelancerListSerializer, FreelancerDetailSerializer,FreelancerCreateUpdateSerializer,
-    UserDetailSerializer,
     TagListSerializer
 )
 
@@ -155,11 +154,6 @@ class CreateTaskView(CreateAPIView):
 class UpdateTaskView(RetrieveUpdateAPIView):
     serializer_class = TaskCreateUpdateSerializer
     queryset = Task.objects.all()
-
-
-class UserDetailView(RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserDetailSerializer
 
 
 class TagListView(ListAPIView):

@@ -175,7 +175,7 @@ DJOSER = {
     'ACTIVATION_URL': '#/auth/users/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
-        'current_user': 'job_site.serializers.UserDetailSerializer',
+        'current_user': 'users.serializers.UserDetailSerializer',
     },
 }
 
