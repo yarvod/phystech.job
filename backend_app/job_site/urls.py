@@ -9,6 +9,7 @@ from .views import (
     ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView,
     FreelancerListView, FreelancerDetailView, FreelancerCreateView, FreelancerUpdateView,
     TagListView, TagDetailView,
+    CheckEmailView,
 )
 
 
@@ -47,5 +48,6 @@ urlpatterns = [
     path("freelancers/<int:pk>/", FreelancerDetailView.as_view()),
     path("tags/", TagListView.as_view()),
     path("tags/<int:pk>/", TagDetailView.as_view()),
+    path("check_email/", CheckEmailView.as_view())
 ]
 

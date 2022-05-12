@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from users.models import User
 from rest_framework import permissions, viewsets, status
@@ -22,6 +23,7 @@ from .serializers import (
     FreelancerListSerializer, FreelancerDetailSerializer, FreelancerUpdateSerializer, FreelancerCreateSerializer,
     TagListSerializer,
     PostInteractActionSerializer,
+    CheckEmailSerializer,
 )
 
 
@@ -194,3 +196,11 @@ class TagDetailView(RetrieveAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagListSerializer
+
+
+class CheckEmailView(APIView):
+
+    def post(self, request, format=None):
+        serializer = CheckEmailSerializer(data=request.data)
+        user = User.objects.filter(email=serializer.initial_data.get('email')).first()
+        return Response({'exists': bool(user)})

@@ -100,8 +100,11 @@
                       required
                     ></b-form-input>
                   </b-form-group>
-                  <b-alert :show="!validatedEmail" variant="danger">
+                  <b-alert :show="Boolean(reg_form.email) && !validatedEmail" variant="danger">
                       Почта не корректна!
+                  </b-alert>
+                  <b-alert :show="emailExists" variant="danger">
+                      Уже существует пользователь с такой почтой
                   </b-alert>
 
                   <b-form-group
@@ -170,7 +173,7 @@
                   </b-form-group>
 
 
-                  <b-button type="submit" variant="primary" :disabled="Boolean(passwordError)">
+                  <b-button type="submit" variant="primary" :disabled="!validatedRegForm">
                     Продолжить
                   </b-button>
             </b-form>
@@ -196,6 +199,8 @@ export default {
       login_password: '',
       login_error: '',
       showLoginError: false,
+      errorRegister: '',
+      email_exists: false,
       reg_form: {
         email: '',
         password: '',
@@ -213,10 +218,10 @@ export default {
   },
   computed: {
     validatedEmail () {
-      if (!this.reg_form.email) {
-        return true&&
-      }
-      else return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.reg_form.email));
+      return this.correctEmail()
+    },
+    emailExists () {
+      return this.checkEmail()
     },
     passwordError () {
       if (this.reg_form.confirmPassword && this.reg_form.password !== this.reg_form.confirmPassword) {
@@ -284,20 +289,31 @@ export default {
       if (this.validatedRegForm) {
         user_service.createUser({
           email: this.reg_form.email,
-          username: this.reg_form.email.split('@')[0],
+          username: this.reg_form.email,
           password: this.reg_form.password,
           first_name: this.reg_form.first_name,
           last_name: this.reg_form.last_name,
           phone_number: this.reg_form.phone_number,
           reg_data: this.reg_form
-        });
-        this.$refs.RegForm.reset();
+        }).catch(error => {
+          if (error.data.username) {
+            this.errorRegister = 'Пользователь с такой почтой уже существует!'
+          }
+        })
+        this.$refs.RegForm.reset()
       }
       
     },
+    correctEmail () {
+      return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.reg_form.email));
+    },
     checkEmail () {
-      console.log(this.reg_form.email)
-    }
+      user_service.checkEmail({email: this.reg_form.email})
+      .then(resp => {
+        this.email_exists = resp.data.exists
+      })
+      return this.email_exists
+    },
   }
 }
 </script>

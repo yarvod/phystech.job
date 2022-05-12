@@ -397,3 +397,8 @@ class PostInteractActionSerializer(serializers.Serializer):
     )
 
     action = serializers.ChoiceField(ACTION_CHOICES)
+
+
+class CheckEmailSerializer(serializers.Serializer):
+    email = serializers.CharField()
+

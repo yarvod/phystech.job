@@ -37,9 +37,9 @@
 
                 <b-card-group deck>
 
-                  <b-card v-if="!user.as_employer">
+                  <b-card v-if="!user.employer">
                     <template #header>
-                      <b v-if="user.as_employee">
+                      <b v-if="user.employee">
                         Вы соискатель!
                       </b>
                       <b v-else>
@@ -48,7 +48,7 @@
                     </template>
                     <b-card-text>
                        <div>
-                        <div v-if="!user.as_employee">
+                        <div v-if="!user.employee">
                           Вы пока не можете резмещать резюме и откликаться на вакансии
                           <br>
                           <b-link> Стать соискателем! </b-link>
@@ -60,9 +60,9 @@
                     </b-card-text>
                   </b-card>
 
-                   <b-card v-if="!user.as_employee">
+                   <b-card v-if="!user.employee">
                      <template #header>
-                       <b v-if="user.as_employer">
+                       <b v-if="user.employer">
                          Вы работодатель!
                        </b>
                        <b v-else>
@@ -71,7 +71,7 @@
                      </template>
                     <b-card-text>
                       <div>
-                        <div v-if="!user.as_employer">
+                        <div v-if="!user.employer">
                           Вы пока не можете размещать вакансии и просматривать резюме
                           <br>
                           <b-link> Стать работодателем! </b-link>
@@ -85,7 +85,7 @@
 
                   <b-card>
                     <template #header>
-                      <b v-if="user.as_client">
+                      <b v-if="user.client">
                         Вы клиент!
                       </b>
                       <b v-else>
@@ -93,7 +93,7 @@
                       </b>
                     </template>
                     <b-card-text>
-                      <div v-if="!user.as_client">
+                      <div v-if="!user.client">
                         Вы пока не можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров
                         <br>
                         <b-link> Стать клиентом! </b-link>
@@ -106,7 +106,7 @@
 
                   <b-card>
                     <template #header>
-                      <b v-if="user.as_freelancer">
+                      <b v-if="user.freelancer">
                         Вы специалист/фрилансер!
                       </b>
                       <b v-else>
@@ -114,7 +114,7 @@
                       </b>
                     </template>
                     <b-card-text>
-                      <div v-if="!user.as_freelancer">
+                      <div v-if="!user.freelancer">
                         Вы пока не можете размещать свои услуги и выполнять задачи клиентов
                         <br>
                         <b-link> Стать специалистом/фрилансером! </b-link>

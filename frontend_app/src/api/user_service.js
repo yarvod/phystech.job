@@ -18,5 +18,8 @@ export default {
   },
   async createUser (data) {
     return await Api().post(`/auth/users/`, data)
+  },
+  async checkEmail (data) {
+    return await Api().post(`/check_email/`, data)
   }
 }
