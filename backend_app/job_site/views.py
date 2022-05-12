@@ -1,5 +1,9 @@
-from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from users.models import User
+from rest_framework import permissions, viewsets, status
+from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView
 from .models import (
     Employer, Vacancy,
@@ -13,12 +17,13 @@ from .serializers import (
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateUpdateSerializer,
     ServiceListSerializer, ServiceDetailSerializer, ServiceCreateUpdateSerializer,
     TaskListSerializer, TaskDetailSerializer, TaskCreateUpdateSerializer,
-    EmployerListSerializer, EmployerDetailSerializer,
-    EmployeeListSerializer, EmployeeDetailSerializer,
-    ClientListSerializer, ClientDetailSerializer,
-    FreelancerListSerializer, FreelancerDetailSerializer,
-    UserDetailSerializer,
-    TagListSerializer
+    EmployerListSerializer, EmployerDetailSerializer, EmployerUpdateSerializer, EmployerCreateSerializer,
+    EmployeeListSerializer, EmployeeDetailSerializer, EmployeeUpdateSerializer, EmployeeCreateSerializer,
+    ClientListSerializer, ClientDetailSerializer, ClientUpdateSerializer, ClientCreateSerializer,
+    FreelancerListSerializer, FreelancerDetailSerializer, FreelancerUpdateSerializer, FreelancerCreateSerializer,
+    TagListSerializer,
+    PostInteractActionSerializer,
+    CheckEmailSerializer,
 )
 
 
@@ -27,9 +32,19 @@ class EmployerListView(ListAPIView):
     serializer_class = EmployerListSerializer
 
 
-class EmployerDetailView(RetrieveAPIView):
+class EmployerDetailView(RetrieveUpdateAPIView):
     queryset = Employer.objects.all()
     serializer_class = EmployerDetailSerializer
+
+
+class EmployerCreateView(CreateAPIView):
+    serializer_class = EmployerCreateSerializer
+
+
+class EmployerUpdateView(RetrieveUpdateAPIView):
+    queryset = Employer.objects.all() \
+        .prefetch_related('favorite_resumes')
+    serializer_class = EmployerUpdateSerializer
 
 
 class EmployeeListView(ListAPIView):
@@ -43,14 +58,34 @@ class EmployeeDetailView(RetrieveUpdateAPIView):
     serializer_class = EmployeeDetailSerializer
 
 
+class EmployeeCreateView(CreateAPIView):
+    serializer_class = EmployeeCreateSerializer
+
+
+class EmployeeUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_vacancies')
+    serializer_class = EmployeeUpdateSerializer
+
+
 class ClientListView(ListAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientListSerializer
 
 
-class ClientDetailView(RetrieveAPIView):
+class ClientDetailView(RetrieveUpdateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientDetailSerializer
+
+
+class ClientCreateView(CreateAPIView):
+    serializer_class = ClientCreateSerializer
+
+
+class ClientUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_services')
+    serializer_class = ClientUpdateSerializer
 
 
 class FreelancerListView(ListAPIView):
@@ -58,9 +93,19 @@ class FreelancerListView(ListAPIView):
     serializer_class = FreelancerListSerializer
 
 
-class FreelancerDetailView(RetrieveAPIView):
+class FreelancerDetailView(RetrieveUpdateAPIView):
     queryset = Freelancer.objects.all()
     serializer_class = FreelancerDetailSerializer
+
+
+class FreelancerCreateView(CreateAPIView):
+    serializer_class = FreelancerCreateSerializer
+
+
+class FreelancerUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_tasks')
+    serializer_class = FreelancerUpdateSerializer
 
 
 class VacancyListView(ListAPIView):
@@ -75,75 +120,70 @@ class VacancyDetailView(RetrieveAPIView):
     serializer_class = VacancyDetailSerializer
 
 
-class CreateVacancyView(CreateAPIView):
+class VacancyCreateView(CreateAPIView):
     serializer_class = VacancyCreateUpdateSerializer
 
 
-class UpdateVacancyView(RetrieveUpdateAPIView):
+class VacancyUpdateView(RetrieveUpdateAPIView):
     serializer_class = VacancyCreateUpdateSerializer
     queryset = Vacancy.objects.all()
 
 
 class ResumeListView(ListAPIView):
-    queryset = Resume.objects.all()
+    queryset = Resume.objects.filter(is_published=True)
     serializer_class = ResumeListSerializer
 
 
 class ResumeDetailView(RetrieveAPIView):
-    queryset = Resume.objects.all()
+    queryset = Resume.objects.filter(is_published=True)
     serializer_class = ResumeDetailSerializer
 
 
-class CreateResumeView(CreateAPIView):
+class ResumeCreateView(CreateAPIView):
     serializer_class = ResumeCreateUpdateSerializer
 
 
-class UpdateResumeView(RetrieveUpdateAPIView):
+class ResumeUpdateView(RetrieveUpdateAPIView):
     serializer_class = ResumeCreateUpdateSerializer
     queryset = Resume.objects.all()
 
 
 class ServiceListView(ListAPIView):
-    queryset = Resume.objects.all()
+    queryset = Service.objects.filter(is_published=True)
     serializer_class = ServiceListSerializer
 
 
 class ServiceDetailView(RetrieveAPIView):
-    queryset = Resume.objects.all()
+    queryset = Service.objects.filter(is_published=True)
     serializer_class = ServiceDetailSerializer
 
 
-class CreateServiceView(CreateAPIView):
+class ServiceCreateView(CreateAPIView):
     serializer_class = ServiceCreateUpdateSerializer
 
 
-class UpdateServiceView(RetrieveUpdateAPIView):
+class ServiceUpdateView(RetrieveUpdateAPIView):
     serializer_class = ServiceCreateUpdateSerializer
     queryset = Service.objects.all()
 
 
 class TaskListView(ListAPIView):
-    queryset = Task.objects.all()
+    queryset = Task.objects.filter(is_published=True)
     serializer_class = TaskListSerializer
 
 
 class TaskDetailView(RetrieveAPIView):
-    queryset = Task.objects.all()
+    queryset = Task.objects.filter(is_published=True)
     serializer_class = TaskDetailSerializer
 
 
-class CreateTaskView(CreateAPIView):
+class TaskCreateView(CreateAPIView):
     serializer_class = TaskCreateUpdateSerializer
 
 
-class UpdateTaskView(RetrieveUpdateAPIView):
+class TaskUpdateView(RetrieveUpdateAPIView):
     serializer_class = TaskCreateUpdateSerializer
     queryset = Task.objects.all()
-
-
-class UserDetailView(RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserDetailSerializer
 
 
 class TagListView(ListAPIView):
@@ -156,3 +196,11 @@ class TagDetailView(RetrieveAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagListSerializer
+
+
+class CheckEmailView(APIView):
+
+    def post(self, request, format=None):
+        serializer = CheckEmailSerializer(data=request.data)
+        user = User.objects.filter(email=serializer.initial_data.get('email')).first()
+        return Response({'exists': bool(user)})

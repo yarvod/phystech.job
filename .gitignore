@@ -272,3 +272,4 @@ cython_debug/
 
 postgres_db/init/init-user-db.sh
 *.DS_Store
+.vscode/

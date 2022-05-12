@@ -8,13 +8,26 @@
       img-top
       :title=vacancy.title
     >
+
+      <template #header>
+        Вакансия
+      </template>
+
       <b-card-text>
-        <b>Company: </b>
+        <b>Компания: </b>
          {{vacancy.company_name}}
         <br>
-        <b>Category: </b>
+        <b>Категория: </b>
         {{vacancy.category}}
         <br>
+        <b-row v-if="vacancy.tags">
+          <b-col>
+            <b>Тэги:</b>
+            <b-link class="m-1" v-for="tag in vacancy.tags" :key="tag">
+              {{ tag }}
+            </b-link>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>
@@ -57,6 +70,7 @@
 </template>
 
 <script>
+
 export default {
   name: "VacancyItem",
   props: ['vacancy', 'edit'],
@@ -67,7 +81,7 @@ export default {
   },
   methods: {
     onlike () {
-      this.$store.dispatch('setLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
+      this.$store.dispatch('setVacancyLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
     },
     setlike () {
       let f_v = this.$store.getters.user.favorites.vacancies;

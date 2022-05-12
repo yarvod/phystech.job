@@ -9,7 +9,7 @@
               <div class="text-center">
                 <b-form @submit.prevent="submitLogin">
                   <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-                    <b-form-input v-model="login_username" placeholder="username" type="text" required></b-form-input>
+                    <b-form-input v-model="login_email" placeholder="email" type="text" required></b-form-input>
                   </b-input-group>
                     <br>
                   <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
@@ -29,7 +29,7 @@
 
             <b-tab title="Регистрация">
 
-              <b-form @submit.prevent="submitRegistration" novalidate>
+              <b-form ref="RegForm" @submit.prevent="submitRegistration">
 
                 <h4> Выберете, что вас интересует: </h4>
                 <hr>
@@ -43,7 +43,7 @@
                     </template>
 
                     <b-card-text>
-                      Я работадатель и ищу работника в свою супер компанию
+                      Я работодатель и ищу работника в свою супер компанию
                     </b-card-text>
                   </b-card>
 
@@ -79,6 +79,8 @@
                     </b-card-text>
                   </b-card>
                 </b-card-group>
+                <br>
+                <b-alert variant="danger" :show="Boolean(roleError)"> {{roleError}} </b-alert>
 
                 <br>
                 <h4>Заполните форму:</h4>
@@ -98,6 +100,12 @@
                       required
                     ></b-form-input>
                   </b-form-group>
+                  <b-alert :show="Boolean(reg_form.email) && !validatedEmail" variant="danger">
+                      Почта не корректна!
+                  </b-alert>
+                  <b-alert :show="emailExists" variant="danger">
+                      Уже существует пользователь с такой почтой
+                  </b-alert>
 
                   <b-form-group
                     id="input-password"
@@ -109,16 +117,14 @@
                       v-model="reg_form.password"
                       type="password"
                       placeholder="Enter a password"
-                      v-validate="{ required: true, min: 3 }"
-                      :state="validateState('input-pass1')"
-                      aria-describedby="input-pass1-feedback"
+                      aria-describedby="password-help-block"
                       name="password1"
+                      required
                     ></b-form-input>
-                    <b-form-invalid-feedback id="input-pass1-feedback">{{ veeErrors.first('input-pass1') }}</b-form-invalid-feedback>
-  <!--                  <b-form-text id="password-help-block">-->
-  <!--                    Your password must be 8-20 characters long, contain letters and numbers, and must not-->
-  <!--                    contain spaces, special characters, or emoji.-->
-  <!--                  </b-form-text>-->
+                    <b-form-text id="password-help-block">
+                      Your password must be 8-20 characters long, contain letters and numbers, and must not
+                      contain spaces, special characters, or emoji.
+                    </b-form-text>
 
                     <b-form-input
                       id="input-pass2"
@@ -126,11 +132,12 @@
                       v-model="reg_form.confirmPassword"
                       type="password"
                       placeholder="Enter a password again"
-                      v-validate="{ required: true, min: 3 }"
-                      :state="validateState('input-pass2')"
-                      data-vv-name="password2"
+                      required
                     ></b-form-input>
-  <!--                  <b-form-invalid-feedback id="input-pass2-feedback">{{ veeErrors.first('input-pass2') }}</b-form-invalid-feedback>-->
+                    <br>
+                    <b-alert :show="Boolean(passwordError)" variant="danger">
+                      {{ passwordError }}
+                    </b-alert>
 
                   </b-form-group>
 
@@ -144,14 +151,29 @@
                     <b-form-input
                       class="mt-1"
                       id="input-name"
-                      v-model="reg_form.second_name"
+                      v-model="reg_form.last_name"
                       placeholder="Фамилия"
                       required
                     ></b-form-input>
                   </b-form-group>
 
+                  <b-form-group v-if="reg_form.as_employer" id="input-comp" label="Ваша компания:" label-for="input-company">
+                    <b-form-input
+                      id="input-company"
+                      v-model="reg_form.company_name"
+                      placeholder="Как называется ваша компания/команда/организация?"
+                      required
+                    ></b-form-input>
+                    <b-form-input
+                      class="mt-1"
+                      id="input-company"
+                      v-model="reg_form.company_website"
+                      placeholder="Ваш веб-сайт"
+                    ></b-form-input>
+                  </b-form-group>
 
-                  <b-button type="submit" variant="primary" @click="submitRegistration" :disabled="Boolean(passwordError)">
+
+                  <b-button type="submit" variant="primary" :disabled="!validatedRegForm">
                     Продолжить
                   </b-button>
             </b-form>
@@ -173,23 +195,48 @@ export default {
   name: "Login",
   data () {
     return {
-      login_username: '',
+      login_email: '',
       login_password: '',
       login_error: '',
       showLoginError: false,
+      errorRegister: '',
+      email_exists: false,
       reg_form: {
         email: '',
         password: '',
         confirmPassword: '',
+        first_name: '',
+        last_name: '',
+        phone_number: '',
         as_employee: false,
-        as_employer: false
+        as_employer: false,
+        as_client: false,
+        as_freelancer: false
       },
+      try_submit: false
     }
   },
   computed: {
+    validatedEmail () {
+      return this.correctEmail()
+    },
+    emailExists () {
+      return this.checkEmail()
+    },
     passwordError () {
-      if (this.reg_form.password !== this.reg_form.confirmPassword) {
+      if (this.reg_form.confirmPassword && this.reg_form.password !== this.reg_form.confirmPassword) {
         return 'Пароли должны совпадать!'
+      }
+      else {
+        return ''
+      }
+    },
+    isRole () {
+      return (this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)
+    },
+    roleError () {
+      if (this.try_submit && !this.isRole) {
+        return 'Выберете свою роль!'
       }
       else {
         return ''
@@ -200,13 +247,16 @@ export default {
     },
     disableEmployee () {
       return this.reg_form.as_employer;
+    },
+    validatedRegForm () {  //TODO: create new validation
+      return !this.passwordError && this.isRole && this.validatedEmail
     }
   },
   methods: {
     async submitLogin() {
       localStorage.removeItem("token")
       const formData = {
-        username: this.login_username,
+        email: this.login_email,
         password: this.login_password
       }
       await user_service.LogIn(formData)
@@ -216,7 +266,8 @@ export default {
 
             localStorage.setItem("token", token)  // сохраняем токен в хранилище
             this.$store.dispatch('getMe')  // получаем юзера из бэка и кладем в стор
-            this.$router.push({name: 'home'})  // переходим на домашнюю страницу
+            this.$router.push({name: 'home'})  //FIXME: переход на желаему страницу
+            this.onReset()
           })
           .catch(error => {
             if (error.response.data['non_field_errors']) {
@@ -230,30 +281,39 @@ export default {
 
     },
     onReset() {
-      this.username = '';
-      this.password = '';
-      this.$nextTick(() => {
-        this.$validator.reset();
-      });
+      this.login_email = '';
+      this.login_password = '';
     },
-    validateState(ref) {
-      if (
-        this.veeFields[ref] &&
-        (this.veeFields[ref].dirty || this.veeFields[ref].validated)
-      ) {
-        return !this.veeErrors.has(ref);
+    submitRegistration () {
+      this.try_submit = true
+      if (this.validatedRegForm) {
+        user_service.createUser({
+          email: this.reg_form.email,
+          username: this.reg_form.email,
+          password: this.reg_form.password,
+          first_name: this.reg_form.first_name,
+          last_name: this.reg_form.last_name,
+          phone_number: this.reg_form.phone_number,
+          reg_data: this.reg_form
+        }).catch(error => {
+          if (error.data.username) {
+            this.errorRegister = 'Пользователь с такой почтой уже существует!'
+          }
+        })
+        this.$refs.RegForm.reset()
       }
-      return null;
+      
     },
-    submitRegistration() {
-      this.$validator.validateAll().then(result => {
-        if (!result) {
-          return;
-        }
-        alert("Form submitted!");
-      });
-      console.log(JSON.stringify(this.reg_form))
-    }
+    correctEmail () {
+      return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.reg_form.email));
+    },
+    checkEmail () {
+      user_service.checkEmail({email: this.reg_form.email})
+      .then(resp => {
+        this.email_exists = resp.data.exists
+      })
+      return this.email_exists
+    },
   }
 }
 </script>

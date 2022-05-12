@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
-    <div class="row h2 text-center">Vacancy Details</div>
-    <div class="row">
-      <a class="cancel-link" @click="$router.back()">Назад</a>
-    </div>
+  <b-container>
+    <b-row class="h2 text-center">Подробнее о вакансии</b-row>
+    <b-row>
+      <b-link @click="$router.back()">Назад</b-link>
+    </b-row>
     <hr>
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col>
         <h3>{{ vacancy.title }}</h3>
         <br>
         <b>Адрес: </b> {{ vacancy.location }}
@@ -18,45 +18,55 @@
         <b>Зарплата: </b> {{vacancy.salary_min}} - {{vacancy.salary_max}}
         <br>
         <b>Опубликовано: </b> {{vacancy.published|formatDate}}
-      </div>
-    </div>
-    <div class="row" v-if="vacancy.about">
-      <div class="col">
+      </b-col>
+    </b-row>
+
+    <b-row v-if="vacancy.tags">
+      <b-col>
+         <b>Тэги:</b>
+        <b-link class="m-1" v-for="tag in vacancy.tags" :key="tag">
+          {{ tag }}
+        </b-link>
+      </b-col>
+    </b-row>
+
+    <b-row v-if="vacancy.about">
+      <b-col>
         <b class="text-underlined">О вакансии:</b>
         <div class="text-default">{{vacancy.about}}</div>
-      </div>
-    </div>
-    <div class="row" v-if="vacancy.duties">
-      <div class="col">
+      </b-col>
+    </b-row>
+    <b-row v-if="vacancy.duties">
+      <b-col>
         <b class="text-underlined">Обязанности: </b> <div class="text-default">{{vacancy.duties}}</div>
-      </div>
-    </div>
-    <div class="row" v-if="vacancy.requirements">
-      <div class="col">
+      </b-col>
+    </b-row>
+    <b-row v-if="vacancy.requirements">
+      <b-col>
         <b class="text-underlined">Требования: </b> <div class="text-default">{{vacancy.requirements}}</div>
-      </div>
-    </div>
-    <div class="row" v-if="vacancy.conditions">
-      <div class="col">
+      </b-col>
+    </b-row>
+    <b-row v-if="vacancy.conditions">
+      <b-col>
         <b class="text-underlined">Условия: </b> <div class="text-default">{{vacancy.conditions}}</div>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
     <hr>
 
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col>
         <b-button variant="outline-success" class="m-1">Откликнуться</b-button>
         <b-checkbox
-          v-if="!this.$store.getters.user || !this.$store.getters.user.employer"
+          v-if="this.$store.getters.user && this.$store.getters.user.employee && !this.$store.getters.user.employer"
           v-model="liked"
           @change="onlike"
         >
           like
         </b-checkbox>
-      </div>
-    </div>
-  </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -84,7 +94,7 @@ export default {
       })
     },
     onlike () {
-      this.$store.dispatch('setLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
+      this.$store.dispatch('setVacancyLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
     },
     setlike () {
       let f_v = this.$store.getters.user.favorites.vacancies;

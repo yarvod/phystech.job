@@ -1,7 +1,7 @@
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from users.models import User
 
 
 class Category(MPTTModel):
@@ -23,8 +23,7 @@ class Category(MPTTModel):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=50)
-    code = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.title
@@ -45,6 +44,9 @@ class Resume(models.Model):
     ready_distant_work = models.BooleanField(default=False)
 
     file = models.FileField(null=True, blank=True)
+
+    salary_min = models.PositiveIntegerField(null=True, blank=True)
+    salary_max = models.PositiveIntegerField(null=True, blank=True)
 
     views = models.IntegerField(default=0)
 
@@ -110,7 +112,7 @@ class Service(models.Model):
     title = models.CharField(max_length=255)
     about = models.TextField(null=True, blank=True)
 
-    salary = models.PositiveIntegerField()
+    salary = models.PositiveIntegerField(null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
@@ -123,6 +125,11 @@ class Service(models.Model):
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Service {self.title}"
 
@@ -133,7 +140,7 @@ class Task(models.Model):
     title = models.CharField(max_length=255)
     about = models.TextField(null=True, blank=True)
 
-    salary = models.PositiveIntegerField()
+    salary = models.PositiveIntegerField(null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
@@ -145,6 +152,11 @@ class Task(models.Model):
     is_published = models.BooleanField(default=False)
     published = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Task {self.title}"
@@ -162,6 +174,7 @@ class Employee(models.Model):
 class Employer(models.Model):
     user = models.OneToOneField(User, related_name='employer', on_delete=models.CASCADE)
     company_name = models.CharField(max_length=255)
+    company_website = models.CharField(max_length=255, null=True)
 
     favorite_resumes = models.ManyToManyField('Resume', blank=True, related_name='employers_who_liked')
 

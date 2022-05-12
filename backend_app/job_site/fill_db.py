@@ -1,5 +1,5 @@
 from .models import *
-from django.contrib.auth.models import User
+from users.models import User
 
 
 def fill_db():
@@ -65,16 +65,26 @@ def fill_db():
     er2.company_name = 'Компания Александра'
     er2.save()
 
+    fr1 = Freelancer.objects.filter(user__username=u1.username).first()
+    if not fr1:
+        fr1 = Freelancer(user=u1)
+        fr1.save()
+
+    ct1 = Client.objects.filter(user__username=u1.username).first()
+    if not ct1:
+        fr1 = Client(user=u1)
+        fr1.save()
+
     c1 = Category.objects.update_or_create(title='IT', slug='it')[0]
     c2 = Category.objects.update_or_create(title='Science', slug='sc')[0]
     c3 = Category.objects.update_or_create(title='Business', slug='bz')[0]
     c4 = Category.objects.update_or_create(title='Management', slug='mn')[0]
 
-    Tag.objects.update_or_create(code='python', title='Python')
-    Tag.objects.update_or_create(code='c', title='C')
-    Tag.objects.update_or_create(code='c++', title='C++')
-    Tag.objects.update_or_create(code='js', title='JavaScript')
-    Tag.objects.update_or_create(code='django', title='Django')
+    Tag.objects.update_or_create(title='Python')
+    Tag.objects.update_or_create(title='C')
+    Tag.objects.update_or_create(title='C++')
+    Tag.objects.update_or_create(title='JavaScript')
+    Tag.objects.update_or_create(title='Django')
 
 
     fields = dict(

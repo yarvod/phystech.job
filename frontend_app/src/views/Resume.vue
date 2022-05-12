@@ -7,7 +7,7 @@
         <h2 v-else>Добавление резюме</h2>
       </div>
     </div>
-    <router-link to="/account">Назад</router-link>
+    <b-link @click="$router.back()">Назад</b-link>
 
     <hr>
 
@@ -70,6 +70,12 @@
             </b-form-textarea>
           </b-form-group>
 
+          <TagMultiSelect
+              :options="tags"
+              :value="resume.tags"
+              v-model="resume.tags"
+          />
+
           <b-form-group>
             <b-form-checkbox
                 v-model="resume.ready_relocate"
@@ -120,12 +126,16 @@
 <script>
 import tags_service from "@/api/tags_service";
 import resumes_service from "@/api/resumes_service";
+import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
 export default {
   name: "Resume",
   props: [
     'isResumeEdit',
   ],
+  components: {
+    TagMultiSelect
+  },
   data() {
     return {
       resume: {
@@ -134,20 +144,31 @@ export default {
         is_published: false,
         ready_relocate: false,
         ready_distant_work: false,
-        work_experiance: ''
+        work_experiance: '',
+        tags: []
       },
-      tags: {},
+      tags: [],
       user: {}
     }
   },
   async mounted () {
+    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {this.tags = response.data})
+      .then(response => {raw_tags = response.data})
+    for (var key in raw_tags) {
+      this.tags.push(raw_tags[key].title)
+    }
     await this.$store.dispatch('getMe')
       .then(this.user = this.$store.getters.user)
     if (this.$route.params.resumeId) {
-      let {data} = await resumes_service.getResume(this.$route.params.resumeId);
-      this.resume = data
+      if (this.isResumeEdit) {
+        let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
+        this.resume = data
+      }
+      else {
+        let {data} = await resumes_service.getResume(this.$route.params.resumeId);
+        this.resume = data;
+      }
     }
   },
   methods: {
@@ -156,16 +177,14 @@ export default {
       if (this.isResumeEdit) {
         this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
-        this.resume.tags = ['python']
         this.$store.dispatch('updateResume', {resume: this.resume})
       } else {
         this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
-        this.resume.tags = ['python']
         this.$store.dispatch('createResume', {resume: this.resume})
         this.onReset()
       }
-      router.push({name: 'account'})
+      router.push({name: 'account'})  // FIXME: redirect to back
     },
     onReset() {
       event.preventDefault()

@@ -7,7 +7,10 @@ export default {
   async getEmployee (id) {
     return await Api().get(`/employees/${id}/`)
   },
-  async updateEmployee (id, f_v_id) {
-    return await Api().put(`/employees/${id}/`, {favorite_vacancies_id: [f_v_id]})
+  async createEmployee (data) {
+    return await Api().post(`/employee/`, data)
+  },
+  async setFavoriteVacancy (id, f_v_id) {
+    return await Api().put(`/employee/${id}/`, {favorite_vacancies_id: [f_v_id]})
   },
 }
