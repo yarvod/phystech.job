@@ -7,6 +7,9 @@ export default {
   async getClient (id) {
     return await Api().get(`/clients/${id}/`)
   },
+  async createClient (data) {
+    return await Api().post(`/client/`, data)
+  },
   async setFavoriteService (id, f_s_id) {
     return await Api().put(`/client/${id}/`, {favorite_services_id: [f_s_id]})
   },

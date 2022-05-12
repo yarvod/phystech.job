@@ -1,5 +1,15 @@
 <template>
   <b-container>
+
+    <b-modal v-model="show_modal_add_employer" title="Стать работодателем" hide-footer static>
+      <div class="d-block text-center">
+        <h3>Hello From This Modal!</h3>
+      </div>
+
+      <b-button class="mt-3" variant="outline-success" block @click="$bvModal.hide('add-employer-modal')">Close Me</b-button>
+
+    </b-modal>
+
     <b-row>
       <b-col>
         <h2>Мой профиль</h2>
@@ -15,7 +25,7 @@
             justified
           >
 
-            <b-tab title="Личная информация">
+            <b-tab title="Аккаунт">
               <b-container>
                 <b-row>
                   <h4>Общая информация</h4>
@@ -47,15 +57,14 @@
                       </b>
                     </template>
                     <b-card-text>
-                       <div>
-                        <div v-if="!user.employee">
-                          Вы пока не можете резмещать резюме и откликаться на вакансии
-                          <br>
-                          <b-link> Стать соискателем! </b-link>
-                        </div>
-                        <div v-else>
-                          Вы можете размещать резюме и откликаться на вакансии!
-                        </div>
+                      <div v-if="!user.employee">
+                       Вы пока не можете резмещать резюме и откликаться на вакансии
+                       <br>
+                       <b-button variant="outline-success" @click="add_employee"> Стать соискателем! </b-button>
+                      </div>
+
+                      <div v-else>
+                       Вы можете размещать резюме и откликаться на вакансии!
                       </div>
                     </b-card-text>
                   </b-card>
@@ -69,18 +78,24 @@
                          Вы пока не работодатель
                        </b>
                      </template>
-                    <b-card-text>
-                      <div>
-                        <div v-if="!user.employer">
-                          Вы пока не можете размещать вакансии и просматривать резюме
-                          <br>
-                          <b-link> Стать работодателем! </b-link>
+                      <b-card-text>
+                        <div>
+                          <div v-if="!user.employer">
+                            Вы пока не можете размещать вакансии и просматривать резюме
+                            <br>
+                            <b-button
+                                variant="outline-success"
+                                @click="show_modal_add_employer = !show_modal_add_employer"
+                                v-b-modal.modal-center
+                            >
+                              Стать работодателем!
+                            </b-button>
+                          </div>
+                          <div v-else>
+                            Вы можете размещать вакансии и просматривать резюме!
+                          </div>
                         </div>
-                        <div v-else>
-                          Вы можете размещать вакансии и просматривать резюме!
-                        </div>
-                      </div>
-                    </b-card-text>
+                      </b-card-text>
                   </b-card>
 
                   <b-card>
@@ -94,12 +109,12 @@
                     </template>
                     <b-card-text>
                       <div v-if="!user.client">
-                        Вы пока не можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров
+                        Вы пока не можете размещать задачи для исполнения и пользоваться услугами фрилансеров
                         <br>
-                        <b-link> Стать клиентом! </b-link>
+                        <b-button variant="outline-success" @click="add_client"> Стать клиентом! </b-button>
                       </div>
                       <div v-else>
-                        Вы можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров!
+                        Вы можете размещать задачи для исполнения и пользоваться услугами фрилансеров!
                       </div>
                     </b-card-text>
                   </b-card>
@@ -107,17 +122,17 @@
                   <b-card>
                     <template #header>
                       <b v-if="user.freelancer">
-                        Вы специалист/фрилансер!
+                        Вы фрилансер!
                       </b>
                       <b v-else>
-                        Вы пока не специалист/фрилансер
+                        Вы пока не фрилансер
                       </b>
                     </template>
                     <b-card-text>
                       <div v-if="!user.freelancer">
                         Вы пока не можете размещать свои услуги и выполнять задачи клиентов
                         <br>
-                        <b-link> Стать специалистом/фрилансером! </b-link>
+                        <b-button variant="outline-success" @click="add_freelancer"> Стать фрилансером! </b-button>
                       </div>
                       <div v-else>
                         Вы можете размещать свои услуги для клиентов и искать задачи для исполнения!
@@ -126,6 +141,12 @@
                   </b-card>
 
                 </b-card-group>
+
+                <b-button v-b-modal.modal-1>Launch demo modal</b-button>
+
+                <b-modal id="modal-1" title="BootstrapVue">
+                  <p class="my-4">Hello from modal!</p>
+                </b-modal>
 
                 <hr>
                 <b-row>
@@ -301,23 +322,11 @@
               </b-container>
             </b-tab>
 
-
-            <b-tab title="Мои подписки">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <p>Вы можете подписаться на категории и получать рассылку по электронной почте</p>
-                  </div>
-                </div>
-              </div>
-            </b-tab>
-
           </b-tabs>
       </b-col>
     </b-row>
 
   </b-container>
-
 </template>
 
 
@@ -327,6 +336,10 @@ import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
 import ServiceItem from "@/components/ServiceItem";
 import TaskItem from "@/components/TaskItem";
+import employees_service from "@/api/employees_service";
+import clients_service from "@/api/clients_service";
+import employers_service from "@/api/employers_service";
+import freelancers_service from "@/api/freelancers_service";
 export default {
   components: {VacancyItem, ResumeItem, ServiceItem, TaskItem},
   data() {
@@ -337,18 +350,41 @@ export default {
         freelancer: {},
         client: {}
       },
-      like_filter: ''
+      like_filter: '',
+      show_modal_add_employer: false
     }
   },
   async mounted() {
+    await this.load_user();
+  },
+  methods: {
+    async load_user () {
       await this.$store.dispatch('getMe')
       this.user = await this.$store.getters.user;
     },
-  methods: {
     add_employee () {
-
+      employees_service.createEmployee({user: this.user.id})
+        .then(
+          this.load_user()
+      )
     },
     add_client () {
+      clients_service.createClient({user: this.user.id})
+        .then(
+          this.load_user()
+      )
+    },
+    add_employer () {
+      employers_service.createEmployer({user: this.user.id})
+        .then(
+            this.load_user()
+        )
+    },
+    add_freelancer () {
+      freelancers_service.createFreelancer({user: this.user.id})
+        .then(
+          this.load_user()
+      )
 
     }
   }
