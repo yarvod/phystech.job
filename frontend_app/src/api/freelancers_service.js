@@ -8,6 +8,6 @@ export default {
     return await Api().get(`/freelancers/${id}/`)
   },
   async setFavoriteTask (id, f_t_id) {
-    return await Api().put(`/freelancers/${id}/`, {favorite_tasks_id: [f_t_id]})
+    return await Api().put(`/freelancer/${id}/`, {favorite_tasks_id: [f_t_id]})
   },
 }

@@ -4,20 +4,20 @@ from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
 from job_site.serializers import (
-    EmployeeDetailSerializer,
-    EmployerDetailSerializer,
-    FreelancerDetailSerializer,
-    ClientDetailSerializer,
+    EmployeeUpdateSerializer,
+    EmployerUpdateSerializer,
+    FreelancerUpdateSerializer,
+    ClientUpdateSerializer,
 )
 
 from .models import User
 
 
-class UserDetailSerializer(UserSerializer):
-    employer = EmployerDetailSerializer(read_only=True)
-    employee = EmployeeDetailSerializer(read_only=True)
-    freelancer = FreelancerDetailSerializer(read_only=True)
-    client = ClientDetailSerializer(read_only=True)
+class UserDjoserSerializer(UserSerializer):
+    employer = EmployerUpdateSerializer(read_only=True)
+    employee = EmployeeUpdateSerializer(read_only=True)
+    freelancer = FreelancerUpdateSerializer(read_only=True)
+    client = ClientUpdateSerializer(read_only=True)
     favorites = serializers.SerializerMethodField()
 
     @staticmethod

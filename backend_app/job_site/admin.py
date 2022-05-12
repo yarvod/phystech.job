@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from mptt.admin import MPTTModelAdmin
 
 from .models import (
@@ -8,7 +7,6 @@ from .models import (
     Freelancer, Service,
     Client, Task,
     Tag, Category,
-    User,
 )
 
 
@@ -78,5 +76,3 @@ admin.site.register(Category, MPTTModelAdmin)
 class TagAdmin(admin.ModelAdmin):
     pass
 
-
-admin.site.register(User, UserAdmin)

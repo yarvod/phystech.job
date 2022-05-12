@@ -159,6 +159,7 @@ class TaskCreateUpdateSerializer(serializers.ModelSerializer):
 
 
 class EmployerListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Employer
         fields = '__all__'
@@ -168,11 +169,31 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
     company_name = serializers.CharField(required=False)
     vacancies = VacancyDetailSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+
+class EmployerCreateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+
+class EmployerUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', required=False)
+    company_name = serializers.CharField(required=False)
     favorite_resumes_id = serializers.SlugRelatedField(source='favorite_resumes',
                                                        slug_field='id', queryset=Resume.objects.all(), many=True)
     favorite_resumes = ResumeDetailSerializer(many=True, required=False)
+    vacancies = VacancyDetailSerializer(read_only=True, many=True)
 
     def update(self, instance, validated_data):
+        company_name = validated_data.pop('company_name')
+        instance.company_name = company_name
+
         f_r = validated_data.pop('favorite_resumes')
         debug('f_r', f_r)
         try:
@@ -191,18 +212,14 @@ class EmployerDetailSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-    class Meta:
-        model = Employer
-        fields = '__all__'
 
-class EmployerCreateUpdateSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Employer
         fields = '__all__'
 
 
 class EmployeeListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Employee
         fields = '__all__'
@@ -211,9 +228,25 @@ class EmployeeListSerializer(serializers.ModelSerializer):
 class EmployeeDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
     resumes = ResumeDetailSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+
+class EmployeeCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+
+class EmployeeUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', required=False)
     favorite_vacancies_id = serializers.SlugRelatedField(source='favorite_vacancies',
                                                          slug_field='id', queryset=Vacancy.objects.all(), many=True)
-    favorite_vacancies = VacancyDetailSerializer(many=True, required=False)
+    favorite_vacancies = VacancyDetailSerializer(read_only=True, many=True, required=False)
+    resumes = ResumeDetailSerializer(read_only=True, many=True)
 
     def update(self, instance, validated_data):
         f_v = validated_data.pop('favorite_vacancies')
@@ -239,13 +272,9 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
         model = Employee
         fields = '__all__'
 
-class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-            model = Employee
-            fields = '__all__'
-
 
 class FreelancerListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Freelancer
         fields = '__all__'
@@ -254,12 +283,25 @@ class FreelancerListSerializer(serializers.ModelSerializer):
 class FreelancerDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
     services = ServiceDetailSerializer(read_only=True, many=True)
-    favorite_tasks = TaskDetailSerializer(read_only=True, many=True)
-    favorite_tasks_id = serializers.SlugRelatedField(source='favorite_tasks',
-                                                         slug_field='id', queryset=Task.objects.all(), many=True)
+
     class Meta:
         model = Freelancer
         fields = '__all__'
+
+
+class FreelancerCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Freelancer
+        fields = '__all__'
+
+
+class FreelancerUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', required=False)
+    favorite_tasks = TaskDetailSerializer(read_only=True, many=True)
+    favorite_tasks_id = serializers.SlugRelatedField(source='favorite_tasks',
+                                                     slug_field='id', queryset=Task.objects.all(), many=True)
+    services = ServiceDetailSerializer(read_only=True, many=True)
 
     def update(self, instance, validated_data):
         f_t = validated_data.pop('favorite_tasks')
@@ -281,14 +323,13 @@ class FreelancerDetailSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
-class FreelancerCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Freelancer
         fields = '__all__'
 
 
 class ClientListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Client
         fields = '__all__'
@@ -297,13 +338,25 @@ class ClientListSerializer(serializers.ModelSerializer):
 class ClientDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
     tasks = TaskDetailSerializer(read_only=True, many=True)
-    favorite_services = ServiceDetailSerializer(read_only=True, many=True)
-    favorite_services_id = serializers.SlugRelatedField(source='favorite_services',
-                                                         slug_field='id', queryset=Service.objects.all(), many=True)
 
     class Meta:
         model = Client
         fields = '__all__'
+
+
+class ClientCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
+class ClientUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', required=False)
+    favorite_services = ServiceDetailSerializer(read_only=True, many=True)
+    favorite_services_id = serializers.SlugRelatedField(source='favorite_services',
+                                                        slug_field='id', queryset=Service.objects.all(), many=True)
+    tasks = TaskDetailSerializer(read_only=True, many=True)
 
     def update(self, instance, validated_data):
         f_s = validated_data.pop('favorite_services')
@@ -325,8 +378,6 @@ class ClientDetailSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
-class ClientCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
@@ -337,3 +388,12 @@ class TagListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('title',)
+
+
+class PostInteractActionSerializer(serializers.Serializer):
+    ACTION_CHOICES = (
+        'like',
+        'response'
+    )
+
+    action = serializers.ChoiceField(ACTION_CHOICES)

@@ -8,6 +8,6 @@ export default {
     return await Api().get(`/employees/${id}/`)
   },
   async setFavoriteVacancy (id, f_v_id) {
-    return await Api().put(`/employees/${id}/`, {favorite_vacancies_id: [f_v_id]})
+    return await Api().put(`/employee/${id}/`, {favorite_vacancies_id: [f_v_id]})
   },
 }

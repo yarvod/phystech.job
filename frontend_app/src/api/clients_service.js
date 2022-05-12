@@ -8,6 +8,6 @@ export default {
     return await Api().get(`/clients/${id}/`)
   },
   async setFavoriteService (id, f_s_id) {
-    return await Api().put(`/clients/${id}/`, {favorite_services_id: [f_s_id]})
+    return await Api().put(`/client/${id}/`, {favorite_services_id: [f_s_id]})
   },
 }

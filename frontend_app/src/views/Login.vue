@@ -280,10 +280,7 @@ export default {
           first_name: this.reg_form.first_name,
           last_name: this.reg_form.last_name,
           phone_number: this.reg_form.phone_number,
-          as_employee: this.reg_form.as_employee,
-          as_employer: this.reg_form.as_employer,
-          as_client: this.reg_form.as_client,
-          as_freelancer: this.reg_form.as_freelancer
+          reg_data: this.reg_form
         });
         this.$refs.RegForm.reset();
       }

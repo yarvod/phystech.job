@@ -345,6 +345,12 @@ export default {
       this.user = await this.$store.getters.user;
     },
   methods: {
+    add_employee () {
+
+    },
+    add_client () {
+
+    }
   }
 }
 

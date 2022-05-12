@@ -1,5 +1,8 @@
+from rest_framework.response import Response
+
 from users.models import User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
+from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView
 from .models import (
     Employer, Vacancy,
@@ -13,11 +16,12 @@ from .serializers import (
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateUpdateSerializer,
     ServiceListSerializer, ServiceDetailSerializer, ServiceCreateUpdateSerializer,
     TaskListSerializer, TaskDetailSerializer, TaskCreateUpdateSerializer,
-    EmployerListSerializer, EmployerDetailSerializer, EmployerCreateUpdateSerializer, 
-    EmployeeListSerializer, EmployeeDetailSerializer, EmployeeCreateUpdateSerializer, 
-    ClientListSerializer, ClientDetailSerializer, ClientCreateUpdateSerializer,
-    FreelancerListSerializer, FreelancerDetailSerializer,FreelancerCreateUpdateSerializer,
-    TagListSerializer
+    EmployerListSerializer, EmployerDetailSerializer, EmployerUpdateSerializer, EmployerCreateSerializer,
+    EmployeeListSerializer, EmployeeDetailSerializer, EmployeeUpdateSerializer, EmployeeCreateSerializer,
+    ClientListSerializer, ClientDetailSerializer, ClientUpdateSerializer, ClientCreateSerializer,
+    FreelancerListSerializer, FreelancerDetailSerializer, FreelancerUpdateSerializer, FreelancerCreateSerializer,
+    TagListSerializer,
+    PostInteractActionSerializer,
 )
 
 
@@ -32,7 +36,13 @@ class EmployerDetailView(RetrieveUpdateAPIView):
 
 
 class EmployerCreateView(CreateAPIView):
-    serializer_class = EmployerCreateUpdateSerializer
+    serializer_class = EmployerCreateSerializer
+
+
+class EmployerUpdateView(RetrieveUpdateAPIView):
+    queryset = Employer.objects.all() \
+        .prefetch_related('favorite_resumes')
+    serializer_class = EmployerUpdateSerializer
 
 
 class EmployeeListView(ListAPIView):
@@ -47,7 +57,13 @@ class EmployeeDetailView(RetrieveUpdateAPIView):
 
 
 class EmployeeCreateView(CreateAPIView):
-    serializer_class = EmployeeCreateUpdateSerializer
+    serializer_class = EmployeeCreateSerializer
+
+
+class EmployeeUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_vacancies')
+    serializer_class = EmployeeUpdateSerializer
 
 
 class ClientListView(ListAPIView):
@@ -61,7 +77,13 @@ class ClientDetailView(RetrieveUpdateAPIView):
 
 
 class ClientCreateView(CreateAPIView):
-    serializer_class = ClientCreateUpdateSerializer
+    serializer_class = ClientCreateSerializer
+
+
+class ClientUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_services')
+    serializer_class = ClientUpdateSerializer
 
 
 class FreelancerListView(ListAPIView):
@@ -75,7 +97,13 @@ class FreelancerDetailView(RetrieveUpdateAPIView):
 
 
 class FreelancerCreateView(CreateAPIView):
-    serializer_class = FreelancerCreateUpdateSerializer
+    serializer_class = FreelancerCreateSerializer
+
+
+class FreelancerUpdateView(RetrieveUpdateAPIView):
+    queryset = Employee.objects.all() \
+        .prefetch_related('favorite_tasks')
+    serializer_class = FreelancerUpdateSerializer
 
 
 class VacancyListView(ListAPIView):
@@ -90,11 +118,11 @@ class VacancyDetailView(RetrieveAPIView):
     serializer_class = VacancyDetailSerializer
 
 
-class CreateVacancyView(CreateAPIView):
+class VacancyCreateView(CreateAPIView):
     serializer_class = VacancyCreateUpdateSerializer
 
 
-class UpdateVacancyView(RetrieveUpdateAPIView):
+class VacancyUpdateView(RetrieveUpdateAPIView):
     serializer_class = VacancyCreateUpdateSerializer
     queryset = Vacancy.objects.all()
 
@@ -109,11 +137,11 @@ class ResumeDetailView(RetrieveAPIView):
     serializer_class = ResumeDetailSerializer
 
 
-class CreateResumeView(CreateAPIView):
+class ResumeCreateView(CreateAPIView):
     serializer_class = ResumeCreateUpdateSerializer
 
 
-class UpdateResumeView(RetrieveUpdateAPIView):
+class ResumeUpdateView(RetrieveUpdateAPIView):
     serializer_class = ResumeCreateUpdateSerializer
     queryset = Resume.objects.all()
 
@@ -128,11 +156,11 @@ class ServiceDetailView(RetrieveAPIView):
     serializer_class = ServiceDetailSerializer
 
 
-class CreateServiceView(CreateAPIView):
+class ServiceCreateView(CreateAPIView):
     serializer_class = ServiceCreateUpdateSerializer
 
 
-class UpdateServiceView(RetrieveUpdateAPIView):
+class ServiceUpdateView(RetrieveUpdateAPIView):
     serializer_class = ServiceCreateUpdateSerializer
     queryset = Service.objects.all()
 
@@ -147,11 +175,11 @@ class TaskDetailView(RetrieveAPIView):
     serializer_class = TaskDetailSerializer
 
 
-class CreateTaskView(CreateAPIView):
+class TaskCreateView(CreateAPIView):
     serializer_class = TaskCreateUpdateSerializer
 
 
-class UpdateTaskView(RetrieveUpdateAPIView):
+class TaskUpdateView(RetrieveUpdateAPIView):
     serializer_class = TaskCreateUpdateSerializer
     queryset = Task.objects.all()
 

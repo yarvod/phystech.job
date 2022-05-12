@@ -174,6 +174,7 @@ class Employee(models.Model):
 class Employer(models.Model):
     user = models.OneToOneField(User, related_name='employer', on_delete=models.CASCADE)
     company_name = models.CharField(max_length=255)
+    company_website = models.CharField(max_length=255, null=True)
 
     favorite_resumes = models.ManyToManyField('Resume', blank=True, related_name='employers_who_liked')
 

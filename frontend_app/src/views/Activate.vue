@@ -13,6 +13,7 @@ export default {
   name: "Activate",
   async mounted() {
     let data = {uid: this.$route.params.uid, token: this.$route.params.token}
+    console.log('data ', data)
     await user_service.activate(data)
   }
 }
