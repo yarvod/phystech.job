@@ -100,6 +100,9 @@
                       required
                     ></b-form-input>
                   </b-form-group>
+                  <b-alert :show="!validatedEmail" variant="danger">
+                      Почта не корректна!
+                  </b-alert>
 
                   <b-form-group
                     id="input-password"
@@ -209,6 +212,12 @@ export default {
     }
   },
   computed: {
+    validatedEmail () {
+      if (!this.reg_form.email) {
+        return true&&
+      }
+      else return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.reg_form.email));
+    },
     passwordError () {
       if (this.reg_form.confirmPassword && this.reg_form.password !== this.reg_form.confirmPassword) {
         return 'Пароли должны совпадать!'
@@ -235,7 +244,7 @@ export default {
       return this.reg_form.as_employer;
     },
     validatedRegForm () {  //TODO: create new validation
-      return !this.passwordError && this.isRole
+      return !this.passwordError && this.isRole && this.validatedEmail
     }
   },
   methods: {
@@ -285,6 +294,9 @@ export default {
         this.$refs.RegForm.reset();
       }
       
+    },
+    checkEmail () {
+      console.log(this.reg_form.email)
     }
   }
 }
