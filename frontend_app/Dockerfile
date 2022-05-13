@@ -18,5 +18,5 @@ EXPOSE 8080
 RUN apk update && apk add tzdata
 ENV TZ=Europe/Moscow
 
- CMD ["npm", "run", "build"]
-#CMD ["npm", "run", "serve"]
+# CMD ["npm", "run", "build"]
+CMD ["npm", "run", "serve"]
