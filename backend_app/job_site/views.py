@@ -103,7 +103,7 @@ class FreelancerCreateView(CreateAPIView):
 
 
 class FreelancerUpdateView(RetrieveUpdateAPIView):
-    queryset = Employee.objects.all() \
+    queryset = Freelancer.objects.all() \
         .prefetch_related('favorite_tasks')
     serializer_class = FreelancerUpdateSerializer
 
