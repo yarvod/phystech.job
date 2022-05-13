@@ -5,7 +5,7 @@ import {store} from './store'
 import moment from 'moment'
 import axios from "axios";
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin, ModalPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 
 // Make Axios play nice with Django CSRF
@@ -21,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(ModalPlugin)
 
 new Vue({
   axios,

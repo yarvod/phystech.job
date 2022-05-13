@@ -10,7 +10,9 @@ class CustomUserManager(UserManager):
 
     def create_user(self, **kwargs):
         username = kwargs.pop('username')
-        reg_data = kwargs.pop('reg_data')
+        reg_data = kwargs.get('reg_data')
+        if reg_data:
+            kwargs.pop('reg_data')
         user = super().create_user(username, **kwargs)
         if reg_data:
             if reg_data.get('as_employee'):
@@ -46,7 +48,6 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     REQUIRED_FIELDS = [
-        'username',
         'email',
         'first_name',
         'last_name',

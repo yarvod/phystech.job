@@ -191,24 +191,25 @@ class EmployerUpdateSerializer(serializers.ModelSerializer):
     vacancies = VacancyDetailSerializer(read_only=True, many=True)
 
     def update(self, instance, validated_data):
-        company_name = validated_data.pop('company_name')
-        instance.company_name = company_name
+        company_name = validated_data.get('company_name')
+        if company_name:
+            instance.company_name = company_name
 
-        f_r = validated_data.pop('favorite_resumes')
-        debug('f_r', f_r)
-        try:
-            f_r = f_r[0]
-            f_r_id = f_r.id
-            debug('f_r_id ', f_r_id)
-        except:
-            return instance
+        f_r = validated_data.get('favorite_resumes')
+        if f_r:
+            try:
+                f_r = f_r[0]
+                f_r_id = f_r.id
+                debug('f_r_id ', f_r_id)
+            except:
+                return instance
 
-        try:
-            r = instance.favorite_resumes.get(id=f_r_id)
-            debug('r ', r)
-            instance.favorite_resumes.remove(r)
-        except:
-            instance.favorite_resumes.add(f_r_id)
+            try:
+                r = instance.favorite_resumes.get(id=f_r_id)
+                debug('r ', r)
+                instance.favorite_resumes.remove(r)
+            except:
+                instance.favorite_resumes.add(f_r_id)
 
         instance.save()
         return instance
