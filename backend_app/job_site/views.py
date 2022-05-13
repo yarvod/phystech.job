@@ -83,7 +83,7 @@ class ClientCreateView(CreateAPIView):
 
 
 class ClientUpdateView(RetrieveUpdateAPIView):
-    queryset = Employee.objects.all() \
+    queryset = Client.objects.all() \
         .prefetch_related('favorite_services')
     serializer_class = ClientUpdateSerializer
 
