@@ -7,7 +7,7 @@ def fill_db():
     u1 = User.objects.filter(username='ivan').first()
     if not u1:
         u1 = User.objects.create_user(
-            username='ivan',
+            username='ivan@mail.ru',
             first_name='Иван',
             last_name='Иванов',
             email='ivan@mail.ru',
@@ -18,7 +18,7 @@ def fill_db():
     u2 = User.objects.filter(username='alex').first()
     if not u2:
         u2 = User.objects.create_user(
-            username='alex',
+            username='alex@mail.ru',
             first_name='Алексей',
             last_name='Алексеев',
             email='alex@mail.ru',
@@ -29,7 +29,7 @@ def fill_db():
     u3 = User.objects.filter(username='mike').first()
     if not u3:
         u3 = User.objects.create_user(
-            username='mike',
+            username='mike@mail.ru',
             first_name='Михаил',
             last_name='Михайлов',
             email='mike@mail.ru',
@@ -40,7 +40,7 @@ def fill_db():
     u4 = User.objects.filter(username='sasha').first()
     if not u4:
         u4 = User.objects.create_user(
-            username='sasha',
+            username='sasha@mail.ru',
             first_name='Александр',
             last_name='Александров',
             email='sasha@mail.ru',
