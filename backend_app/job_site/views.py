@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,6 +7,8 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView, \
     RetrieveUpdateDestroyAPIView, ListCreateAPIView
+
+from .filters import Resume2VacancyFilter
 from .models import (
     Employer, Vacancy,
     Employee, Resume,
@@ -215,5 +218,10 @@ class Resume2VacancyDetailUpdateView(RetrieveUpdateDestroyAPIView):
 
 
 class Resume2VacancyListCreateView(ListCreateAPIView):
-    queryset = Resume2Vacancy.objects.all()
     serializer_class = Resume2VacancyListCreateSerializer
+
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = Resume2VacancyFilter
+
+    def get_queryset(self):
+        return Resume2Vacancy.objects.all()

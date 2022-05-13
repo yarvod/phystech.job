@@ -1,5 +1,6 @@
 asgiref==3.4.1
 Django==3.2.9
+django-filter==21.1
 djangorestframework==3.11
 djangorestframework-simplejwt==4.8.0
 djoser==2.1.0

@@ -207,8 +207,8 @@ class Resume2Vacancy(models.Model):
     employee_message = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    viewed = models.BooleanField(default=False)
     accepted = models.BooleanField(null=True, blank=True)
-    declined = models.BooleanField(null=True, blank=True)
     employer_message = models.TextField(null=True, blank=True)
 
     class Meta:

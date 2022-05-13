@@ -18,7 +18,6 @@ debug = logging.getLogger(__name__).debug
 class ResumeListSerializer(serializers.ModelSerializer):
     """Список всех резюме"""
     category = serializers.CharField(source='category.title')
-    employee = serializers.CharField(source='employee.user.username')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
     class Meta:
@@ -28,7 +27,6 @@ class ResumeListSerializer(serializers.ModelSerializer):
 
 class ResumeDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
-    employee = serializers.CharField(source='employee.user.username')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
 
@@ -54,7 +52,6 @@ class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
 class VacancyListSerializer(serializers.ModelSerializer):
     """Список всех вакансий"""
     category = serializers.CharField(source='category.title')
-    employer_id = serializers.CharField(source='employer.id')
     company_name = serializers.CharField(source='employer.company_name')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
@@ -70,7 +67,6 @@ class VacancyListSerializer(serializers.ModelSerializer):
 
 class VacancyDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
-    employer_id = serializers.CharField(source='employer.id')
     company_name = serializers.CharField(source='employer.company_name')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
 
