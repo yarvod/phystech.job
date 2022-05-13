@@ -1,7 +1,5 @@
 FROM node:lts-alpine
 
-RUN npm install -g http-server
-
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
@@ -20,5 +18,5 @@ EXPOSE 8080
 RUN apk update && apk add tzdata
 ENV TZ=Europe/Moscow
 
-# CMD ["http-server", "dist"]
-CMD ["npm", "run", "serve"]
+ CMD ["npm", "run", "build"]
+#CMD ["npm", "run", "serve"]
