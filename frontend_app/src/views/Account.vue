@@ -1,21 +1,19 @@
 <template>
   <b-container>
 
-    <b-modal v-model="show_modal_add_employer" title="Стать работодателем" hide-footer static>
-      <div class="d-block text-center">
-        <h3>Hello From This Modal!</h3>
-      </div>
-
-      <b-button class="mt-3" variant="outline-success" block @click="$bvModal.hide('add-employer-modal')">Close Me</b-button>
-
-    </b-modal>
-
     <b-row>
       <b-col>
         <h2>Мой профиль</h2>
         <hr>
       </b-col>
     </b-row>
+
+    <AddEmployerModal
+        :show_modal_add_employer="show_modal_add_employer"
+        :user="user"
+        @modal_state="show_modal_add_employer = $event"
+        @user_update="user = $event"
+    />
 
     <b-row>
       <b-col>
@@ -142,11 +140,7 @@
 
                 </b-card-group>
 
-                <b-button v-b-modal.modal-1>Launch demo modal</b-button>
 
-                <b-modal id="modal-1" title="BootstrapVue">
-                  <p class="my-4">Hello from modal!</p>
-                </b-modal>
 
                 <hr>
                 <b-row>
@@ -157,21 +151,21 @@
 
 
             <b-tab title="Избранное">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
+              <b-container>
+                <b-row>
+                  <b-col>
                     <p>Здесь все, что вам понравилось</p>
-                  </div>
-                </div>
+                  </b-col>
+                </b-row>
 
-                  <div v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')">
+                  <b-card-group v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')" deck>
                     <ResumeItem
                       v-for="resume of user.employer.favorite_resumes"
                       :key="resume.id"
                       :resume="resume"
                       :edit="false"
                     />
-                  </div>
+                  </b-card-group>
 
                 <b-card-group v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')" deck>
                   <VacancyItem
@@ -200,23 +194,23 @@
                   />
                 </b-card-group>
 
-              </div>
+              </b-container>
             </b-tab>
 
 
             <b-tab title="Отклики">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
+              <b-container>
+                <b-row>
+                  <b-col>
                     <p>Здесь отображаются отклики на ваши заявки и посты</p>
-                  </div>
-                </div>
-              </div>
+                  </b-col>
+                </b-row>
+              </b-container>
             </b-tab>
 
 
             <b-tab title="Мои резюме" v-if="user.employee">
-              <b-container class="container">
+              <b-container>
                 <b-row>
                   <b-col>
                     <b-button
@@ -336,12 +330,13 @@ import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
 import ServiceItem from "@/components/ServiceItem";
 import TaskItem from "@/components/TaskItem";
+import AddEmployerModal from "@/components/AddEmployerModal";
 import employees_service from "@/api/employees_service";
 import clients_service from "@/api/clients_service";
 import employers_service from "@/api/employers_service";
 import freelancers_service from "@/api/freelancers_service";
 export default {
-  components: {VacancyItem, ResumeItem, ServiceItem, TaskItem},
+  components: {VacancyItem, ResumeItem, ServiceItem, TaskItem, AddEmployerModal},
   data() {
     return {
       user: {

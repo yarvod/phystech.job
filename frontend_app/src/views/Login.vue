@@ -256,7 +256,7 @@ export default {
     async submitLogin() {
       localStorage.removeItem("token")
       const formData = {
-        email: this.login_email,
+        username: this.login_email,
         password: this.login_password
       }
       await user_service.LogIn(formData)
