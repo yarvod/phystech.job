@@ -9,6 +9,7 @@ from .models import (
     Freelancer, Service,
     Client, Task,
     Tag, Category,
+    Resume2Vacancy, Vacancy2Resume,
 )
 
 debug = logging.getLogger(__name__).debug
@@ -402,4 +403,19 @@ class PostInteractActionSerializer(serializers.Serializer):
 
 class CheckEmailSerializer(serializers.Serializer):
     email = serializers.CharField()
+
+
+class Resume2VacancyDetailUpdateSerializer(serializers.ModelSerializer):
+    from_resume = ResumeDetailSerializer(read_only=True)
+    to_vacancy = VacancyDetailSerializer(read_only=True)
+
+    class Meta:
+        model = Resume2Vacancy
+        fields = '__all__'
+
+
+class Resume2VacancyListCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resume2Vacancy
+        fields = '__all__'
 

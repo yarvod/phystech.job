@@ -4,13 +4,15 @@ from rest_framework.views import APIView
 from users.models import User
 from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView, \
+    RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from .models import (
     Employer, Vacancy,
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
     Tag, Category,
+    Resume2Vacancy, Vacancy2Resume,
 )
 from .serializers import (
     ResumeListSerializer, ResumeDetailSerializer, ResumeCreateUpdateSerializer,
@@ -24,6 +26,7 @@ from .serializers import (
     TagListSerializer,
     PostInteractActionSerializer,
     CheckEmailSerializer,
+    Resume2VacancyListCreateSerializer, Resume2VacancyDetailUpdateSerializer,
 )
 
 
@@ -204,3 +207,13 @@ class CheckEmailView(APIView):
         serializer = CheckEmailSerializer(data=request.data)
         user = User.objects.filter(email=serializer.initial_data.get('email')).first()
         return Response({'exists': bool(user)})
+
+
+class Resume2VacancyDetailUpdateView(RetrieveUpdateDestroyAPIView):
+    queryset = Resume2Vacancy.objects.all()
+    serializer_class = Resume2VacancyDetailUpdateSerializer
+
+
+class Resume2VacancyListCreateView(ListCreateAPIView):
+    queryset = Resume2Vacancy.objects.all()
+    serializer_class = Resume2VacancyListCreateSerializer
