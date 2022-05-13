@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col">
 
-        <b-form @submit="onSubmit">
+        <b-form @submit.prevent="onSubmit">
           <b-form-group id="title-group" label="Название:" label-for="title">
             <b-form-input
               id="title"
@@ -97,7 +97,7 @@
 
           <div class="row">
             <div class="col-auto">
-               <b-button type="submit" variant="outline-primary" @click="onSubmit">Сохранить</b-button>
+               <b-button type="submit" variant="outline-primary">Сохранить</b-button>
             </div>
             <div class="col-auto">
               <b-form-checkbox
