@@ -7,6 +7,8 @@ from .models import (
     Freelancer, Service,
     Client, Task,
     Tag, Category,
+    Resume2Vacancy,
+    Vacancy2Resume,
 )
 
 
@@ -74,5 +76,10 @@ admin.site.register(Category, MPTTModelAdmin)
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Resume2Vacancy)
+class Resume2VacancyAdmin(admin.ModelAdmin):
     pass
 

@@ -296,8 +296,8 @@ export default {
           phone_number: this.reg_form.phone_number,
           reg_data: this.reg_form
         }).catch(error => {
-          if (error.data.username) {
-            this.errorRegister = 'Пользователь с такой почтой уже существует!'
+          if (error.response.data) {
+            console.log(error.response.data)
           }
         })
         this.$refs.RegForm.reset()

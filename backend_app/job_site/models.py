@@ -200,3 +200,32 @@ class Client(models.Model):
     def __str__(self):
         return f"Client {self.user.username}"
 
+
+class Resume2Vacancy(models.Model):
+    from_resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='requests_to_vacancies')
+    to_vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='requests_from_resumes')
+    employee_message = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    viewed = models.BooleanField(default=False)
+    accepted = models.BooleanField(null=True, blank=True)
+    employer_message = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Resume to Vacancy'
+        verbose_name_plural = 'Resumes to Vacancies'
+
+
+class Vacancy2Resume(models.Model):
+    from_vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='offers_to_resumes')
+    to_resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='offers_from_vacancies')
+    employer_message = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    accepted = models.BooleanField(null=True, blank=True)
+    declined = models.BooleanField(null=True, blank=True)
+    employee_message = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Vacancy to Resume'
+        verbose_name_plural = 'Vacancies to Resumes'
