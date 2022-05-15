@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal v-model="show_modal" title="Форма работодателя" hide-footer>
+    <b-modal v-model="show_modal" title="Форма работодателя" hide-backdrop content-class="shadow" centered hide-footer>
       <b-form @submit.prevent="submitForm">
 
         <b-form-group
