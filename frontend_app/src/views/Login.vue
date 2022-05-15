@@ -6,6 +6,8 @@
         <b-tabs content-class="mt-3" fill>
 
             <b-tab title="Вход">
+              <h5>Вход с паролем:</h5>
+              <br>
               <div class="text-center">
                 <b-form @submit.prevent="submitLogin">
                   <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
@@ -25,6 +27,20 @@
                   <b-button size="md" class="my-2 my-sm-0" type="submit">Войти</b-button>
                 </b-form>
               </div>
+  
+              <br>
+              
+              <b-container>
+                <b-row>
+                  <h5>Вход через социальную сеть:</h5>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <p>В разработке...</p>
+                  </b-col>
+                </b-row>
+              </b-container>
+              
             </b-tab>
 
             <b-tab title="Регистрация">
@@ -81,9 +97,38 @@
                 </b-card-group>
                 <br>
                 <b-alert variant="danger" :show="Boolean(roleError)"> {{roleError}} </b-alert>
+                
+                <b-form-group v-if="reg_form.as_employer" id="input-comp" label="Ваша компания:" label-for="input-company">
+                  <b-form-input
+                    id="input-company"
+                    v-model="reg_form.company_name"
+                    placeholder="Как называется ваша компания/команда/организация?"
+                    required
+                  ></b-form-input>
+                  <b-form-input
+                    class="mt-1"
+                    id="input-company"
+                    v-model="reg_form.company_website"
+                    placeholder="Ваш веб-сайт"
+                  ></b-form-input>
+                  <b-form-textarea
+                    class="mt-1"
+                    id="about"
+                    v-model="reg_form.about"
+                    placeholder="Расскажите о компании"
+                    required
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+  
+                <br>
+                
+                <h4>Регистрация через соц. сеть:</h4>
+                <hr>
+                <p>В разработке...</p>
 
                 <br>
-                <h4>Заполните форму:</h4>
+                <h4>Или регистрация через форму:</h4>
                 <hr>
 
                   <b-form-group
@@ -156,22 +201,6 @@
                       required
                     ></b-form-input>
                   </b-form-group>
-
-                  <b-form-group v-if="reg_form.as_employer" id="input-comp" label="Ваша компания:" label-for="input-company">
-                    <b-form-input
-                      id="input-company"
-                      v-model="reg_form.company_name"
-                      placeholder="Как называется ваша компания/команда/организация?"
-                      required
-                    ></b-form-input>
-                    <b-form-input
-                      class="mt-1"
-                      id="input-company"
-                      v-model="reg_form.company_website"
-                      placeholder="Ваш веб-сайт"
-                    ></b-form-input>
-                  </b-form-group>
-
 
                   <b-button type="submit" variant="primary" :disabled="!validatedRegForm">
                     Продолжить
