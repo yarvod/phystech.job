@@ -106,7 +106,10 @@ export default {
       this.liked = f_v.includes(this.vacancy.id)
     },
     goVacancy () {
-      if (this.$store.getters.user.employee) {
+      if (!this.$store.getters.user) {
+        this.$router.push({name: 'login'})
+      }
+      else if (this.$store.getters.user.employee) {
         this.$router.push({name: 'vacancy_details', params: {vacancyId: this.vacancy.id}})
       }
       else if (!this.$store.getters.user.employer) {
