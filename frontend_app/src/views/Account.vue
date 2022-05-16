@@ -205,6 +205,20 @@
                     <p>Здесь отображаются отклики на ваши заявки и посты</p>
                   </b-col>
                 </b-row>
+                
+                  <b-card-group deck>
+                      <ResponseItem
+                        v-for="item of responses"
+                        :key="item.id"
+                        :item="item"
+                        :user="user"
+                        :responces="responses"
+                        @user_update="user = $event"
+                        @item_update="item = $event"
+                        @responces_update="response = $event"
+                      />
+                  </b-card-group>
+                
               </b-container>
             </b-tab>
 
@@ -330,13 +344,20 @@ import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
 import ServiceItem from "@/components/ServiceItem";
 import TaskItem from "@/components/TaskItem";
+import ResponseItem from "@/components/ResponseItem";
 import AddEmployerModal from "@/components/AddEmployerModal";
 import employees_service from "@/api/employees_service";
 import clients_service from "@/api/clients_service";
 import employers_service from "@/api/employers_service";
 import freelancers_service from "@/api/freelancers_service";
 export default {
-  components: {VacancyItem, ResumeItem, ServiceItem, TaskItem, AddEmployerModal},
+  components: {VacancyItem,
+    ResumeItem,
+    ServiceItem,
+    TaskItem,
+    AddEmployerModal,
+    ResponseItem,
+  },
   data() {
     return {
       user: {
@@ -345,17 +366,20 @@ export default {
         freelancer: {},
         client: {}
       },
+      responses: [],
       like_filter: '',
       show_modal_add_employer: false
     }
   },
   async mounted() {
-    await this.load_user();
+    await this.load_user()
   },
   methods: {
     async load_user () {
       await this.$store.dispatch('getMe')
-      this.user = await this.$store.getters.user;
+      this.user = this.$store.getters.user
+      this.fill_responses()
+
     },
     add_employee () {
       employees_service.createEmployee({user: this.user.id})
@@ -381,6 +405,14 @@ export default {
           this.load_user()
       )
 
+    },
+    fill_responses () {
+      if (this.user.employee) {
+        this.responses = this.responses.concat(this.user.employee.r2v)
+      }
+      if (this.user.employer) {
+        this.responses = this.responses.concat(this.user.employer.r2v)
+      }
     }
   }
 }

@@ -1,5 +1,13 @@
 <template>
   <b-container>
+    
+    <ResponseVacancyModal
+      :show_modal_response_vacancy="show_modal_response_vacancy"
+      :vacancy_id="vacancyId"
+      :user="user"
+      @modal_state="show_modal_response_vacancy = $event"
+    />
+    
     <b-row class="h2 text-center">Подробнее о вакансии</b-row>
     <b-row>
       <b-link @click="$router.back()">Назад</b-link>
@@ -56,9 +64,9 @@
 
     <b-row>
       <b-col>
-        <b-button variant="outline-success" class="m-1">Откликнуться</b-button>
+        <b-button @click="response" variant="outline-success" class="m-1">Откликнуться</b-button>
         <b-checkbox
-          v-if="this.$store.getters.user && this.$store.getters.user.employee && !this.$store.getters.user.employer"
+          v-if="this.user && this.user.employee && !this.user.employer"
           v-model="liked"
           @change="onlike"
         >
@@ -70,19 +78,28 @@
 </template>
 
 <script>
-import vacancy_service from '@/api/vacancies_service'
+import vacancy_service from '@/api/vacancies_service';
+import ResponseVacancyModal from "@/components/ResponseVacancyModal";
+import {mapGetters} from "vuex";
 
 export default {
   name: "VacancyDetails",
   props: ['vacancyId'],
+  components: {
+    ResponseVacancyModal,
+  },
   data() {
     return {
       vacancy: {},
       liked: Boolean,
+      show_modal_response_vacancy: false,
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   async mounted () {
-    await this.$store.dispatch('getMe');
+    // await this.$store.dispatch('getMe');
     await this.getVacancy();
   },
   methods : {
@@ -94,11 +111,14 @@ export default {
       })
     },
     onlike () {
-      this.$store.dispatch('setVacancyLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
+      this.$store.dispatch('setVacancyLike', {id: this.user.employee.id, f_v_id: this.vacancy.id})
     },
     setlike () {
-      let f_v = this.$store.getters.user.favorites.vacancies;
+      let f_v = this.user.favorites.vacancies;
       this.liked = f_v.includes(this.vacancy.id)
+    },
+    response () {
+      this.show_modal_response_vacancy = !this.show_modal_response_vacancy
     }
   },
 }
