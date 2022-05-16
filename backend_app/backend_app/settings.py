@@ -210,8 +210,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:8080",
-    # "http://localhost"
+    "http://phystech-job.ru:8080",
+    "http://phystech-job.ru"
 ]
