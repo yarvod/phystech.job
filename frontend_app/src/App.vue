@@ -1,21 +1,34 @@
 <template>
 	<div id="app">
-    <Header
-      :user="$store.getters.user"
-      :show_login="$route.params.show_login"
-    />
-    <router-view/>
 
-	</div>
+    <Header
+        :user="$store.getters.user"
+        :show_login="$route.params.show_login"
+      />
+    
+    <div class="wrapper">
+      <div class="content">
+        <router-view/>
+      </div>
+  
+      <div class="footer">
+        <Footer/>
+      </div>
+    </div>
+
+  </div>
+
 </template>
 
 <script>
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import axios from "axios";
 
 export default {
   components: {
-    Header
+    Header,
+    Footer,
   },
   async beforeMount() {
     await this.$store.commit('storeToken')
@@ -41,4 +54,28 @@ export default {
 }
 a{text-decoration:none;}
 img{vertical-align:top;}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+html,
+body {
+	height: 100%;
+}
+.wrapper {
+	position: relative;
+	min-height: 100%;
+}
+.content {
+	padding-bottom: 90px;
+}
+.footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 80px;
+}
+
 </style>

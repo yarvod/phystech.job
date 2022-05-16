@@ -155,6 +155,22 @@ class TaskCreateUpdateSerializer(serializers.ModelSerializer):
         exclude = ('views',)
 
 
+class Resume2VacancyDetailUpdateSerializer(serializers.ModelSerializer):
+    from_resume = ResumeDetailSerializer(read_only=True)
+    to_vacancy = VacancyDetailSerializer(read_only=True)
+
+    class Meta:
+        model = Resume2Vacancy
+        fields = '__all__'
+
+
+class Resume2VacancyListCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Resume2Vacancy
+        fields = '__all__'
+
+
 class EmployerListSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -186,6 +202,11 @@ class EmployerUpdateSerializer(serializers.ModelSerializer):
                                                        slug_field='id', queryset=Resume.objects.all(), many=True)
     favorite_resumes = ResumeDetailSerializer(many=True, required=False)
     vacancies = VacancyDetailSerializer(read_only=True, many=True)
+    r2v = serializers.SerializerMethodField()
+
+    def get_r2v(self, instance):
+        data = Resume2Vacancy.objects.filter(to_vacancy__employer=instance)
+        return Resume2VacancyDetailUpdateSerializer(data, many=True).data
 
     def update(self, instance, validated_data):
         company_name = validated_data.get('company_name')
@@ -245,6 +266,11 @@ class EmployeeUpdateSerializer(serializers.ModelSerializer):
                                                          slug_field='id', queryset=Vacancy.objects.all(), many=True)
     favorite_vacancies = VacancyDetailSerializer(read_only=True, many=True, required=False)
     resumes = ResumeDetailSerializer(read_only=True, many=True)
+    r2v = serializers.SerializerMethodField()
+
+    def get_r2v(self, instance):
+        data = Resume2Vacancy.objects.filter(from_resume__employee=instance)
+        return Resume2VacancyDetailUpdateSerializer(data, many=True).data
 
     def update(self, instance, validated_data):
         f_v = validated_data.pop('favorite_vacancies')
@@ -399,19 +425,4 @@ class PostInteractActionSerializer(serializers.Serializer):
 
 class CheckEmailSerializer(serializers.Serializer):
     email = serializers.CharField()
-
-
-class Resume2VacancyDetailUpdateSerializer(serializers.ModelSerializer):
-    from_resume = ResumeDetailSerializer(read_only=True)
-    to_vacancy = VacancyDetailSerializer(read_only=True)
-
-    class Meta:
-        model = Resume2Vacancy
-        fields = '__all__'
-
-
-class Resume2VacancyListCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Resume2Vacancy
-        fields = '__all__'
 

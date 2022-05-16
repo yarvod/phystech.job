@@ -1,4 +1,11 @@
 <template>
+  <div>
+    
+    <AddEmployeeModal
+      :show_modal_add_employee="show_modal_add_employee"
+      @modal_state="show_modal_add_employee = $event"
+    />
+    
     <b-card
       tag="article"
       style="max-width: 20rem;"
@@ -40,12 +47,12 @@
       </b-button>
       <div v-else>
         <b-button variant="outline-primary" class="m-1"
-                @click="$router.push({name: 'vacancy_details', params: {vacancyId: vacancy.id}})">
+                @click="goVacancy">
           Подробнее
         </b-button>
 
         <b-checkbox
-          v-if="this.$store.getters.user && !this.$store.getters.user.employer"
+          v-if="this.$store.getters.user && this.$store.getters.user.employee"
           v-model="liked"
           @change="onlike"
         >
@@ -66,17 +73,28 @@
       </template>
 
     </b-card>
+  </div>
 
 </template>
 
 <script>
+import AddEmployeeModal from "@/components/AddEmployeeModal";
 
 export default {
   name: "VacancyItem",
   props: ['vacancy', 'edit'],
+  components: {
+    AddEmployeeModal
+  },
   data () {
     return {
-      liked: Boolean
+      liked: Boolean,
+      show_modal_add_employee: false,
+    }
+  },
+  mounted () {
+    if (this.$store.getters.user && !this.edit && this.$store.getters.user.employee){
+      this.setlike()
     }
   },
   methods: {
@@ -86,18 +104,16 @@ export default {
     setlike () {
       let f_v = this.$store.getters.user.favorites.vacancies;
       this.liked = f_v.includes(this.vacancy.id)
-    }
-  },
-  mounted () {
-    if (this.$store.getters.user && !this.edit && !this.$store.getters.user.employer){
-      this.setlike()
+    },
+    goVacancy () {
+      if (this.$store.getters.user.employee) {
+        this.$router.push({name: 'vacancy_details', params: {vacancyId: this.vacancy.id}})
+      }
+      else if (!this.$store.getters.user.employer) {
+        this.show_modal_add_employee = ! this.show_modal_add_employee
+      }
     }
   }
-
-
-
-
-
 }
 </script>
 

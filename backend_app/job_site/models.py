@@ -202,6 +202,7 @@ class Client(models.Model):
 
 
 class Resume2Vacancy(models.Model):
+    type = models.CharField(default='Отклик на вакансию', max_length=50)
     from_resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='requests_to_vacancies')
     to_vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='requests_from_resumes')
     employee_message = models.TextField(null=True, blank=True)
@@ -217,13 +218,14 @@ class Resume2Vacancy(models.Model):
 
 
 class Vacancy2Resume(models.Model):
+    type = models.CharField(default='Приглашение на работу', max_length=50)
     from_vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='offers_to_resumes')
     to_resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='offers_from_vacancies')
     employer_message = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    viewed = models.BooleanField(default=False)
     accepted = models.BooleanField(null=True, blank=True)
-    declined = models.BooleanField(null=True, blank=True)
     employee_message = models.TextField(null=True, blank=True)
 
     class Meta:
