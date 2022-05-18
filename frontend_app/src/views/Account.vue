@@ -376,7 +376,6 @@ export default {
   },
   methods: {
     async load_user () {
-      await this.$store.dispatch('getMe')
       this.user = this.$store.getters.user
       this.fill_responses()
 

@@ -99,7 +99,6 @@ export default {
     ...mapGetters(['user'])
   },
   async mounted () {
-    // await this.$store.dispatch('getMe');
     await this.getVacancy();
   },
   methods : {

@@ -158,8 +158,7 @@ export default {
     for (var key in raw_tags) {
       this.tags.push(raw_tags[key].title)
     }
-    await this.$store.dispatch('getMe')
-      .then(this.user = this.$store.getters.user)
+    this.user = this.$store.getters.user
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {
         let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);

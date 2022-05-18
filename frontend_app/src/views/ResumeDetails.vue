@@ -83,7 +83,6 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('getMe');
     await this.getResume();
   },
   methods: {
