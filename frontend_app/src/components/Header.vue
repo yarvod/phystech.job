@@ -22,7 +22,8 @@
                 <em type="bright">{{ user.username }}</em>
               </template>
               <b-dropdown-item @click="$router.push({name: 'account'})">Профиль</b-dropdown-item>
-              <b-dropdown-item @click="LogOut">Выйти</b-dropdown-item>
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item @click="LogOut" variant="danger">Выйти</b-dropdown-item>
             </b-nav-item-dropdown>
           </template>
 
