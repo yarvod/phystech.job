@@ -13,24 +13,24 @@
       img-src="https://placekitten.com/380/200"
       img-alt="Image"
       img-top
-      :title=vacancy.title
+      :title=offer.title
     >
 
       <template #header>
-        Вакансия
+        Предложение
       </template>
 
       <b-card-text>
         <b>Компания: </b>
-         {{vacancy.company_name}}
+         {{offer.company_name}}
         <br>
         <b>Категория: </b>
-        {{vacancy.category}}
+        {{offer.category}}
         <br>
-        <b-row v-if="vacancy.tags">
+        <b-row v-if="offer.tags">
           <b-col>
             <b>Тэги:</b>
-            <b-link class="m-1" v-for="tag in vacancy.tags" :key="tag">
+            <b-link class="m-1" v-for="tag in offer.tags" :key="tag">
               {{ tag }}
             </b-link>
           </b-col>
@@ -41,13 +41,13 @@
 
       <b-button variant="outline-primary" class="m-1"
         v-if="edit"
-        @click="$router.push({name: 'vacancy_edit', params: {vacancyId: vacancy.id}})"
+        @click="$router.push({name: 'offer_edit', params: {offerId: offer.id}})"
       >
         Редактировать
       </b-button>
       <div v-else>
         <b-button variant="outline-primary" class="m-1"
-                @click="goVacancy">
+                @click="goOffer">
           Подробнее
         </b-button>
 
@@ -55,16 +55,16 @@
           v-if="this.$store.getters.user && this.$store.getters.user.employee"
           v-model="liked"
           @change="onlike"
-        >
-          like
-        </b-checkbox>
+          :on-icon="'mdi-heart'"
+          :off-icon="'mdi-home'"
+        />
       </div>
 
       <template #footer>
         <small class="text-muted">
-          <div v-if="vacancy.is_published">
+          <div v-if="offer.is_published">
             <b>Опубликовано: </b>
-            {{vacancy.published|formatDate}}
+            {{offer.published|formatDate}}
           </div>
           <div v-else>
             <b>Не опубликовано</b>
@@ -79,12 +79,11 @@
 
 <script>
 import AddEmployeeModal from "@/components/AddEmployeeModal";
-
 export default {
-  name: "VacancyItem",
-  props: ['vacancy', 'edit'],
+  name: "OfferItem",
+  props: ['offer', 'edit'],
   components: {
-    AddEmployeeModal
+    AddEmployeeModal,
   },
   data () {
     return {
@@ -99,18 +98,18 @@ export default {
   },
   methods: {
     onlike () {
-      this.$store.dispatch('setVacancyLike', {id: this.$store.getters.user.employee.id, f_v_id: this.vacancy.id})
+      this.$store.dispatch('setOfferLike', {id: this.$store.getters.user.employee.id, f_o_id: this.offer.id})
     },
     setlike () {
-      let f_v = this.$store.getters.user.favorites.vacancies;
-      this.liked = f_v.includes(this.vacancy.id)
+      let f_o = this.$store.getters.user.favorites.offers;
+      this.liked = f_o.includes(this.offer.id)
     },
-    goVacancy () {
+    goOffer () {
       if (!this.$store.getters.user) {
         this.$router.push({name: 'login'})
       }
       else if (this.$store.getters.user.employee) {
-        this.$router.push({name: 'vacancy_details', params: {vacancyId: this.vacancy.id}})
+        this.$router.push({name: 'offer_details', params: {offerId: this.offer.id}})
       }
       else if (!this.$store.getters.user.employer) {
         this.show_modal_add_employee = ! this.show_modal_add_employee

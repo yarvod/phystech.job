@@ -157,24 +157,11 @@
                     <p>Здесь все, что вам понравилось</p>
                   </b-col>
                 </b-row>
-
-                  <b-card-group v-if="user.employer && (like_filter === 'Vacancies' || like_filter === '')" deck>
-                    <ResumeItem
-                      v-for="resume of user.employer.favorite_resumes"
-                      :key="resume.id"
-                      :resume="resume"
-                      :edit="false"
-                    />
-                  </b-card-group>
-
-                <b-card-group v-if="user.employee && (like_filter === 'Resumes' || like_filter === '')" deck>
-                  <VacancyItem
-                  v-for="vacancy of user.employee.favorite_vacancies"
-                  :key="vacancy.id"
-                  :vacancy="vacancy"
-                  :edit="false"
-                  />
-                </b-card-group>
+                
+                <PostsWrapper
+                  v-if="favorite_items.some(el => el !== undefined)"
+                  :items="favorite_items"
+                />
 
 <!--                <b-card-group v-if="user.freelancer && (like_filter === 'Tasks' || like_filter === '')" deck>-->
 <!--                  <TaskItem-->
@@ -344,6 +331,7 @@ import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
 // import ServiceItem from "@/components/ServiceItem";
 // import TaskItem from "@/components/TaskItem";
+import PostsWrapper from "@/components/PostsWrapper";
 import ResponseItem from "@/components/ResponseItem";
 import AddEmployerModal from "@/components/AddEmployerModal";
 import employees_service from "@/api/employees_service";
@@ -357,6 +345,7 @@ export default {
     // TaskItem,
     AddEmployerModal,
     ResponseItem,
+    PostsWrapper,
   },
   data() {
     return {
@@ -368,11 +357,26 @@ export default {
       },
       responses: [],
       like_filter: '',
-      show_modal_add_employer: false
+      show_modal_add_employer: false,
+      loading_favorites: false,
     }
   },
   async mounted() {
+    this.loading_favorites = true;
     await this.load_user()
+  },
+  computed: {
+    favorite_items () {
+      let res = [];
+      if (this.user.employer && (this.like_filter === 'Resumes' || this.like_filter === '')) {
+        res = res.concat(this.user.employer.favorite_resumes)
+      }
+      if (this.user.employee && (this.like_filter === 'Vacancies' || this.like_filter === '')) {
+        res = res.concat(this.user.employee.favorite_vacancies)
+        res = res.concat(this.user.employee.favorite_offers)
+      }
+      return res
+    }
   },
   methods: {
     async load_user () {

@@ -8,6 +8,7 @@ from .models import (
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
+    Admin, Offer,
     Tag, Category,
     Resume2Vacancy, Vacancy2Resume,
 )
@@ -82,6 +83,40 @@ class VacancyCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vacancy
+        exclude = ('views',)
+
+
+class OfferListSerializer(serializers.ModelSerializer):
+    """List of all offers"""
+    category = serializers.CharField(source='category.title')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    likes = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.employees_who_liked.distinct().count()
+
+    class Meta:
+        model = Offer
+        fields = '__all__'
+
+
+class OfferDetailSerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source='category.title')
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+
+    class Meta:
+        model = Offer
+        fields = '__all__'
+
+
+class OfferCreateUpdateSerializer(serializers.ModelSerializer):
+    admin = serializers.SlugRelatedField(slug_field='id', queryset=Admin.objects.all())
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
+    tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+
+    class Meta:
+        model = Offer
         exclude = ('views',)
 
 
@@ -262,9 +297,12 @@ class EmployeeCreateSerializer(serializers.ModelSerializer):
 
 class EmployeeUpdateSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', required=False)
-    favorite_vacancies_id = serializers.SlugRelatedField(source='favorite_vacancies',
+    favorite_vacancies_id = serializers.SlugRelatedField(source='favorite_vacancies', required=False,
                                                          slug_field='id', queryset=Vacancy.objects.all(), many=True)
     favorite_vacancies = VacancyDetailSerializer(read_only=True, many=True, required=False)
+    favorite_offers_id = serializers.SlugRelatedField(source='favorite_offers', required=False,
+                                                         slug_field='id', queryset=Offer.objects.all(), many=True)
+    favorite_offers = OfferDetailSerializer(read_only=True, many=True, required=False)
     resumes = ResumeDetailSerializer(read_only=True, many=True)
     r2v = serializers.SerializerMethodField()
 
@@ -273,21 +311,33 @@ class EmployeeUpdateSerializer(serializers.ModelSerializer):
         return Resume2VacancyDetailUpdateSerializer(data, many=True).data
 
     def update(self, instance, validated_data):
-        f_v = validated_data.pop('favorite_vacancies')
-        debug('f_v', f_v)
-        try:
-            f_v = f_v[0]
-            f_v_id = f_v.id
-            debug('f_v_id ', f_v_id)
-        except:
-            return instance
+        f_v = validated_data.get('favorite_vacancies')
+        f_o = validated_data.get('favorite_offers')
+        if f_v:
+            try:
+                f_v = f_v[0]
+                f_v_id = f_v.id
+            except:
+                return instance
 
-        try:
-            v = instance.favorite_vacancies.get(id=f_v_id)
-            debug('v ', v)
-            instance.favorite_vacancies.remove(v)
-        except:
-            instance.favorite_vacancies.add(f_v_id)
+            try:
+                v = instance.favorite_vacancies.get(id=f_v_id)
+                instance.favorite_vacancies.remove(v)
+            except:
+                instance.favorite_vacancies.add(f_v_id)
+
+        if f_o:
+            try:
+                f_o = f_o[0]
+                f_o_id = f_o.id
+            except:
+                return instance
+
+            try:
+                o = instance.favorite_offers.get(id=f_o_id)
+                instance.favorite_offers.remove(o)
+            except:
+                instance.favorite_offers.add(f_o_id)
 
         instance.save()
         return instance

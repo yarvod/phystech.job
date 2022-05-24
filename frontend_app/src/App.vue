@@ -47,6 +47,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = ""
     }
     if (this.$store.getters.isAuthenticated) {
+      this.$store.commit('setLoadingUser')
       await this.$store.dispatch('getMe')
     }
   },

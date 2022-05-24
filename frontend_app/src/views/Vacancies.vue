@@ -7,8 +7,8 @@
       <b-link @click="$router.back()">Назад</b-link>
     </div>
     <hr>
-    <VacancyList
-      :vacancies="vacancies"
+    <PostsWrapper
+      :items="items"
     />
 
   </div>
@@ -16,22 +16,25 @@
 
 
 <script>
-import VacancyList from "@/components/VacancyList";
+import PostsWrapper from "@/components/PostsWrapper";
 import { mapGetters } from "vuex";
 
 export default {
   name: 'Vacancies',
-  computed: mapGetters(['vacancies']),
-  async mounted () {
-    await this.$store.dispatch('getVacancies')
-  },
   components: {
-		VacancyList,
+		PostsWrapper,
   },
   data () {
     return {
-
+      items: []
     }
-  }
+  },
+  computed: mapGetters(['vacancies', 'offers']),
+  async mounted () {
+    await this.$store.dispatch('getVacancies');
+    await this.$store.dispatch('getOffers');
+    this.items = this.vacancies.concat(this.offers)
+  },
+
 }
 </script>

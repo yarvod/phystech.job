@@ -6,6 +6,7 @@ from .models import (
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
+    Admin, Offer,
     Tag, Category,
     Resume2Vacancy,
     Vacancy2Resume,
@@ -15,6 +16,11 @@ from .models import (
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'employer', 'created')
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'admin', 'created')
 
 
 @admin.register(Resume)
@@ -49,6 +55,11 @@ class BaseUserAdmin(admin.ModelAdmin):
 
     class Meta:
         abstract = True
+
+
+@admin.register(Admin)
+class AdminAdmin(BaseUserAdmin):
+    pass
 
 
 @admin.register(Employee)

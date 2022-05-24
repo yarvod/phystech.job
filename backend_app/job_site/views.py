@@ -14,6 +14,7 @@ from .models import (
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
+    Admin, Offer,
     Tag, Category,
     Resume2Vacancy, Vacancy2Resume,
 )
@@ -22,6 +23,7 @@ from .serializers import (
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateUpdateSerializer,
     ServiceListSerializer, ServiceDetailSerializer, ServiceCreateUpdateSerializer,
     TaskListSerializer, TaskDetailSerializer, TaskCreateUpdateSerializer,
+    OfferListSerializer, OfferDetailSerializer, OfferCreateUpdateSerializer,
     EmployerListSerializer, EmployerDetailSerializer, EmployerUpdateSerializer, EmployerCreateSerializer,
     EmployeeListSerializer, EmployeeDetailSerializer, EmployeeUpdateSerializer, EmployeeCreateSerializer,
     ClientListSerializer, ClientDetailSerializer, ClientUpdateSerializer, ClientCreateSerializer,
@@ -133,6 +135,27 @@ class VacancyCreateView(CreateAPIView):
 class VacancyUpdateView(RetrieveUpdateAPIView):
     serializer_class = VacancyCreateUpdateSerializer
     queryset = Vacancy.objects.all()
+
+
+class OfferListView(ListAPIView):
+
+    queryset = Offer.objects.filter(is_published=True)
+    serializer_class = OfferListSerializer
+
+
+class OfferDetailView(RetrieveAPIView):
+
+    queryset = Offer.objects.filter(is_published=True)
+    serializer_class = OfferDetailSerializer
+
+
+class OfferCreateView(CreateAPIView):
+    serializer_class = OfferCreateUpdateSerializer
+
+
+class OfferUpdateView(RetrieveUpdateAPIView):
+    serializer_class = OfferCreateUpdateSerializer
+    queryset = Offer.objects.all()
 
 
 class ResumeListView(ListAPIView):
