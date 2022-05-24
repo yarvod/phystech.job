@@ -96,47 +96,47 @@
                       </b-card-text>
                   </b-card>
 
-                  <b-card>
-                    <template #header>
-                      <b v-if="user.client">
-                        Вы клиент!
-                      </b>
-                      <b v-else>
-                        Вы пока не клиент
-                      </b>
-                    </template>
-                    <b-card-text>
-                      <div v-if="!user.client">
-                        Вы пока не можете размещать задачи для исполнения и пользоваться услугами фрилансеров
-                        <br>
-                        <b-button variant="outline-success" @click="add_client"> Стать клиентом! </b-button>
-                      </div>
-                      <div v-else>
-                        Вы можете размещать задачи для исполнения и пользоваться услугами фрилансеров!
-                      </div>
-                    </b-card-text>
-                  </b-card>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b v-if="user.client">-->
+<!--                        Вы клиент!-->
+<!--                      </b>-->
+<!--                      <b v-else>-->
+<!--                        Вы пока не клиент-->
+<!--                      </b>-->
+<!--                    </template>-->
+<!--                    <b-card-text>-->
+<!--                      <div v-if="!user.client">-->
+<!--                        Вы пока не можете размещать задачи для исполнения и пользоваться услугами фрилансеров-->
+<!--                        <br>-->
+<!--                        <b-button variant="outline-success" @click="add_client"> Стать клиентом! </b-button>-->
+<!--                      </div>-->
+<!--                      <div v-else>-->
+<!--                        Вы можете размещать задачи для исполнения и пользоваться услугами фрилансеров!-->
+<!--                      </div>-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
 
-                  <b-card>
-                    <template #header>
-                      <b v-if="user.freelancer">
-                        Вы фрилансер!
-                      </b>
-                      <b v-else>
-                        Вы пока не фрилансер
-                      </b>
-                    </template>
-                    <b-card-text>
-                      <div v-if="!user.freelancer">
-                        Вы пока не можете размещать свои услуги и выполнять задачи клиентов
-                        <br>
-                        <b-button variant="outline-success" @click="add_freelancer"> Стать фрилансером! </b-button>
-                      </div>
-                      <div v-else>
-                        Вы можете размещать свои услуги для клиентов и искать задачи для исполнения!
-                      </div>
-                    </b-card-text>
-                  </b-card>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b v-if="user.freelancer">-->
+<!--                        Вы фрилансер!-->
+<!--                      </b>-->
+<!--                      <b v-else>-->
+<!--                        Вы пока не фрилансер-->
+<!--                      </b>-->
+<!--                    </template>-->
+<!--                    <b-card-text>-->
+<!--                      <div v-if="!user.freelancer">-->
+<!--                        Вы пока не можете размещать свои услуги и выполнять задачи клиентов-->
+<!--                        <br>-->
+<!--                        <b-button variant="outline-success" @click="add_freelancer"> Стать фрилансером! </b-button>-->
+<!--                      </div>-->
+<!--                      <div v-else>-->
+<!--                        Вы можете размещать свои услуги для клиентов и искать задачи для исполнения!-->
+<!--                      </div>-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
 
                 </b-card-group>
 
@@ -176,23 +176,23 @@
                   />
                 </b-card-group>
 
-                <b-card-group v-if="user.freelancer && (like_filter === 'Tasks' || like_filter === '')" deck>
-                  <TaskItem
-                    v-for="task of user.freelancer.favorite_tasks"
-                    :key="task.id"
-                    :task="task"
-                    :edit="false"
-                  />
-                </b-card-group>
+<!--                <b-card-group v-if="user.freelancer && (like_filter === 'Tasks' || like_filter === '')" deck>-->
+<!--                  <TaskItem-->
+<!--                    v-for="task of user.freelancer.favorite_tasks"-->
+<!--                    :key="task.id"-->
+<!--                    :task="task"-->
+<!--                    :edit="false"-->
+<!--                  />-->
+<!--                </b-card-group>-->
 
-                <b-card-group v-if="user.client && (like_filter === 'Services' || like_filter === '')" deck>
-                  <ServiceItem
-                    v-for="service of user.client.favorite_services"
-                    :key="service.id"
-                    :service="service"
-                    :edit="false"
-                  />
-                </b-card-group>
+<!--                <b-card-group v-if="user.client && (like_filter === 'Services' || like_filter === '')" deck>-->
+<!--                  <ServiceItem-->
+<!--                    v-for="service of user.client.favorite_services"-->
+<!--                    :key="service.id"-->
+<!--                    :service="service"-->
+<!--                    :edit="false"-->
+<!--                  />-->
+<!--                </b-card-group>-->
 
               </b-container>
             </b-tab>
@@ -277,58 +277,58 @@
             </b-tab>
 
 
-            <b-tab title="Мои услуги" v-if="user.freelancer">
-              <b-container>
-                <b-row>
-                  <b-col>
-                    <b-button
-                      variant="outline-success"
-                      @click="$router.push({name:'service_add'})"
-                    >
-                      Добавить услугу
-                    </b-button>
-                  </b-col>
-                </b-row>
+<!--            <b-tab title="Мои услуги" v-if="user.freelancer">-->
+<!--              <b-container>-->
+<!--                <b-row>-->
+<!--                  <b-col>-->
+<!--                    <b-button-->
+<!--                      variant="outline-success"-->
+<!--                      @click="$router.push({name:'service_add'})"-->
+<!--                    >-->
+<!--                      Добавить услугу-->
+<!--                    </b-button>-->
+<!--                  </b-col>-->
+<!--                </b-row>-->
 
-                <br>
+<!--                <br>-->
 
-                <b-card-group deck>
-                  <ServiceItem
-                    v-for="service of user.freelancer.services"
-                    :key="service.id"
-                    :service="service"
-                    :edit="true"
-                  />
-                </b-card-group>
-              </b-container>
-            </b-tab>
+<!--                <b-card-group deck>-->
+<!--                  <ServiceItem-->
+<!--                    v-for="service of user.freelancer.services"-->
+<!--                    :key="service.id"-->
+<!--                    :service="service"-->
+<!--                    :edit="true"-->
+<!--                  />-->
+<!--                </b-card-group>-->
+<!--              </b-container>-->
+<!--            </b-tab>-->
 
 
-            <b-tab title="Мои задачи" v-if="user.client">
-              <b-container>
-                <b-row>
-                  <b-col>
-                    <b-button
-                      variant="outline-success"
-                      @click="$router.push({name:'task_add'})"
-                    >
-                      Добавить задачу
-                    </b-button>
-                  </b-col>
-                </b-row>
+<!--            <b-tab title="Мои задачи" v-if="user.client">-->
+<!--              <b-container>-->
+<!--                <b-row>-->
+<!--                  <b-col>-->
+<!--                    <b-button-->
+<!--                      variant="outline-success"-->
+<!--                      @click="$router.push({name:'task_add'})"-->
+<!--                    >-->
+<!--                      Добавить задачу-->
+<!--                    </b-button>-->
+<!--                  </b-col>-->
+<!--                </b-row>-->
 
-                <br>
+<!--                <br>-->
 
-                <b-card-group deck>
-                  <TaskItem
-                    v-for="task of user.client.tasks"
-                    :key="task.id"
-                    :task="task"
-                    :edit="true"
-                  />
-                </b-card-group>
-              </b-container>
-            </b-tab>
+<!--                <b-card-group deck>-->
+<!--                  <TaskItem-->
+<!--                    v-for="task of user.client.tasks"-->
+<!--                    :key="task.id"-->
+<!--                    :task="task"-->
+<!--                    :edit="true"-->
+<!--                  />-->
+<!--                </b-card-group>-->
+<!--              </b-container>-->
+<!--            </b-tab>-->
 
           </b-tabs>
       </b-col>
@@ -342,8 +342,8 @@
 
 import ResumeItem from "@/components/ResumeItem";
 import VacancyItem from "@/components/VacancyItem";
-import ServiceItem from "@/components/ServiceItem";
-import TaskItem from "@/components/TaskItem";
+// import ServiceItem from "@/components/ServiceItem";
+// import TaskItem from "@/components/TaskItem";
 import ResponseItem from "@/components/ResponseItem";
 import AddEmployerModal from "@/components/AddEmployerModal";
 import employees_service from "@/api/employees_service";
@@ -353,8 +353,8 @@ import freelancers_service from "@/api/freelancers_service";
 export default {
   components: {VacancyItem,
     ResumeItem,
-    ServiceItem,
-    TaskItem,
+    // ServiceItem,
+    // TaskItem,
     AddEmployerModal,
     ResponseItem,
   },

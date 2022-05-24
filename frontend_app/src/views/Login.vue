@@ -76,24 +76,24 @@
                     </b-card-text>
                   </b-card>
 
-                  <b-card>
-                    <template #header>
-                      <b-form-checkbox v-model="reg_form.as_freelancer">Я хочу предоставить свою услугу</b-form-checkbox>
-                    </template>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b-form-checkbox v-model="reg_form.as_freelancer">Я хочу предоставить свою услугу</b-form-checkbox>-->
+<!--                    </template>-->
 
-                    <b-card-text>
-                      Я специалист и могу предоставить свою услугу
-                    </b-card-text>
-                  </b-card>
+<!--                    <b-card-text>-->
+<!--                      Я специалист и могу предоставить свою услугу-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
 
-                  <b-card>
-                    <template #header>
-                      <b-form-checkbox v-model="reg_form.as_client">Я хочу найти исполнителя</b-form-checkbox>
-                    </template>
-                    <b-card-text>
-                      У меня есть задача, для которой требуется услуга специалиста
-                    </b-card-text>
-                  </b-card>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b-form-checkbox v-model="reg_form.as_client">Я хочу найти исполнителя</b-form-checkbox>-->
+<!--                    </template>-->
+<!--                    <b-card-text>-->
+<!--                      У меня есть задача, для которой требуется услуга специалиста-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
                 </b-card-group>
                 <br>
                 <b-alert variant="danger" :show="Boolean(roleError)"> {{roleError}} </b-alert>
@@ -261,7 +261,7 @@ export default {
       }
     },
     isRole () {
-      return (this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)
+      return (this.reg_form.as_employee || this.reg_form.as_employer)
     },
     roleError () {
       if (this.try_submit && !this.isRole) {
