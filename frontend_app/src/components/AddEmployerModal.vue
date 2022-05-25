@@ -48,12 +48,12 @@
 
 <script>
 import employers_service from "@/api/employers_service";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AddEmployerModal",
   props: [
     'show_modal_add_employer',
-    'user'
   ],
   data () {
     return {
@@ -65,6 +65,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['user']),
     show_modal: {
       get: function() {
         return this.show_modal_add_employer
@@ -84,9 +85,7 @@ export default {
         about: this.form.about
       }).then(
           await this.$store.dispatch('getMe')
-        ).then(
-          this.$emit('user_update', this.$store.getters.user)
-      )
+        )
       this.show_modal = false
     }
   }

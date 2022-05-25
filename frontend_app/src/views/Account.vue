@@ -10,9 +10,7 @@
 
     <AddEmployerModal
         :show_modal_add_employer="show_modal_add_employer"
-        :user="user"
         @modal_state="show_modal_add_employer = $event"
-        @user_update="user = $event"
     />
 
     <b-row>
@@ -338,6 +336,7 @@ import employees_service from "@/api/employees_service";
 import clients_service from "@/api/clients_service";
 import employers_service from "@/api/employers_service";
 import freelancers_service from "@/api/freelancers_service";
+import { mapGetters } from "vuex";
 export default {
   components: {VacancyItem,
     ResumeItem,
@@ -349,12 +348,12 @@ export default {
   },
   data() {
     return {
-      user: {
-        employee: {},
-        employer: {},
-        freelancer: {},
-        client: {}
-      },
+      // user: {
+      //   employee: {},
+      //   employer: {},
+      //   freelancer: {},
+      //   client: {}
+      // },
       responses: [],
       like_filter: '',
       show_modal_add_employer: false,
@@ -363,9 +362,10 @@ export default {
   },
   async mounted() {
     this.loading_favorites = true;
-    await this.load_user()
+    this.fill_responses()
   },
   computed: {
+    ...mapGetters(['user']),
     favorite_items () {
       let res = [];
       if (this.user.employer && (this.like_filter === 'Resumes' || this.like_filter === '')) {
@@ -379,34 +379,17 @@ export default {
     }
   },
   methods: {
-    async load_user () {
-      this.user = this.$store.getters.user
-      this.fill_responses()
-
-    },
     add_employee () {
       employees_service.createEmployee({user: this.user.id})
-        .then(
-          this.load_user()
-      )
     },
     add_client () {
       clients_service.createClient({user: this.user.id})
-        .then(
-          this.load_user()
-      )
     },
     add_employer () {
       employers_service.createEmployer({user: this.user.id})
-        .then(
-            this.load_user()
-        )
     },
     add_freelancer () {
       freelancers_service.createFreelancer({user: this.user.id})
-        .then(
-          this.load_user()
-      )
 
     },
     fill_responses () {

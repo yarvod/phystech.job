@@ -147,6 +147,15 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/offers/:offerId/details',
+      component: () => import('@/views/OfferDetails.vue'),
+      props: true,
+      name: 'offer_details',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/account',
       component: () => import('@/views/Account.vue'),
       name: 'account',

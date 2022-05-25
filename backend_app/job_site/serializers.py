@@ -16,6 +16,13 @@ from .models import (
 debug = logging.getLogger(__name__).debug
 
 
+class TagListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = ('title',)
+
+
 class ResumeListSerializer(serializers.ModelSerializer):
     """Список всех резюме"""
     category = serializers.CharField(source='category.title')
@@ -455,13 +462,6 @@ class ClientUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-
-
-class TagListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Tag
-        fields = ('title',)
 
 
 class PostInteractActionSerializer(serializers.Serializer):

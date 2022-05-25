@@ -73,8 +73,9 @@
           <TagMultiSelect
               :options="tags"
               :value="resume.tags"
-              v-model="resume.tags"
+              @set_tags="resume.tags = $event"
           />
+          <br>
 
           <b-form-group>
             <b-form-checkbox
@@ -128,6 +129,7 @@ import tags_service from "@/api/tags_service";
 import resumes_service from "@/api/resumes_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
+import { mapGetters } from "vuex";
 export default {
   name: "Resume",
   props: [
@@ -148,17 +150,14 @@ export default {
         tags: []
       },
       tags: [],
-      user: {}
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   async mounted () {
-    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {raw_tags = response.data})
-    for (var key in raw_tags) {
-      this.tags.push(raw_tags[key].title)
-    }
-    this.user = this.$store.getters.user
+      .then(response => {this.tags = response.data})
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {
         let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
@@ -171,7 +170,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault()
       if (this.isResumeEdit) {
         this.resume.category = 'it'
@@ -183,11 +182,13 @@ export default {
         this.$store.dispatch('createResume', {resume: this.resume})
         this.onReset()
       }
-      router.push({name: 'account'})  // FIXME: redirect to back
+      await this.$store.dispatch('getMe')
+        .then(
+          router.push({name: 'account'})  // FIXME: redirect to back
+        )
+      
     },
     onReset() {
-      event.preventDefault()
-      // Reset our form values
       this.resume = {}
     },
     onDelete() {

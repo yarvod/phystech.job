@@ -113,7 +113,7 @@
           <TagMultiSelect
               :options="tags"
               :value="vacancy.tags"
-              v-model="vacancy.tags"
+              @set_tags="vacancy.tags = $event"
           />
 
           <b-form-group>
@@ -160,6 +160,7 @@ import tags_service from "@/api/tags_service";
 import vacancies_service from "@/api/vacancies_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
+import { mapGetters } from "vuex";
 export default {
   name: "Vacancy",
   props: [
@@ -184,18 +185,15 @@ export default {
         is_published: false,
         tags: []
       },
-      tags: [],
-      user: {}
+      tags: []
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   async mounted () {
-    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {raw_tags = response.data})
-    for (var key in raw_tags) {
-      this.tags.push(raw_tags[key].title)
-    }
-    this.user = this.$store.getters.user
+      .then(response => {this.tags = response.data})
     if (this.$route.params.vacancyId) {
       if (this.isVacancyEdit) {
         let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
@@ -208,7 +206,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault()
       if (this.isVacancyEdit) {
         this.vacancy.category = 'it'
@@ -220,10 +218,12 @@ export default {
         this.$store.dispatch('createVacancy', {vacancy: this.vacancy})
         this.onReset()
       }
-      router.push({name: 'account'})
+      await this.$store.dispatch('getMe')
+        .then(
+          router.push({name: 'account'})  // FIXME: redirect to back
+        )
     },
     onReset() {
-      event.preventDefault()
       // Reset our form values
       this.vacancy = {}
     },
