@@ -197,6 +197,14 @@ router.beforeEach((to, from, next) => {
         next()
       }
     }
+    else if (to.meta.requiresEmployer) {
+      if (!store.getters.user.employer) {
+        router.replace({name: from.name, query: {show_modal_add_employer: true}})
+      }
+      else {
+        next()
+      }
+    }
     else {
       next()
     }

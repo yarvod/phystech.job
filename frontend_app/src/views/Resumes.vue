@@ -1,5 +1,11 @@
 <template>
   <b-container>
+
+    <AddEmployerModal
+      :show_modal_add_employer="show_modal_add_employer"
+      @modal_state="show_modal_add_employer = $event"
+    />
+
     <b-row>
       <h2 class="text-center">Список резюме</h2>
     </b-row>
@@ -28,20 +34,30 @@
 
 
 <script>
-import ResumeItem from '@/components/ResumeItem'
+import ResumeItem from '@/components/ResumeItem';
+import AddEmployerModal from '@/components/AddEmployerModal.vue';
 import { mapGetters } from "vuex";
 export default {
   name: 'Resumes',
   computed: {
     ...mapGetters([
       'resumes'
-    ])
+    ]),
+    show_modal_add_employer: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employer)
+      },
+      set (v) {
+        this.$router.replace({name: 'resumes'})
+      }
+    }
   },
   async mounted() {
     await this.$store.dispatch('getResumes')
   },
   components: {
-		ResumeItem
+		ResumeItem,
+    AddEmployerModal
   },
   data () {
     return {

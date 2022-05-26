@@ -6,6 +6,10 @@
       :show_modal_add_employee="show_modal_add_employee"
       @modal_state="show_modal_add_employee = $event"
     />
+    <AddEmployerModal
+      :show_modal_add_employer="show_modal_add_employer"
+      @modal_state="show_modal_add_employer = $event"
+    />
 
       <b-card-group deck>
         <b-card
@@ -71,10 +75,12 @@
 
 
 <script>
-import AddEmployeeModal from '@/components/AddEmployeeModal.vue'
+import AddEmployeeModal from '@/components/AddEmployeeModal.vue';
+import AddEmployerModal from '@/components/AddEmployerModal.vue';
 export default {
   components: {
-    AddEmployeeModal
+    AddEmployeeModal,
+    AddEmployerModal
   },
   computed: {
     show_modal_add_employee: {
@@ -84,8 +90,15 @@ export default {
       set (v) {
         this.$router.replace({name: 'home'})
       }
+    },
+    show_modal_add_employer: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employer)
+      },
+      set (v) {
+        this.$router.replace({name: 'home'})
+      }
     }
-   
   }
 }
 </script>

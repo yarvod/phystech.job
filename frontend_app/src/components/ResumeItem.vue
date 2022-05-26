@@ -32,7 +32,8 @@
       </b-button>
       <div v-else>
         <b-button variant="outline-primary" class="m-1"
-                @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})">
+          @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})"
+        >
           Подробнее
         </b-button>
 

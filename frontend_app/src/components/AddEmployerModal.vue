@@ -1,46 +1,54 @@
 <template>
   <div>
     <b-modal v-model="show_modal" title="Форма работодателя" hide-backdrop content-class="shadow" centered hide-footer>
-      <b-form @submit.prevent="submitForm">
+      <div v-if="!user.employee">
+        <b-form @submit.prevent="submitForm">
 
-        <b-form-group
-          id="input-company-name"
-          label="Название организации:"
-          label-for="input-company-name"
-        >
-          <b-form-input
+          <b-form-group
             id="input-company-name"
-            v-model="form.company_name"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group
-          id="input-company-website"
-          label="Сайт организации:"
-          label-for="input-company-website"
-        >
-          <b-form-input
-            id="input-company-website"
-            v-model="form.company_website"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="text-about" label="О компании:" label-for="about">
-          <b-form-textarea
-            id="about"
-            v-model="form.about"
-            required
+            label="Название организации:"
+            label-for="input-company-name"
           >
-          </b-form-textarea>
-        </b-form-group>
+            <b-form-input
+              id="input-company-name"
+              v-model="form.company_name"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-        <br>
+          <b-form-group
+            id="input-company-website"
+            label="Сайт организации:"
+            label-for="input-company-website"
+          >
+            <b-form-input
+              id="input-company-website"
+              v-model="form.company_website"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-        <b-button variant="outline-success" type="submit">Стать работодателем!</b-button>
+          <b-form-group id="text-about" label="О компании:" label-for="about">
+            <b-form-textarea
+              id="about"
+              v-model="form.about"
+              required
+            >
+            </b-form-textarea>
+          </b-form-group>
 
-      </b-form>
+          <br>
+
+          <b-button variant="outline-success" type="submit">Стать работодателем!</b-button>
+
+        </b-form>
+      </div>
+
+      <div v-else>
+        <p>Вы соискатель и не можете добавлять вакансии и смотреть чужие резюме :(</p>
+        <b-button @click="show_modal = false" variant="outline-danger">Закрыть</b-button>
+      </div>
+      
 
     </b-modal>
   </div>
