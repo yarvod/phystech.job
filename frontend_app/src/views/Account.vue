@@ -45,7 +45,7 @@
                 <b-row>
                   <h4>Возможности</h4>
                 </b-row>
-
+                <br>
                 <b-card-group deck>
 
                   <b-card v-if="!user.employer">
