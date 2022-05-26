@@ -5,6 +5,9 @@ import {store} from './store'
 import moment from 'moment'
 import axios from "axios";
 
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
 import { BootstrapVue, IconsPlugin, ModalPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 
@@ -19,6 +22,7 @@ if (token) {
 
 Vue.config.productionTip = false
 
+Vue.use(Vuetify)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ModalPlugin)
