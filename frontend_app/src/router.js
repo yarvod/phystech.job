@@ -13,7 +13,7 @@ const router = new VueRouter({
       props: true
     },
     {
-      path: '/login',
+      path: '/login/:tabIndex',
       component: () => import('@/views/Login.vue'),
       name: 'login',
       props: true
@@ -178,7 +178,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!localStorage.getItem('token')) {
-      router.push({name: 'login'})
+      router.push({name: 'login', params: {tabIndex: 0}})
      } else {
       next()
     }
