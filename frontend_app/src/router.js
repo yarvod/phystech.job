@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {store} from './store'
+import {store}from '@/store'
 
 
 Vue.use(VueRouter)
@@ -183,31 +183,45 @@ const router = new VueRouter({
   ],
 })
 
+function checkLoading(resolve) {
+  if(!store.getters.user) {
+    window.setTimeout(() => checkLoading(resolve), 50);
+  } else {
+    resolve('loaded')
+  }
+}
+
+var waiting = new Promise((resolve, reject) => {
+  checkLoading(resolve)
+})
+
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!localStorage.getItem('token')) {
       router.push({name: 'login', params: {tabIndex: 0}})
-     }
-    else if (to.meta.requiresEmployee) {
-      if (!store.getters.user.employee) {
-        router.replace({name: from.name, query: {show_modal_add_employee: true}})
+    }
+    waiting.then(() => {  // FIXME: fix this bad logic!!!
+      if (to.meta.requiresEmployee) {
+        if (!store.getters.user.employee) {
+          router.replace({name: from.name, query: {show_modal_add_employee: true}})
+        }
+        else {
+          next()
+        }
+      }
+      else if (to.meta.requiresEmployer) {
+        if (!store.getters.user.employer) {
+          router.replace({name: from.name, query: {show_modal_add_employer: true}})
+        }
+        else {
+          next()
+        }
       }
       else {
         next()
       }
-    }
-    else if (to.meta.requiresEmployer) {
-      if (!store.getters.user.employer) {
-        router.replace({name: from.name, query: {show_modal_add_employer: true}})
-      }
-      else {
-        next()
-      }
-    }
-    else {
-      next()
-    }
+    })
   }
   else {
     next()

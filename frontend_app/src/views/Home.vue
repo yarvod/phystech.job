@@ -3,10 +3,12 @@
   <b-container class="mt-5">
 
     <AddEmployeeModal
+      v-if="user"
       :show_modal_add_employee="show_modal_add_employee"
       @modal_state="show_modal_add_employee = $event"
     />
     <AddEmployerModal
+      v-if="user"
       :show_modal_add_employer="show_modal_add_employer"
       @modal_state="show_modal_add_employer = $event"
     />
@@ -77,12 +79,14 @@
 <script>
 import AddEmployeeModal from '@/components/AddEmployeeModal.vue';
 import AddEmployerModal from '@/components/AddEmployerModal.vue';
+import { mapGetters } from 'vuex';
 export default {
   components: {
     AddEmployeeModal,
     AddEmployerModal
   },
   computed: {
+    ...mapGetters(['user']),
     show_modal_add_employee: {
       get () {
         return eval(this.$route.query.show_modal_add_employee)

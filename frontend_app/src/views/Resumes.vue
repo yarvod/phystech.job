@@ -2,6 +2,7 @@
   <b-container>
 
     <AddEmployerModal
+    v-if="user"
       :show_modal_add_employer="show_modal_add_employer"
       @modal_state="show_modal_add_employer = $event"
     />
@@ -41,7 +42,8 @@ export default {
   name: 'Resumes',
   computed: {
     ...mapGetters([
-      'resumes'
+      'resumes',
+      'user'
     ]),
     show_modal_add_employer: {
       get () {

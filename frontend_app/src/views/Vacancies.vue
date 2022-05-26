@@ -2,6 +2,7 @@
   <div class="container">
 
     <AddEmployeeModal
+    v-if="user"
       :show_modal_add_employee="show_modal_add_employee"
       @modal_state="show_modal_add_employee = $event"
     />
@@ -38,7 +39,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['vacancies', 'offers']),
+    ...mapGetters(['vacancies', 'offers', 'user']),
     show_modal_add_employee: {
       get () {
         return eval(this.$route.query.show_modal_add_employee)
