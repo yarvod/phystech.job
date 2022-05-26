@@ -201,7 +201,6 @@ import currencies_service from "@/api/currencies_service";
 import billing_periods_service from "../api/billing_periods_service";
 import vacancies_service from "@/api/vacancies_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
-import router from "@/router";
 import { mapGetters } from "vuex";
 export default {
   name: "Vacancy",

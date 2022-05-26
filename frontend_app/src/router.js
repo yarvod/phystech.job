@@ -191,7 +191,7 @@ function checkLoading(resolve) {
   }
 }
 
-var waiting = new Promise((resolve, reject) => {
+var waiting = new Promise((resolve) => {
   checkLoading(resolve)
 })
 
