@@ -14,22 +14,26 @@ from .models import (
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
+    Admin, Offer,
     Tag, Category,
     Resume2Vacancy, Vacancy2Resume,
+    Currency, BillingPeriod,
 )
 from .serializers import (
     ResumeListSerializer, ResumeDetailSerializer, ResumeCreateUpdateSerializer,
     VacancyListSerializer, VacancyDetailSerializer, VacancyCreateUpdateSerializer,
     ServiceListSerializer, ServiceDetailSerializer, ServiceCreateUpdateSerializer,
     TaskListSerializer, TaskDetailSerializer, TaskCreateUpdateSerializer,
+    OfferListSerializer, OfferDetailSerializer, OfferCreateUpdateSerializer,
     EmployerListSerializer, EmployerDetailSerializer, EmployerUpdateSerializer, EmployerCreateSerializer,
     EmployeeListSerializer, EmployeeDetailSerializer, EmployeeUpdateSerializer, EmployeeCreateSerializer,
     ClientListSerializer, ClientDetailSerializer, ClientUpdateSerializer, ClientCreateSerializer,
     FreelancerListSerializer, FreelancerDetailSerializer, FreelancerUpdateSerializer, FreelancerCreateSerializer,
-    TagListSerializer,
+    TagListSerializer, CategoryListSerializer,
     PostInteractActionSerializer,
     CheckEmailSerializer,
     Resume2VacancyListCreateSerializer, Resume2VacancyDetailUpdateSerializer,
+    CurrencyListSerializer, BillingPeriodListSerializer,
 )
 
 
@@ -135,6 +139,27 @@ class VacancyUpdateView(RetrieveUpdateAPIView):
     queryset = Vacancy.objects.all()
 
 
+class OfferListView(ListAPIView):
+
+    queryset = Offer.objects.filter(is_published=True)
+    serializer_class = OfferListSerializer
+
+
+class OfferDetailView(RetrieveAPIView):
+
+    queryset = Offer.objects.filter(is_published=True)
+    serializer_class = OfferDetailSerializer
+
+
+class OfferCreateView(CreateAPIView):
+    serializer_class = OfferCreateUpdateSerializer
+
+
+class OfferUpdateView(RetrieveUpdateAPIView):
+    serializer_class = OfferCreateUpdateSerializer
+    queryset = Offer.objects.all()
+
+
 class ResumeListView(ListAPIView):
     queryset = Resume.objects.filter(is_published=True)
     serializer_class = ResumeListSerializer
@@ -202,6 +227,24 @@ class TagDetailView(RetrieveAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagListSerializer
+
+
+class CategoryListView(ListAPIView):
+
+    queryset = Category.objects.all()
+    serializer_class = CategoryListSerializer
+
+
+class CurrencyListView(ListAPIView):
+
+    queryset = Currency.objects.all()
+    serializer_class = CurrencyListSerializer
+
+
+class BillingPeriodListView(ListAPIView):
+
+    queryset = BillingPeriod.objects.all()
+    serializer_class = BillingPeriodListSerializer
 
 
 class CheckEmailView(APIView):

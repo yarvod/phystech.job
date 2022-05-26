@@ -29,6 +29,22 @@ class Tag(models.Model):
         return self.title
 
 
+class Currency(models.Model):
+    title = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        verbose_name_plural = 'Currencies'
+
+
+class BillingPeriod(models.Model):
+    title = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.title
+
 class Resume(models.Model):
 
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='resumes')
@@ -47,6 +63,8 @@ class Resume(models.Model):
 
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
 
     views = models.IntegerField(default=0)
 
@@ -79,6 +97,8 @@ class Vacancy(models.Model):
 
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
@@ -162,10 +182,54 @@ class Task(models.Model):
         return f"Task {self.title}"
 
 
+class Offer(models.Model):
+
+    admin = models.ForeignKey('Admin', on_delete=models.CASCADE, related_name='offers')
+
+    title = models.CharField(max_length=255)
+    about = models.TextField(null=True, blank=True)
+    duties = models.TextField(null=True, blank=True)  # обязанности
+    requirements = models.TextField(null=True, blank=True)  # требования
+    skills = models.TextField(null=True, blank=True)   # навыки
+    conditions = models.TextField(null=True, blank=True)  # условия
+
+    company_name = models.CharField(max_length=100, null=True)
+
+    salary_min = models.PositiveIntegerField(null=True, blank=True)
+    salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
+
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    distant_work = models.BooleanField(default=False)
+
+    category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='offers')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='offers')
+
+    views = models.IntegerField(default=0)
+
+    is_published = models.BooleanField(default=False)
+    published = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Offers'
+
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published = timezone.now()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Offer {self.title}"
+
+
 class Employee(models.Model):
     user = models.OneToOneField(User, related_name='employee', on_delete=models.CASCADE)
 
     favorite_vacancies = models.ManyToManyField('Vacancy', blank=True, related_name='employees_who_liked')
+    favorite_offers = models.ManyToManyField('Offer', blank=True, related_name='employees_who_liked')
 
     def __str__(self):
         return f"Employee {self.user.username}"
@@ -199,6 +263,13 @@ class Client(models.Model):
 
     def __str__(self):
         return f"Client {self.user.username}"
+
+
+class Admin(models.Model):
+    user = models.OneToOneField(User, related_name='admin', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Resume2Vacancy(models.Model):

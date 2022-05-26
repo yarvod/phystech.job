@@ -6,15 +6,22 @@ from .models import (
     Employee, Resume,
     Freelancer, Service,
     Client, Task,
+    Admin, Offer,
     Tag, Category,
     Resume2Vacancy,
     Vacancy2Resume,
+    Currency, BillingPeriod,
 )
 
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'employer', 'created')
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'admin', 'created')
 
 
 @admin.register(Resume)
@@ -51,6 +58,11 @@ class BaseUserAdmin(admin.ModelAdmin):
         abstract = True
 
 
+@admin.register(Admin)
+class AdminAdmin(BaseUserAdmin):
+    pass
+
+
 @admin.register(Employee)
 class EmployeeAdmin(BaseUserAdmin):
     pass
@@ -83,3 +95,12 @@ class TagAdmin(admin.ModelAdmin):
 class Resume2VacancyAdmin(admin.ModelAdmin):
     pass
 
+
+@admin.register(Currency)
+class CurrencyAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(BillingPeriod)
+class BillingPeriodAdmin(admin.ModelAdmin):
+    pass

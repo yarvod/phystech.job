@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col">
 
-        <b-form @submit.prevent="onSubmit">
+        <b-form ref="formResume" @submit.prevent="onSubmit">
           <b-form-group id="title-group" label="Название:" label-for="title">
             <b-form-input
               id="title"
@@ -70,11 +70,76 @@
             </b-form-textarea>
           </b-form-group>
 
+          <b-form-group label="Зарплата:" label-for="salary">
+            <b-container>
+              <b-row>
+                <b-col>
+                  <b-form-group label="От:" label-for="salary_min" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
+                        id="salary_min"
+                        type="number"
+                        step="1000"
+                        min="0"
+                        v-model="resume.salary_min"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="До:" label-for="salary_max" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
+                      id="salary_max"
+                      type="number"
+                      step="1000"
+                      min="0"
+                      v-model="resume.salary_max"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-form-group label="Валюта:" label-for="currency" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="currency"
+                    v-model="resume.currency"
+                    :options="currencies"
+                    >
+                    </b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="Период:" label-for="billing_period" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="billing_period"
+                    v-model="resume.billing_period"
+                    :options="billing_periods"
+                    >
+                    </b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </b-container>
+                
+          </b-form-group>
+
           <TagMultiSelect
-              :options="tags"
-              :value="resume.tags"
-              v-model="resume.tags"
+            :options="tags"
+            :value="resume.tags"
+            @set_tags="resume.tags = $event"
           />
+          <br>
+
+          <b-form-group id="category-group" label="Категория:" label-for="category">
+            <b-form-select 
+            id="category"
+            v-model="resume.category"
+            :options="categories"
+            required
+            >
+            </b-form-select>
+          </b-form-group>
+          
+          <br>
 
           <b-form-group>
             <b-form-checkbox
@@ -125,9 +190,12 @@
 
 <script>
 import tags_service from "@/api/tags_service";
+import categories_service from "@/api/categories_service";
+import currencies_service from "@/api/currencies_service";
+import billing_periods_service from "../api/billing_periods_service";
 import resumes_service from "@/api/resumes_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
-import router from "@/router";
+import { mapGetters } from "vuex";
 export default {
   name: "Resume",
   props: [
@@ -145,21 +213,33 @@ export default {
         ready_relocate: false,
         ready_distant_work: false,
         work_experiance: '',
-        tags: []
+        tags: [],
+        category: null
       },
       tags: [],
-      user: {}
+      categories: [{value: null, text: 'Выберете категорию'}],
+      currencies: [],
+      billing_periods: []
     }
   },
+  computed: {
+    ...mapGetters(['user']),
+  },
   async mounted () {
-    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {raw_tags = response.data})
-    for (var key in raw_tags) {
-      this.tags.push(raw_tags[key].title)
-    }
-    await this.$store.dispatch('getMe')
-      .then(this.user = this.$store.getters.user)
+      .then(response => {this.tags = response.data})
+    await categories_service.getCategories()
+      .then(resp => {
+        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
+      })
+    await currencies_service.getCurrencies()
+      .then(resp => {
+        this.currencies = this.currencies.concat(resp.data.map(x => ({value: x.title, text: x.title})))
+      })
+    await billing_periods_service.getBillingPeriods()
+      .then(resp => {
+        this.billing_periods = this.billing_periods.concat(resp.data.map(x => ({value: x.title, text: x.title})))
+      })
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {
         let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
@@ -172,24 +252,24 @@ export default {
     }
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault()
       if (this.isResumeEdit) {
-        this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
         this.$store.dispatch('updateResume', {resume: this.resume})
       } else {
-        this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
         this.$store.dispatch('createResume', {resume: this.resume})
-        this.onReset()
       }
-      router.push({name: 'account'})  // FIXME: redirect to back
+      await this.$store.dispatch('getMe')
+        .then(
+          this.$router.back(),
+          this.onReset()
+        )
+      
     },
     onReset() {
-      event.preventDefault()
-      // Reset our form values
-      this.resume = {}
+      this.$refs.formResume.reset()
     },
     onDelete() {
 

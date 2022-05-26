@@ -1,18 +1,24 @@
 <template>
 	<div id="app">
-
-    <Header
+    
+    <div v-if="$store.getters.loading_user">
+      <Loader/>
+    </div>
+    
+    <div v-else>
+      <Header
         :user="$store.getters.user"
         :show_login="$route.params.show_login"
       />
     
-    <div class="wrapper">
-      <div class="content">
-        <router-view/>
-      </div>
-  
-      <div class="footer">
-        <Footer/>
+      <div class="wrapper">
+        <div class="content">
+          <router-view/>
+        </div>
+    
+        <div class="footer">
+          <Footer/>
+        </div>
       </div>
     </div>
 
@@ -23,12 +29,14 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Loader from '@/components/Loader';
 import axios from "axios";
 
 export default {
   components: {
     Header,
     Footer,
+    Loader,
   },
   async beforeMount() {
     await this.$store.commit('storeToken')
@@ -39,6 +47,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = ""
     }
     if (this.$store.getters.isAuthenticated) {
+      this.$store.commit('setLoadingUser')
       await this.$store.dispatch('getMe')
     }
   },

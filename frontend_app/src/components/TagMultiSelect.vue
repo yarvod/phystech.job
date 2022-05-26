@@ -1,112 +1,50 @@
 <template>
   <div>
-    <b-form-group label="Тэги:" label-for="tags-with-dropdown">
-      <b-form-tags id="tags-with-dropdown" v-model="value" no-outer-focus class="mb-2">
-        <template v-slot="{tagVariant}">
-          <ul v-if="value.length > 0" class="list-inline d-inline-block mb-2">
-            <li v-for="tag in value" :key="tag" class="list-inline-item">
-              <b-form-tag
-                @remove="removeTag(tag)"
-                :title="tag"
-                :variant="tagVariant"
-                class=""
-              >
-                <strong> {{ tag }} </strong>
-              </b-form-tag>
-            </li>
-          </ul>
-
-          <b-dropdown size="sm" variant="outline-secondary" block menu-class="w-100">
-            <template #button-content>
-              <b-icon icon="tag-fill"></b-icon> Выберете тэги
-            </template>
-            <b-dropdown-form @submit.stop.prevent="() => {}">
-              <b-form-group
-                label="Поиск"
-                label-for="tag-search-input"
-                label-cols-md="auto"
-                class="mb-0"
-                label-size="sm"
-                :description="searchDesc"
-              >
-                <b-form-input
-                  v-model="search"
-                  id="tag-search-input"
-                  type="search"
-                  size="sm"
-                  autocomplete="off"
-                 ></b-form-input>
-              </b-form-group>
-            </b-dropdown-form>
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item-button
-              v-for="option in availableOptions"
-              :key="option"
-              @click="onOptionClick(option)"
-            >
-              {{ option }}
-            </b-dropdown-item-button>
-            <b-dropdown-text v-if="availableOptions.length === 0">
-              Нет доступных тегов :(
-            </b-dropdown-text>
-          </b-dropdown>
-        </template>
-      </b-form-tags>
-    </b-form-group>
+    <label class="typo__label">Тэги:</label>
+     <multiselect 
+     v-model="selected" 
+     placeholder="Type to search" 
+     label="title" 
+     track-by="title" 
+     :options="options" 
+     :multiple="true"
+     :close-on-select="false"
+    >
+      <span slot="noResult">
+        Не удалось найти тэг :(
+      </span>
+    </multiselect>
   </div>
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 export default {
   name: "TagMultiSelect",
   props: {
     options: Array,
     value: Array
   },
-  data() {
+  components: {
+    Multiselect
+  },
+  data () {
     return {
-      search: ''
+      
     }
   },
   computed: {
-    criteria() {
-      // Compute the search criteria
-      return this.search.toLowerCase()
-    },
-    availableOptions() {
-      const criteria = this.criteria
-      // Filter out already selected options
-      const options = this.options.filter(opt => this.value.indexOf(opt) === -1)
-      if (criteria) {
-        // Show only options that match criteria
-        return options.filter(opt => opt.toLowerCase().indexOf(criteria) > -1);
+    selected: {
+      set: function (v) {
+        let serialized_value = v.map(x => x.title)
+        this.$emit('set_tags', serialized_value)
+      },
+      get: function () {
+        return this.options.filter(x => this.value.indexOf(x.title) !== -1)
       }
-      // Show all options available
-      return options.slice(0,4)
-    },
-    searchDesc() {
-      if (this.criteria && this.availableOptions.length === 0) {
-        return 'There are no tags matching your search criteria'
-      }
-      return ''
-    }
-  },
-  methods: {
-    onOptionClick(option) {
-      this.addTag(option)
-      this.search = ''
-    },
-    addTag (tag) {
-      this.value.push(tag)
-    },
-    removeTag (tag) {
-      const ind = this.value.findIndex(item => item === tag)
-      this.value.splice(ind, 1)
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

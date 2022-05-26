@@ -2,6 +2,17 @@
 
   <b-container class="mt-5">
 
+    <AddEmployeeModal
+      v-if="user"
+      :show_modal_add_employee="show_modal_add_employee"
+      @modal_state="show_modal_add_employee = $event"
+    />
+    <AddEmployerModal
+      v-if="user"
+      :show_modal_add_employer="show_modal_add_employer"
+      @modal_state="show_modal_add_employer = $event"
+    />
+
       <b-card-group deck>
         <b-card
             title="Я хочу найти сотрудника"
@@ -30,33 +41,33 @@
       </b-card-group>
 
 
-      <b-card-group deck>
+<!--      <b-card-group deck>-->
 
-        <b-card
-            title="Я хочу найти исполнителя"
-            class="mt-2"
-        >
-          <b-card-text>
-            У меня есть задача, для которой требуется услуга специалиста
-          </b-card-text>
-          <button class="btn btn-outline-success" @click="$router.push({name: 'task_add'})"> Разместить задачу </button>
-          <br>
-          <router-link to="/services">К списку услуг специалистов</router-link>
-        </b-card>
+<!--        <b-card-->
+<!--            title="Я хочу найти исполнителя"-->
+<!--            class="mt-2"-->
+<!--        >-->
+<!--          <b-card-text>-->
+<!--            У меня есть задача, для которой требуется услуга специалиста-->
+<!--          </b-card-text>-->
+<!--          <button class="btn btn-outline-success" @click="$router.push({name: 'task_add'})"> Разместить задачу </button>-->
+<!--          <br>-->
+<!--          <router-link to="/services">К списку услуг специалистов</router-link>-->
+<!--        </b-card>-->
 
-        <b-card
-            title="Я хочу предоставить свою услугу"
-            class="mt-2"
-        >
-          <b-card-text>
-            Я специалист и могу предоставить свою услугу
-          </b-card-text>
-          <button class="btn btn-outline-success" @click="$router.push({name: 'service_add'})"> Разместить услугу </button>
-          <br>
-          <router-link to="/tasks">К списку задач для иполнения</router-link>
-        </b-card>
+<!--        <b-card-->
+<!--            title="Я хочу предоставить свою услугу"-->
+<!--            class="mt-2"-->
+<!--        >-->
+<!--          <b-card-text>-->
+<!--            Я специалист и могу предоставить свою услугу-->
+<!--          </b-card-text>-->
+<!--          <button class="btn btn-outline-success" @click="$router.push({name: 'service_add'})"> Разместить услугу </button>-->
+<!--          <br>-->
+<!--          <router-link to="/tasks">К списку задач для иполнения</router-link>-->
+<!--        </b-card>-->
 
-      </b-card-group>
+<!--      </b-card-group>-->
 
 
   </b-container>
@@ -66,9 +77,33 @@
 
 
 <script>
-
+import AddEmployeeModal from '@/components/AddEmployeeModal.vue';
+import AddEmployerModal from '@/components/AddEmployerModal.vue';
+import { mapGetters } from 'vuex';
 export default {
-  components: {}
+  components: {
+    AddEmployeeModal,
+    AddEmployerModal
+  },
+  computed: {
+    ...mapGetters(['user']),
+    show_modal_add_employee: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employee)
+      },
+      set (v) {
+        this.$router.replace({name: 'home'})
+      }
+    },
+    show_modal_add_employer: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employer)
+      },
+      set (v) {
+        this.$router.replace({name: 'home'})
+      }
+    }
+  }
 }
 </script>
 

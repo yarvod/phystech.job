@@ -86,35 +86,74 @@
             <b-container>
               <b-row>
                 <b-col>
-                  <label label-for="salary_min">От</label>
-                  <b-form-input
-                      id="salary_min"
-                      type="number"
-                      step="1000"
-                      min="0"
-                      v-model="vacancy.salary_min"
-                  ></b-form-input>
+                  <b-form-group label="От:" label-for="salary_min" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
+                        id="salary_min"
+                        type="number"
+                        step="1000"
+                        min="0"
+                        v-model="vacancy.salary_min"
+                    ></b-form-input>
+                  </b-form-group>
                 </b-col>
                 <b-col>
-                  <label label-for="salary_max">До</label>
-                  <b-form-input
+                  <b-form-group label="До:" label-for="salary_max" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
                       id="salary_max"
                       type="number"
                       step="1000"
                       min="0"
                       v-model="vacancy.salary_max"
-                  ></b-form-input>
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-form-group label="Валюта:" label-for="currency" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="currency"
+                    v-model="vacancy.currency"
+                    :options="currencies"
+                    >
+                    </b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="Период:" label-for="billing_period" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="billing_period"
+                    v-model="vacancy.billing_period"
+                    :options="billing_periods"
+                    >
+                    </b-form-select>
+                  </b-form-group>
                 </b-col>
               </b-row>
             </b-container>
-
+                
           </b-form-group>
+          
 
           <TagMultiSelect
-              :options="tags"
-              :value="vacancy.tags"
-              v-model="vacancy.tags"
+            :options="tags"
+            :value="vacancy.tags"
+            @set_tags="vacancy.tags = $event"
           />
+
+          <br>
+
+          <b-form-group id="category-group" label="Категория:" label-for="category">
+            <b-form-select 
+            id="category"
+            v-model="vacancy.category"
+            :options="categories"
+            required
+            >
+            </b-form-select>
+          </b-form-group>
+          
+          <br>
 
           <b-form-group>
             <b-form-checkbox
@@ -157,9 +196,13 @@
 
 <script>
 import tags_service from "@/api/tags_service";
+import categories_service from "@/api/categories_service";
+import currencies_service from "@/api/currencies_service";
+import billing_periods_service from "../api/billing_periods_service";
 import vacancies_service from "@/api/vacancies_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
+import { mapGetters } from "vuex";
 export default {
   name: "Vacancy",
   props: [
@@ -185,18 +228,29 @@ export default {
         tags: []
       },
       tags: [],
-      user: {}
+      categories: [{value: null, text: 'Выберете категорию'}],
+      currencies: [],
+      billing_periods: []
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   async mounted () {
-    let raw_tags = [];
     await tags_service.getTags()
-      .then(response => {raw_tags = response.data})
-    for (var key in raw_tags) {
-      this.tags.push(raw_tags[key].title)
-    }
-    await this.$store.dispatch('getMe')
-      .then(this.user = this.$store.getters.user)
+      .then(response => {this.tags = response.data})
+    await categories_service.getCategories()
+      .then(resp => {
+        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
+      })
+    await currencies_service.getCurrencies()
+      .then(resp => {
+        this.currencies = this.currencies.concat(resp.data.map(x => ({value: x.title, text: x.title})))
+      })
+    await billing_periods_service.getBillingPeriods()
+      .then(resp => {
+        this.billing_periods = this.billing_periods.concat(resp.data.map(x => ({value: x.title, text: x.title})))
+      })
     if (this.$route.params.vacancyId) {
       if (this.isVacancyEdit) {
         let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
@@ -209,7 +263,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault()
       if (this.isVacancyEdit) {
         this.vacancy.category = 'it'
@@ -221,10 +275,12 @@ export default {
         this.$store.dispatch('createVacancy', {vacancy: this.vacancy})
         this.onReset()
       }
-      router.push({name: 'account'})
+      await this.$store.dispatch('getMe')
+        .then(
+          this.$router.back()
+        )
     },
     onReset() {
-      event.preventDefault()
       // Reset our form values
       this.vacancy = {}
     },

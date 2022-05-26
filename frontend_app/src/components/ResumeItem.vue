@@ -1,7 +1,7 @@
 <template>
+  <div>
     <b-card
       tag="article"
-      style="max-width: 20rem;"
       class="mb-2"
       :title=resume.title
     >
@@ -20,6 +20,14 @@
             </b-link>
           </b-col>
         </b-row>
+        <b-row>
+          <b-col v-if="resume.salary_min || resume.salary_max">
+            <b v-if="resume.salary_min">от {{resume.salary_min}} </b>
+            <b v-if="resume.salary_max">до {{resume.salary_max}} </b>
+            <b v-if="resume.currency"> {{resume.currency}} </b> 
+            <b v-if="resume.billing_period"> {{resume.billing_period}} </b>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>
@@ -32,7 +40,8 @@
       </b-button>
       <div v-else>
         <b-button variant="outline-primary" class="m-1"
-                @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})">
+          @click="$router.push({name: 'resume_details', params: {resumeId: resume.id}})"
+        >
           Подробнее
         </b-button>
 
@@ -58,7 +67,7 @@
       </template>
 
     </b-card>
-
+  </div>
 </template>
 
 <script>

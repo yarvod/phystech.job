@@ -23,7 +23,13 @@
         <br>
         <b>Работодатель: </b> {{vacancy.company_name}}
         <br>
-        <b>Зарплата: </b> {{vacancy.salary_min}} - {{vacancy.salary_max}}
+        <span v-if="vacancy.salary_min || vacancy.salary_max">
+          <b>Зарплата: </b>
+          <span v-if="vacancy.salary_min">от {{vacancy.salary_min}} </span>
+          <span v-if="vacancy.salary_max">до {{vacancy.salary_max}} </span>
+          <span v-if="vacancy.currency"> {{vacancy.currency}} </span> 
+          <span v-if="vacancy.billing_period"> {{vacancy.billing_period}} </span>
+        </span>
         <br>
         <b>Опубликовано: </b> {{vacancy.published|formatDate}}
       </b-col>
@@ -99,7 +105,6 @@ export default {
     ...mapGetters(['user'])
   },
   async mounted () {
-    // await this.$store.dispatch('getMe');
     await this.getVacancy();
   },
   methods : {

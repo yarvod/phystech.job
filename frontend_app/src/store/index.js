@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from "vuex";
 import vacancies from './vacancies';
+import offers from "./offers";
 import resumes from './resumes';
 import services from "./services";
 import tasks from "./tasks";
@@ -16,6 +17,7 @@ export const store = new Vuex.Store({
   actions: {},
   modules: {
     vacancies,
+    offers,
     resumes,
     services,
     tasks,

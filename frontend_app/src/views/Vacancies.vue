@@ -1,5 +1,12 @@
 <template>
   <div class="container">
+
+    <AddEmployeeModal
+    v-if="user"
+      :show_modal_add_employee="show_modal_add_employee"
+      @modal_state="show_modal_add_employee = $event"
+    />
+
     <div class="row">
       <h2 class="text-center">Список вакансий</h2>
     </div>
@@ -7,8 +14,8 @@
       <b-link @click="$router.back()">Назад</b-link>
     </div>
     <hr>
-    <VacancyList
-      :vacancies="vacancies"
+    <PostsWrapper
+      :items="items"
     />
 
   </div>
@@ -16,22 +23,37 @@
 
 
 <script>
-import VacancyList from "@/components/VacancyList";
+import AddEmployeeModal from "@/components/AddEmployeeModal.vue";
+import PostsWrapper from "@/components/PostsWrapper";
 import { mapGetters } from "vuex";
 
 export default {
   name: 'Vacancies',
-  computed: mapGetters(['vacancies']),
-  async mounted () {
-    await this.$store.dispatch('getVacancies')
-  },
   components: {
-		VacancyList,
+		PostsWrapper,
+    AddEmployeeModal
   },
   data () {
     return {
-
+      items: []
     }
-  }
+  },
+  computed: {
+    ...mapGetters(['vacancies', 'offers', 'user']),
+    show_modal_add_employee: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employee)
+      },
+      set (v) {
+        this.$router.replace({name: 'vacancies'})
+      }
+    }
+  },
+  async mounted () {
+    await this.$store.dispatch('getVacancies');
+    await this.$store.dispatch('getOffers');
+    this.items = this.vacancies.concat(this.offers)
+  },
+
 }
 </script>

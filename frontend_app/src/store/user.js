@@ -7,13 +7,15 @@ import freelancers_service from "@/api/freelancers_service";
 const state = {
   user: {},
   isAuthenticated: false,
-  token: ''
+  token: '',
+  loading_user: false,
 }
 
 const getters = {
   isAuthenticated: state => state.isAuthenticated,
   token: state => state.token,
-  user: state => state.user.data
+  user: state => state.user.data,
+  loading_user: state => state.loading_user,
 }
 
 const mutations = {
@@ -35,7 +37,11 @@ const mutations = {
     state.isAuthenticated = false;
   },
   setUser(state, user) {
-    state.user = user
+    state.user = user;
+    state.loading_user = false;
+  },
+  setLoadingUser(state) {
+    state.loading_user = true;
   }
 }
 
@@ -47,8 +53,8 @@ const actions = {
     context.commit('removeToken');
   },
   async getMe (context) {
-    let user = await user_service.getMe();
-    context.commit('setUser', user);
+    await user_service.getMe()
+      .then(res => {context.commit('setUser', res)})
 
   },
   async LogIn (context, data) {
@@ -57,6 +63,10 @@ const actions = {
   },
   async setVacancyLike (context, payload) {
     await employees_service.setFavoriteVacancy(payload.id, payload.f_v_id)
+    await this.dispatch('getMe')
+  },
+  async setOfferLike (context, payload) {
+    await employees_service.setFavoriteOffer(payload.id, payload.f_o_id)
     await this.dispatch('getMe')
   },
   async setResumeLike (context, payload) {

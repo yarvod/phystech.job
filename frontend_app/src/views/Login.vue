@@ -3,7 +3,7 @@
     <b-row class="mt-2">
       <b-col>
 
-        <b-tabs content-class="mt-3" fill>
+        <b-tabs v-model="tabIndexCurrent" content-class="mt-3" fill>
 
             <b-tab title="Вход">
               <h5>Вход с паролем:</h5>
@@ -76,24 +76,24 @@
                     </b-card-text>
                   </b-card>
 
-                  <b-card>
-                    <template #header>
-                      <b-form-checkbox v-model="reg_form.as_freelancer">Я хочу предоставить свою услугу</b-form-checkbox>
-                    </template>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b-form-checkbox v-model="reg_form.as_freelancer">Я хочу предоставить свою услугу</b-form-checkbox>-->
+<!--                    </template>-->
 
-                    <b-card-text>
-                      Я специалист и могу предоставить свою услугу
-                    </b-card-text>
-                  </b-card>
+<!--                    <b-card-text>-->
+<!--                      Я специалист и могу предоставить свою услугу-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
 
-                  <b-card>
-                    <template #header>
-                      <b-form-checkbox v-model="reg_form.as_client">Я хочу найти исполнителя</b-form-checkbox>
-                    </template>
-                    <b-card-text>
-                      У меня есть задача, для которой требуется услуга специалиста
-                    </b-card-text>
-                  </b-card>
+<!--                  <b-card>-->
+<!--                    <template #header>-->
+<!--                      <b-form-checkbox v-model="reg_form.as_client">Я хочу найти исполнителя</b-form-checkbox>-->
+<!--                    </template>-->
+<!--                    <b-card-text>-->
+<!--                      У меня есть задача, для которой требуется услуга специалиста-->
+<!--                    </b-card-text>-->
+<!--                  </b-card>-->
                 </b-card-group>
                 <br>
                 <b-alert variant="danger" :show="Boolean(roleError)"> {{roleError}} </b-alert>
@@ -246,6 +246,14 @@ export default {
     }
   },
   computed: {
+    tabIndexCurrent: {
+      set (v) {
+        this.$router.push({name: 'login', params: {tabIndex: v}})
+      },
+      get () {
+        return Number(this.$route.params.tabIndex)
+      }
+    },
     validatedEmail () {
       return this.correctEmail()
     },
@@ -261,7 +269,7 @@ export default {
       }
     },
     isRole () {
-      return (this.reg_form.as_client || this.reg_form.as_freelancer || this.reg_form.as_employee || this.reg_form.as_employer)
+      return (this.reg_form.as_employee || this.reg_form.as_employer)
     },
     roleError () {
       if (this.try_submit && !this.isRole) {

@@ -128,8 +128,7 @@ export default {
     for (var key in raw_tags) {
       this.tags.push(raw_tags[key].title)
     }
-    await this.$store.dispatch('getMe')
-      .then(this.user = this.$store.getters.user)
+    this.user = this.$store.getters.user
     if (this.$route.params.serviceId) {
       if (this.isServiceEdit) {
         let {data} = await services_service.getServiceDetail(this.$route.params.serviceId);

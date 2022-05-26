@@ -1,5 +1,12 @@
 <template>
   <b-container>
+
+    <AddEmployerModal
+    v-if="user"
+      :show_modal_add_employer="show_modal_add_employer"
+      @modal_state="show_modal_add_employer = $event"
+    />
+
     <b-row>
       <h2 class="text-center">Список резюме</h2>
     </b-row>
@@ -8,29 +15,51 @@
     </b-row>
     <hr>
 
-    <ResumeList
-      :resumes="resumes"
-    />
+    <b-row>
+      <b-col 
+        cols="md-4" 
+        class="mb-4"
+        v-for="resume of resumes"
+        :key="resume.id"
+      >
+        <ResumeItem
+          :resume="resume"
+          :edit="false"
+        />
+      </b-col>
+      
+    </b-row>
 
   </b-container>
 </template>
 
 
 <script>
-import ResumeList from '@/components/ResumeList'
+import ResumeItem from '@/components/ResumeItem';
+import AddEmployerModal from '@/components/AddEmployerModal.vue';
 import { mapGetters } from "vuex";
 export default {
   name: 'Resumes',
   computed: {
     ...mapGetters([
-      'resumes'
-    ])
+      'resumes',
+      'user'
+    ]),
+    show_modal_add_employer: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employer)
+      },
+      set (v) {
+        this.$router.replace({name: 'resumes'})
+      }
+    }
   },
   async mounted() {
     await this.$store.dispatch('getResumes')
   },
   components: {
-		ResumeList,
+		ResumeItem,
+    AddEmployerModal
   },
   data () {
     return {

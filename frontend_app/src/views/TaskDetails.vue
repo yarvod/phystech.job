@@ -65,7 +65,6 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('getMe');
     await this.getTask();
   },
   methods : {

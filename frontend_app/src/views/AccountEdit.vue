@@ -122,7 +122,6 @@ export default {
     }
   },
   async mounted() {
-    // await this.$store.dispatch('getMe')
     this.user = await this.$store.getters.user;
   }
 }

@@ -25,8 +25,10 @@ class UserDjoserSerializer(UserSerializer):
         f = defaultdict(list)
         try:
             ee = obj.employee
+            fo = ee.favorite_offers.values_list('id', flat=True)
             fv = ee.favorite_vacancies.values_list('id', flat=True)
             f['vacancies'] = list(fv)
+            f['offers'] = list(fo)
         except:
             pass
         try:

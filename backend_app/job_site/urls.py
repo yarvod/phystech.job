@@ -4,13 +4,16 @@ from .views import (
     VacancyListView, VacancyDetailView, VacancyCreateView, VacancyUpdateView,
     TaskListView, TaskDetailView, TaskCreateView, TaskUpdateView,
     ServiceListView, ServiceDetailView, ServiceCreateView, ServiceUpdateView,
+    OfferListView, OfferDetailView, OfferUpdateView, OfferCreateView,
     EmployerListView, EmployerDetailView, EmployerCreateView, EmployerUpdateView,
     EmployeeListView, EmployeeDetailView, EmployeeCreateView, EmployeeUpdateView,
     ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView,
     FreelancerListView, FreelancerDetailView, FreelancerCreateView, FreelancerUpdateView,
     TagListView, TagDetailView,
+    CategoryListView,
     CheckEmailView,
     Resume2VacancyListCreateView, Resume2VacancyDetailUpdateView,
+    CurrencyListView, BillingPeriodListView,
 )
 
 
@@ -19,6 +22,10 @@ urlpatterns = [
     path("vacancies/<int:pk>/", VacancyDetailView.as_view()),
     path("vacancy/", VacancyCreateView.as_view()),
     path("vacancy/<int:pk>/", VacancyUpdateView.as_view()),
+    path("offers/", OfferListView.as_view()),
+    path("offers/<int:pk>/", OfferDetailView.as_view()),
+    path("offer/", OfferCreateView.as_view()),
+    path("offer/<int:pk>/", OfferUpdateView.as_view()),
     path("resumes/", ResumeListView.as_view()),
     path("resumes/<int:pk>/", ResumeDetailView.as_view()),
     path("resume/", ResumeCreateView.as_view()),
@@ -49,6 +56,9 @@ urlpatterns = [
     path("freelancers/<int:pk>/", FreelancerDetailView.as_view()),
     path("tags/", TagListView.as_view()),
     path("tags/<int:pk>/", TagDetailView.as_view()),
+    path("categories/", CategoryListView.as_view()),
+    path("currencies/", CurrencyListView.as_view()),
+    path("billing_periods/", BillingPeriodListView.as_view()),
     path("check_email/", CheckEmailView.as_view()),
     path("resumes2vacancies/", Resume2VacancyListCreateView.as_view()),
     path("resumes2vacancies/<int:pk>/", Resume2VacancyDetailUpdateView.as_view())

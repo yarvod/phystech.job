@@ -6,7 +6,10 @@
 <style scoped>
     .lds-roller {
     display: inline-block;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 80px;
     height: 80px;
     }
@@ -21,7 +24,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #cef;
+    background: #17a2b8;
     margin: -4px 0 0 -4px;
     }
     .lds-roller div:nth-child(1) {
