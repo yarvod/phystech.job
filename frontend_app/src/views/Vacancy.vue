@@ -240,7 +240,7 @@ export default {
       }
       await this.$store.dispatch('getMe')
         .then(
-          router.push({name: 'account'})  // FIXME: redirect to back
+          this.$router.back()
         )
     },
     onReset() {
