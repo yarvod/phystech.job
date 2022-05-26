@@ -2,6 +2,11 @@
 
   <b-container class="mt-5">
 
+    <AddEmployeeModal
+      :show_modal_add_employee="show_modal_add_employee"
+      @modal_state="show_modal_add_employee = $event"
+    />
+
       <b-card-group deck>
         <b-card
             title="Я хочу найти сотрудника"
@@ -66,9 +71,22 @@
 
 
 <script>
-
+import AddEmployeeModal from '@/components/AddEmployeeModal.vue'
 export default {
-  components: {}
+  components: {
+    AddEmployeeModal
+  },
+  computed: {
+    show_modal_add_employee: {
+      get () {
+        return eval(this.$route.query.show_modal_add_employee)
+      },
+      set (v) {
+        this.$router.replace({name: 'home'})
+      }
+    }
+   
+  }
 }
 </script>
 

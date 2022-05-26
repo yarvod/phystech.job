@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {store} from './store'
 
 
 Vue.use(VueRouter)
@@ -93,8 +94,10 @@ const router = new VueRouter({
       props: true,
       name: 'resume_details',
       meta: {
-        requiresAuth: true
-      }
+        requiresAuth: true,
+        requiresEmployer: true
+      },
+      query: true
     },
     {
       path: '/account/resumes/:resumeId/edit',
@@ -104,7 +107,8 @@ const router = new VueRouter({
       },
       name: 'resume_edit',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresOwner: true
       }
     },
     {
@@ -113,7 +117,8 @@ const router = new VueRouter({
       props: {isResumeEdit:false},
       name: 'resume_add',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresEmployee: true
       }
     },
     {
@@ -122,7 +127,8 @@ const router = new VueRouter({
       props: {isVacancyEdit:true},
       name: 'vacancy_edit',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresOwner: true
       }
     },
     {
@@ -131,7 +137,8 @@ const router = new VueRouter({
       props: {isVacancyEdit:false},
       name: 'vacancy_add',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresEmployer: true
       }
     },
     {
@@ -145,7 +152,8 @@ const router = new VueRouter({
       props: true,
       name: 'vacancy_details',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresEmployee: true
       }
     },
     {
@@ -179,10 +187,20 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!localStorage.getItem('token')) {
       router.push({name: 'login', params: {tabIndex: 0}})
-     } else {
+     }
+    else if (to.meta.requiresEmployee) {
+      if (!store.getters.user.employee) {
+        router.replace({name: from.name, query: {show_modal_add_employee: true}})
+      }
+      else {
+        next()
+      }
+    }
+    else {
       next()
     }
-  } else {
+  }
+  else {
     next()
   }
 })

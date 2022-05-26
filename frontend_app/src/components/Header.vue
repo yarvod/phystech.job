@@ -2,14 +2,14 @@
 
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand class="btn" @click="$router.push('/')">phystech.job</b-navbar-brand>
+      <b-navbar-brand class="btn" @click="$router.push({name: 'home'})">phystech.job</b-navbar-brand>
 
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="$router.push('/')">Главная</b-nav-item>
+          <b-nav-item @click="$router.push({name: 'home'})">Главная</b-nav-item>
           <b-nav-item href="#">Предложения</b-nav-item>
           <b-nav-item href="#">События</b-nav-item>
         </b-navbar-nav>

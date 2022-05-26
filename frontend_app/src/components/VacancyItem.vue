@@ -1,11 +1,6 @@
 <template>
   <div>
     
-    <AddEmployeeModal
-      :show_modal_add_employee="show_modal_add_employee"
-      @modal_state="show_modal_add_employee = $event"
-    />
-    
     <b-card
       tag="article"
       class="mb-2"
@@ -77,18 +72,13 @@
 </template>
 
 <script>
-import AddEmployeeModal from "@/components/AddEmployeeModal";
 
 export default {
   name: "VacancyItem",
   props: ['vacancy', 'edit'],
-  components: {
-    AddEmployeeModal
-  },
   data () {
     return {
-      liked: Boolean,
-      show_modal_add_employee: false,
+      liked: Boolean
     }
   },
   mounted () {
@@ -105,15 +95,7 @@ export default {
       this.liked = f_v.includes(this.vacancy.id)
     },
     goVacancy () {
-      if (!this.$store.getters.user) {
-        this.$router.push({name: 'login'})
-      }
-      else if (this.$store.getters.user.employee) {
-        this.$router.push({name: 'vacancy_details', params: {vacancyId: this.vacancy.id}})
-      }
-      else if (!this.$store.getters.user.employer) {
-        this.show_modal_add_employee = ! this.show_modal_add_employee
-      }
+      this.$router.push({name: 'vacancy_details', params: {vacancyId: this.vacancy.id}})
     }
   }
 }

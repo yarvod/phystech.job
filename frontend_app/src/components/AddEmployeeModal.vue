@@ -1,14 +1,19 @@
 <template>
   <div>
     <b-modal v-model="show_modal" title="Форма соискателя" hide-backdrop content-class="shadow" centered hide-footer>
-      <p>
+      <div v-if="!user.employer">
+        <p>
         Вы сможете размещать свои резюме и откликаться на вакансии!
-      </p>
-      <b-form @submit.prevent="submitForm">
+        </p>
+        <b-form @submit.prevent="submitForm">
+          <b-button variant="outline-success" type="submit">Стать соискателем!</b-button>
+        </b-form>
+      </div>
 
-        <b-button variant="outline-success" type="submit">Стать соискателем!</b-button>
-
-      </b-form>
+      <div v-else>
+        <p>Вы работодатель и не можете смотреть подробнее чужие вакансии :(</p>
+        <b-button @click="show_modal = false" variant="outline-danger">Закрыть</b-button>
+      </div>
 
     </b-modal>
   </div>
@@ -16,6 +21,7 @@
 
 <script>
 import employees_service from "@/api/employees_service";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AddEmployeeModal",
@@ -29,6 +35,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['user']),
     show_modal: {
       get: function() {
         return this.show_modal_add_employee
