@@ -97,8 +97,8 @@ class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
     employee = serializers.SlugRelatedField(slug_field='id', queryset=Employee.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
-    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
-    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all(), allow_null=True, required=False)
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all(), allow_null=True, required=False)
 
     class Meta:
         model = Resume
@@ -159,8 +159,8 @@ class VacancyCreateUpdateSerializer(serializers.ModelSerializer):
     employer = serializers.SlugRelatedField(slug_field='id', queryset=Employer.objects.all())
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
-    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
-    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all(), allow_null=True, required=False)
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all(), allow_null=True, required=False)
 
     class Meta:
         model = Vacancy
@@ -219,8 +219,8 @@ class OfferCreateUpdateSerializer(serializers.ModelSerializer):
     admin = serializers.SlugRelatedField(slug_field='id', queryset=Admin.objects.all())
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
-    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
-    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all(), allow_null=True, required=False)
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all(), allow_null=True, required=False)
 
     class Meta:
         model = Offer
