@@ -11,7 +11,7 @@
       </div>
 
       <div v-else>
-        <p>Вы работодатель и не можете смотреть подробнее чужие вакансии :(</p>
+        <p>Вы работодатель и не можете добавлять резюме смотреть чужие вакансии :(</p>
         <b-button @click="show_modal = false" variant="outline-danger">Закрыть</b-button>
       </div>
 
@@ -51,9 +51,9 @@ export default {
       await employees_service.createEmployee({
         user: this.$store.getters.user.id
       }).then(
-          await this.$store.dispatch('getMe')
+          await this.$store.dispatch('getMe'),
+          this.show_modal = false
         )
-      this.show_modal = false
     }
   }
 }

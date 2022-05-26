@@ -162,7 +162,8 @@ const router = new VueRouter({
       props: true,
       name: 'offer_details',
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresEmployee: true
       }
     },
     {

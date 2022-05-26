@@ -12,6 +12,10 @@
         :show_modal_add_employer="show_modal_add_employer"
         @modal_state="show_modal_add_employer = $event"
     />
+    <AddEmployeeModal
+        :show_modal_add_employee="show_modal_add_employee"
+        @modal_state="show_modal_add_employee = $event"
+    />
 
     <b-row>
       <b-col>
@@ -57,11 +61,20 @@
                       <div v-if="!user.employee">
                        Вы пока не можете резмещать резюме и откликаться на вакансии
                        <br>
-                       <b-button variant="outline-success" @click="add_employee"> Стать соискателем! </b-button>
+                       <b-button
+                          variant="outline-success"
+                          @click="show_modal_add_employee = !show_modal_add_employee"
+                          v-b-modal.modal-center
+                        >
+                          Стать соискателем!
+                        </b-button>
                       </div>
 
                       <div v-else>
-                       Вы можете размещать резюме и откликаться на вакансии!
+                        Вы можете размещать резюме и откликаться на вакансии!
+                        <br>
+                        <b-button @click="$router.push({name: 'resume_add'})" variant="outline-success" class="m-1">Разместить резюме!</b-button>
+                        <b-button @click="$router.push({name: 'vacancies'})" variant="outline-success" class="m-1">Найти работу!</b-button>
                       </div>
                     </b-card-text>
                   </b-card>
@@ -90,6 +103,9 @@
                           </div>
                           <div v-else>
                             Вы можете размещать вакансии и просматривать резюме!
+                            <br>
+                            <b-button @click="$router.push({name: 'vacancy_add'})" variant="outline-success" class="m-1">Разместить вакансию!</b-button>
+                            <b-button @click="$router.push({name: 'resumes'})" variant="outline-success" class="m-1">Найти работника!</b-button>
                           </div>
                         </div>
                       </b-card-text>
@@ -339,6 +355,7 @@ import VacancyItem from "@/components/VacancyItem";
 import PostsWrapper from "@/components/PostsWrapper";
 import ResponseItem from "@/components/ResponseItem";
 import AddEmployerModal from "@/components/AddEmployerModal";
+import AddEmployeeModal from "@/components/AddEmployeeModal.vue";
 import employees_service from "@/api/employees_service";
 import clients_service from "@/api/clients_service";
 import employers_service from "@/api/employers_service";
@@ -350,6 +367,7 @@ export default {
     // ServiceItem,
     // TaskItem,
     AddEmployerModal,
+    AddEmployeeModal,
     ResponseItem,
     PostsWrapper,
   },
@@ -364,6 +382,7 @@ export default {
       responses: [],
       like_filter: '',
       show_modal_add_employer: false,
+      show_modal_add_employee: false,
       loading_favorites: false,
     }
   },

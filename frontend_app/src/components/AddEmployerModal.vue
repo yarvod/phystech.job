@@ -84,9 +84,9 @@ export default {
         company_website: this.form.company_website,
         about: this.form.about
       }).then(
-          await this.$store.dispatch('getMe')
+          await this.$store.dispatch('getMe'),
+          this.show_modal = false
         )
-      this.show_modal = false
     }
   }
 }
