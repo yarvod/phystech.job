@@ -240,14 +240,20 @@
 
                 <br>
 
-                <b-card-group deck>
-                  <ResumeItem
+                <b-row>
+                  <b-col 
+                    cols="md-4" 
+                    class="mb-4"
                     v-for="resume of user.employee.resumes"
                     :key="resume.id"
-                    :resume="resume"
-                    :edit="true"
-                  />
-                </b-card-group>
+                  >
+                    <ResumeItem
+                      :resume="resume"
+                      :edit="true"
+                    />
+                  </b-col>
+      
+                </b-row>
               </b-container>
             </b-tab>
 
