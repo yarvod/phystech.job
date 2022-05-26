@@ -12,13 +12,8 @@
       />
     
       <div class="wrapper">
-        <div class="content">
-          <router-view/>
-        </div>
-    
-        <div class="footer">
-          <Footer/>
-        </div>
+          <router-view class="content"/>
+          <Footer class="footer"/>
       </div>
     </div>
 
@@ -65,26 +60,11 @@ a{text-decoration:none;}
 img{vertical-align:top;}
 
 * {
-	margin: 0;
-	padding: 0;
-}
-html,
-body {
-	height: 100%;
-}
-.wrapper {
-	position: relative;
-	min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 .content {
-	padding-bottom: 90px;
-}
-.footer {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 </style>
