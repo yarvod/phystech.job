@@ -16,7 +16,13 @@
         <br>
         <b>Работодатель: </b> {{offer.company_name}}
         <br>
-        <b>Зарплата: </b> {{offer.salary_min}} - {{offer.salary_max}}
+        <span v-if="offer.salary_min || offer.salary_max">
+          <b>Зарплата: </b>
+          <span v-if="offer.salary_min">от {{offer.salary_min}} </span>
+          <span v-if="offer.salary_max">до {{offer.salary_max}} </span>
+          <span v-if="offer.currency"> {{offer.currency}} </span> 
+          <span v-if="offer.billing_period"> {{offer.billing_period}} </span>
+        </span>
         <br>
         <b>Опубликовано: </b> {{offer.published|formatDate}}
       </b-col>

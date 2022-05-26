@@ -70,6 +70,58 @@
             </b-form-textarea>
           </b-form-group>
 
+          <b-form-group label="Зарплата:" label-for="salary">
+            <b-container>
+              <b-row>
+                <b-col>
+                  <b-form-group label="От:" label-for="salary_min" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
+                        id="salary_min"
+                        type="number"
+                        step="1000"
+                        min="0"
+                        v-model="resume.salary_min"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="До:" label-for="salary_max" label-cols-sm="4" label-align-sm="right">
+                    <b-form-input
+                      id="salary_max"
+                      type="number"
+                      step="1000"
+                      min="0"
+                      v-model="resume.salary_max"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-form-group label="Валюта:" label-for="currency" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="currency"
+                    v-model="resume.currency"
+                    :options="currencies"
+                    >
+                    </b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="Период:" label-for="billing_period" label-cols-sm="4" label-align-sm="right">
+                    <b-form-select 
+                    id="billing_period"
+                    v-model="resume.billing_period"
+                    :options="billing_periods"
+                    >
+                    </b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </b-container>
+                
+          </b-form-group>
+
           <TagMultiSelect
             :options="tags"
             :value="resume.tags"
@@ -138,10 +190,11 @@
 
 <script>
 import tags_service from "@/api/tags_service";
-import categories_service from "@/api/categories_service"
+import categories_service from "@/api/categories_service";
+import currencies_service from "@/api/currencies_service";
+import billing_periods_service from "../api/billing_periods_service";
 import resumes_service from "@/api/resumes_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
-import router from "@/router";
 import { mapGetters } from "vuex";
 export default {
   name: "Resume",
@@ -164,7 +217,9 @@ export default {
         category: null
       },
       tags: [],
-      categories: [{value: null, text: 'Выберете категорию'}]
+      categories: [{value: null, text: 'Выберете категорию'}],
+      currencies: [],
+      billing_periods: []
     }
   },
   computed: {
@@ -176,6 +231,14 @@ export default {
     await categories_service.getCategories()
       .then(resp => {
         this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
+      })
+    await currencies_service.getCurrencies()
+      .then(resp => {
+        this.currencies = this.currencies.concat(resp.data.map(x => ({value: x.title, text: x.title})))
+      })
+    await billing_periods_service.getBillingPeriods()
+      .then(resp => {
+        this.billing_periods = this.billing_periods.concat(resp.data.map(x => ({value: x.title, text: x.title})))
       })
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {

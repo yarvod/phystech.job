@@ -13,6 +13,7 @@ from .views import (
     CategoryListView,
     CheckEmailView,
     Resume2VacancyListCreateView, Resume2VacancyDetailUpdateView,
+    CurrencyListView, BillingPeriodListView,
 )
 
 
@@ -56,6 +57,8 @@ urlpatterns = [
     path("tags/", TagListView.as_view()),
     path("tags/<int:pk>/", TagDetailView.as_view()),
     path("categories/", CategoryListView.as_view()),
+    path("currencies/", CurrencyListView.as_view()),
+    path("billing_periods/", BillingPeriodListView.as_view()),
     path("check_email/", CheckEmailView.as_view()),
     path("resumes2vacancies/", Resume2VacancyListCreateView.as_view()),
     path("resumes2vacancies/<int:pk>/", Resume2VacancyDetailUpdateView.as_view())

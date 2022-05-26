@@ -1,4 +1,5 @@
 from collections import defaultdict
+from locale import currency
 import logging
 import djoser.serializers
 from users.models import User
@@ -11,6 +12,7 @@ from .models import (
     Admin, Offer,
     Tag, Category,
     Resume2Vacancy, Vacancy2Resume,
+    Currency, BillingPeriod,
 )
 
 debug = logging.getLogger(__name__).debug
@@ -20,6 +22,20 @@ class TagListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
+        fields = ('title',)
+
+
+class CurrencyListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Currency
+        fields = ('title',)
+
+
+class BillingPeriodListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BillingPeriod
         fields = ('title',)
 
 
@@ -33,6 +49,18 @@ class ResumeListSerializer(serializers.ModelSerializer):
     """Список всех резюме"""
     category = serializers.CharField(source='category.title')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     class Meta:
         model = Resume
@@ -43,6 +71,18 @@ class ResumeDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     @staticmethod
     def get_likes(obj):
@@ -57,6 +97,8 @@ class ResumeCreateUpdateSerializer(serializers.ModelSerializer):
     employee = serializers.SlugRelatedField(slug_field='id', queryset=Employee.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
 
     class Meta:
         model = Resume
@@ -69,6 +111,18 @@ class VacancyListSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='employer.company_name')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     @staticmethod
     def get_likes(obj):
@@ -83,6 +137,18 @@ class VacancyDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     company_name = serializers.CharField(source='employer.company_name')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     class Meta:
         model = Vacancy
@@ -93,6 +159,8 @@ class VacancyCreateUpdateSerializer(serializers.ModelSerializer):
     employer = serializers.SlugRelatedField(slug_field='id', queryset=Employer.objects.all())
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
 
     class Meta:
         model = Vacancy
@@ -104,6 +172,18 @@ class OfferListSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
     likes = serializers.SerializerMethodField()
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     @staticmethod
     def get_likes(obj):
@@ -117,6 +197,18 @@ class OfferListSerializer(serializers.ModelSerializer):
 class OfferDetailSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    currency = serializers.SerializerMethodField()
+    billing_period = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_currency(obj):
+        if obj.currency:
+            return obj.currency.title
+
+    @staticmethod
+    def get_billing_period(obj):
+        if obj.billing_period:
+            return obj.billing_period.title
 
     class Meta:
         model = Offer
@@ -127,6 +219,8 @@ class OfferCreateUpdateSerializer(serializers.ModelSerializer):
     admin = serializers.SlugRelatedField(slug_field='id', queryset=Admin.objects.all())
     category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
     tags = serializers.SlugRelatedField(slug_field='title', queryset=Tag.objects.all(), many=True)
+    currency = serializers.SlugRelatedField(slug_field='title', queryset=Currency.objects.all())
+    billing_period = serializers.SlugRelatedField(slug_field='title', queryset=BillingPeriod.objects.all())
 
     class Meta:
         model = Offer

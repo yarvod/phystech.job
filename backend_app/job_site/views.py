@@ -17,6 +17,7 @@ from .models import (
     Admin, Offer,
     Tag, Category,
     Resume2Vacancy, Vacancy2Resume,
+    Currency, BillingPeriod,
 )
 from .serializers import (
     ResumeListSerializer, ResumeDetailSerializer, ResumeCreateUpdateSerializer,
@@ -32,6 +33,7 @@ from .serializers import (
     PostInteractActionSerializer,
     CheckEmailSerializer,
     Resume2VacancyListCreateSerializer, Resume2VacancyDetailUpdateSerializer,
+    CurrencyListSerializer, BillingPeriodListSerializer,
 )
 
 
@@ -231,6 +233,18 @@ class CategoryListView(ListAPIView):
 
     queryset = Category.objects.all()
     serializer_class = CategoryListSerializer
+
+
+class CurrencyListView(ListAPIView):
+
+    queryset = Currency.objects.all()
+    serializer_class = CurrencyListSerializer
+
+
+class BillingPeriodListView(ListAPIView):
+
+    queryset = BillingPeriod.objects.all()
+    serializer_class = BillingPeriodListSerializer
 
 
 class CheckEmailView(APIView):

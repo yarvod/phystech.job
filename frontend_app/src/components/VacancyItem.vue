@@ -29,6 +29,14 @@
             </b-link>
           </b-col>
         </b-row>
+        <b-row>
+          <b-col v-if="vacancy.salary_min || vacancy.salary_max">
+            <b v-if="vacancy.salary_min">от {{vacancy.salary_min}} </b>
+            <b v-if="vacancy.salary_max">до {{vacancy.salary_max}} </b>
+            <b v-if="vacancy.currency"> {{vacancy.currency}} </b> 
+            <b v-if="vacancy.billing_period"> {{vacancy.billing_period}} </b>
+          </b-col>
+        </b-row>
       </b-card-text>
 
       <hr>

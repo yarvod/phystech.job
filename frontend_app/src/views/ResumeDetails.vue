@@ -13,7 +13,13 @@
       <b>Категоря: </b>
       {{resume.category}}
       <br>
-      <b>Зарплата: </b> {{resume.salary_min}} - {{resume.salary_max}}
+      <span v-if="resume.salary_min || resume.salary_max">
+        <b>Зарплата: </b>
+        <span v-if="resume.salary_min">от {{resume.salary_min}} </span>
+        <span v-if="resume.salary_max">до {{resume.salary_max}} </span>
+        <span v-if="resume.currency"> {{resume.currency}} </span> 
+        <span v-if="resume.billing_period"> {{resume.billing_period}} </span>
+      </span>
       <br>
       <b>Опубликовано: </b>
       {{resume.published}}

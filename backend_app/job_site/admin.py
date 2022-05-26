@@ -10,6 +10,7 @@ from .models import (
     Tag, Category,
     Resume2Vacancy,
     Vacancy2Resume,
+    Currency, BillingPeriod,
 )
 
 
@@ -94,3 +95,12 @@ class TagAdmin(admin.ModelAdmin):
 class Resume2VacancyAdmin(admin.ModelAdmin):
     pass
 
+
+@admin.register(Currency)
+class CurrencyAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(BillingPeriod)
+class BillingPeriodAdmin(admin.ModelAdmin):
+    pass

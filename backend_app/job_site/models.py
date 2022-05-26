@@ -29,6 +29,22 @@ class Tag(models.Model):
         return self.title
 
 
+class Currency(models.Model):
+    title = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        verbose_name_plural = 'Currencies'
+
+
+class BillingPeriod(models.Model):
+    title = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.title
+
 class Resume(models.Model):
 
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='resumes')
@@ -47,6 +63,8 @@ class Resume(models.Model):
 
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
 
     views = models.IntegerField(default=0)
 
@@ -79,6 +97,8 @@ class Vacancy(models.Model):
 
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
@@ -177,6 +197,8 @@ class Offer(models.Model):
 
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    billing_period = models.ForeignKey(BillingPeriod, on_delete=models.SET_NULL, null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 
