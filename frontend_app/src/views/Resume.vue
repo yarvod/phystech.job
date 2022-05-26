@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col">
 
-        <b-form @submit.prevent="onSubmit">
+        <b-form ref="formResume" @submit.prevent="onSubmit">
           <b-form-group id="title-group" label="Название:" label-for="title">
             <b-form-input
               id="title"
@@ -260,16 +260,16 @@ export default {
       } else {
         this.resume.employee = this.user.employee.id
         this.$store.dispatch('createResume', {resume: this.resume})
-        this.onReset()
       }
       await this.$store.dispatch('getMe')
         .then(
-          this.$router.back()
+          this.$router.back(),
+          this.onReset()
         )
       
     },
     onReset() {
-      this.resume = {}
+      this.$refs.formResume.reset()
     },
     onDelete() {
 
