@@ -250,14 +250,20 @@
 
                 <br>
 
-                <b-card-group deck>
-                  <VacancyItem
+                <b-row>
+                  <b-col
+                    cols="md-4"
+                    class="mb-4"
                     v-for="vacancy of user.employer.vacancies"
                     :key="vacancy.id"
-                    :vacancy="vacancy"
-                    :edit="true"
-                  />
-                </b-card-group>
+                  >
+                    <VacancyItem
+                      :vacancy="vacancy"
+                      :edit="true"
+                    />
+                  </b-col>
+                 
+                </b-row>
               </b-container>
             </b-tab>
 

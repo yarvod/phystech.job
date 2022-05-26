@@ -1,7 +1,7 @@
 <template>
+  <div>
     <b-card
       tag="article"
-      style="max-width: 20rem;"
       class="mb-2"
       :title=resume.title
     >
@@ -58,7 +58,7 @@
       </template>
 
     </b-card>
-
+  </div>
 </template>
 
 <script>

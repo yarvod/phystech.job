@@ -1,6 +1,6 @@
 <template>
-  <b-card-group deck>
-    <div v-for="item of items" :key="item.created+item.id">
+  <b-row>
+    <b-col v-for="item of items" :key="item.created+item.id" cols="md-4" class="mb-4">
       <VacancyItem
         v-if="item.employer"
         :vacancy="item"
@@ -16,8 +16,8 @@
         :resume="item"
         :edit="false"
       />
-    </div>
-  </b-card-group>
+    </b-col>
+  </b-row>
 </template>
 
 <script>

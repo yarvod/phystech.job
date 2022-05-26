@@ -8,16 +8,27 @@
     </b-row>
     <hr>
 
-    <ResumeList
-      :resumes="resumes"
-    />
+    <b-row>
+      <b-col 
+        cols="md-4" 
+        class="mb-4"
+        v-for="resume of resumes"
+        :key="resume.id"
+      >
+        <ResumeItem
+          :resume="resume"
+          :edit="false"
+        />
+      </b-col>
+      
+    </b-row>
 
   </b-container>
 </template>
 
 
 <script>
-import ResumeList from '@/components/ResumeList'
+import ResumeItem from '@/components/ResumeItem'
 import { mapGetters } from "vuex";
 export default {
   name: 'Resumes',
@@ -30,7 +41,7 @@ export default {
     await this.$store.dispatch('getResumes')
   },
   components: {
-		ResumeList,
+		ResumeItem
   },
   data () {
     return {
