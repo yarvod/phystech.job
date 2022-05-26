@@ -16,6 +16,7 @@
     <b-row>
       <b-col>
           <b-tabs
+            v-model="tabIndexCurrent"
             active-nav-item-class="font-weight-bold text-uppercase"
             content-class="mt-3"
             justified
@@ -372,6 +373,14 @@ export default {
   },
   computed: {
     ...mapGetters(['user']),
+    tabIndexCurrent: {
+      set (v) {
+        this.$router.push({name: 'account', params: {tabIndex: v}})
+      },
+      get () {
+        return Number(this.$route.params.tabIndex)
+      }
+    },
     favorite_items () {
       let res = [];
       if (this.user.employer && (this.like_filter === 'Resumes' || this.like_filter === '')) {

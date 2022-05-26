@@ -21,7 +21,9 @@
               <template #button-content>
                 <em type="bright">{{ user.username }}</em>
               </template>
-              <b-dropdown-item @click="$router.push({name: 'account'})">Профиль</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({name: 'account', params: {tabIndex: 0}})">Профиль</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({name: 'account', params: {tabIndex: 1}})">Избранное</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({name: 'account', params: {tabIndex: 2}})">Отклики</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item @click="LogOut" variant="danger">Выйти</b-dropdown-item>
             </b-nav-item-dropdown>

@@ -99,7 +99,9 @@ const router = new VueRouter({
     {
       path: '/account/resumes/:resumeId/edit',
       component: () => import('@/views/Resume.vue'),
-      props: {isResumeEdit:true},
+      props: {
+        isResumeEdit: true
+      },
       name: 'resume_edit',
       meta: {
         requiresAuth: true
@@ -156,12 +158,13 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/account',
+      path: '/account/:tabIndex',
       component: () => import('@/views/Account.vue'),
       name: 'account',
       meta: {
         requiresAuth: true
-      }
+      },
+      props: true
     },
     {
       path: '/auth/users/activate/:uid/:token',
