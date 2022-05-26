@@ -3,7 +3,7 @@
     <b-row class="mt-2">
       <b-col>
 
-        <b-tabs content-class="mt-3" fill>
+        <b-tabs v-model="tabIndexCurrent" content-class="mt-3" fill>
 
             <b-tab title="Вход">
               <h5>Вход с паролем:</h5>
@@ -246,6 +246,14 @@ export default {
     }
   },
   computed: {
+    tabIndexCurrent: {
+      set (v) {
+        this.$router.push({name: 'login', params: {tabIndex: v}})
+      },
+      get () {
+        return Number(this.$route.params.tabIndex)
+      }
+    },
     validatedEmail () {
       return this.correctEmail()
     },

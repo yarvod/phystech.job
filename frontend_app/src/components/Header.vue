@@ -30,7 +30,7 @@
           </template>
 
           <template v-else>
-            <b-button class="mx-1" @click="$router.push({name: 'login'})">Вход</b-button>
+            <b-button class="mx-1" @click="$router.push({name: 'login', params: {tabIndex: 0}})">Вход</b-button>
           </template>
 
         </b-navbar-nav>
