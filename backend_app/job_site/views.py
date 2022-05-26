@@ -28,7 +28,7 @@ from .serializers import (
     EmployeeListSerializer, EmployeeDetailSerializer, EmployeeUpdateSerializer, EmployeeCreateSerializer,
     ClientListSerializer, ClientDetailSerializer, ClientUpdateSerializer, ClientCreateSerializer,
     FreelancerListSerializer, FreelancerDetailSerializer, FreelancerUpdateSerializer, FreelancerCreateSerializer,
-    TagListSerializer,
+    TagListSerializer, CategoryListSerializer,
     PostInteractActionSerializer,
     CheckEmailSerializer,
     Resume2VacancyListCreateSerializer, Resume2VacancyDetailUpdateSerializer,
@@ -225,6 +225,12 @@ class TagDetailView(RetrieveAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagListSerializer
+
+
+class CategoryListView(ListAPIView):
+
+    queryset = Category.objects.all()
+    serializer_class = CategoryListSerializer
 
 
 class CheckEmailView(APIView):

@@ -111,10 +111,24 @@
           </b-form-group>
 
           <TagMultiSelect
-              :options="tags"
-              :value="vacancy.tags"
-              @set_tags="vacancy.tags = $event"
+            :options="tags"
+            :value="vacancy.tags"
+            @set_tags="vacancy.tags = $event"
           />
+
+          <br>
+
+          <b-form-group id="category-group" label="Категория:" label-for="category">
+            <b-form-select 
+            id="category"
+            v-model="vacancy.category"
+            :options="categories"
+            required
+            >
+            </b-form-select>
+          </b-form-group>
+          
+          <br>
 
           <b-form-group>
             <b-form-checkbox
@@ -157,6 +171,7 @@
 
 <script>
 import tags_service from "@/api/tags_service";
+import categories_service from "@/api/categories_service";
 import vacancies_service from "@/api/vacancies_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
@@ -185,7 +200,8 @@ export default {
         is_published: false,
         tags: []
       },
-      tags: []
+      tags: [],
+      categories: [{value: null, text: 'Выберете категорию'}]
     }
   },
   computed: {
@@ -194,6 +210,10 @@ export default {
   async mounted () {
     await tags_service.getTags()
       .then(response => {this.tags = response.data})
+    await categories_service.getCategories()
+      .then(resp => {
+        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
+      })
     if (this.$route.params.vacancyId) {
       if (this.isVacancyEdit) {
         let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);

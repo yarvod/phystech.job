@@ -10,6 +10,7 @@ from .views import (
     ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView,
     FreelancerListView, FreelancerDetailView, FreelancerCreateView, FreelancerUpdateView,
     TagListView, TagDetailView,
+    CategoryListView,
     CheckEmailView,
     Resume2VacancyListCreateView, Resume2VacancyDetailUpdateView,
 )
@@ -54,6 +55,7 @@ urlpatterns = [
     path("freelancers/<int:pk>/", FreelancerDetailView.as_view()),
     path("tags/", TagListView.as_view()),
     path("tags/<int:pk>/", TagDetailView.as_view()),
+    path("categories/", CategoryListView.as_view()),
     path("check_email/", CheckEmailView.as_view()),
     path("resumes2vacancies/", Resume2VacancyListCreateView.as_view()),
     path("resumes2vacancies/<int:pk>/", Resume2VacancyDetailUpdateView.as_view())

@@ -71,10 +71,22 @@
           </b-form-group>
 
           <TagMultiSelect
-              :options="tags"
-              :value="resume.tags"
-              @set_tags="resume.tags = $event"
+            :options="tags"
+            :value="resume.tags"
+            @set_tags="resume.tags = $event"
           />
+          <br>
+
+          <b-form-group id="category-group" label="Категория:" label-for="category">
+            <b-form-select 
+            id="category"
+            v-model="resume.category"
+            :options="categories"
+            required
+            >
+            </b-form-select>
+          </b-form-group>
+          
           <br>
 
           <b-form-group>
@@ -126,6 +138,7 @@
 
 <script>
 import tags_service from "@/api/tags_service";
+import categories_service from "@/api/categories_service"
 import resumes_service from "@/api/resumes_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
 import router from "@/router";
@@ -147,17 +160,23 @@ export default {
         ready_relocate: false,
         ready_distant_work: false,
         work_experiance: '',
-        tags: []
+        tags: [],
+        category: null
       },
       tags: [],
+      categories: [{value: null, text: 'Выберете категорию'}]
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
   },
   async mounted () {
     await tags_service.getTags()
       .then(response => {this.tags = response.data})
+    await categories_service.getCategories()
+      .then(resp => {
+        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
+      })
     if (this.$route.params.resumeId) {
       if (this.isResumeEdit) {
         let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
@@ -173,11 +192,9 @@ export default {
     async onSubmit(event) {
       event.preventDefault()
       if (this.isResumeEdit) {
-        this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
         this.$store.dispatch('updateResume', {resume: this.resume})
       } else {
-        this.resume.category = 'it'
         this.resume.employee = this.user.employee.id
         this.$store.dispatch('createResume', {resume: this.resume})
         this.onReset()
