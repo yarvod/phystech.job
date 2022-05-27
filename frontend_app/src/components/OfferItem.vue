@@ -3,7 +3,6 @@
     
     <b-card
       tag="article"
-      style="max-width: 20rem;"
       class="mb-2"
       img-src="https://placekitten.com/380/200"
       img-alt="Image"
