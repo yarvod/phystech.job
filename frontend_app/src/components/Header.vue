@@ -10,8 +10,6 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item @click="$router.push({name: 'home'})">Главная</b-nav-item>
-          <b-nav-item href="#">Предложения</b-nav-item>
-          <b-nav-item href="#">События</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
