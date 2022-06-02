@@ -265,11 +265,9 @@ export default {
     async onSubmit(event) {
       event.preventDefault()
       if (this.isVacancyEdit) {
-        this.vacancy.category = 'it'
         this.vacancy.employer = this.user.employer.id
         this.$store.dispatch('updateVacancy', {vacancy: this.vacancy})
       } else {
-        this.vacancy.category = 'it'
         this.vacancy.employer = this.user.employer.id
         this.$store.dispatch('createVacancy', {vacancy: this.vacancy})
         this.onReset()
