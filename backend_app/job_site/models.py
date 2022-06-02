@@ -95,6 +95,7 @@ class Vacancy(models.Model):
     skills = models.TextField(null=True, blank=True)   #  навыки
     conditions = models.TextField(null=True, blank=True)  # условия
 
+    by_agreement = models.BooleanField(default=False)
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)

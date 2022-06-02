@@ -86,7 +86,16 @@
             <b-container>
               <b-row>
                 <b-col>
-                  <b-form-group label="От:" label-for="salary_min" label-cols-sm="4" label-align-sm="right">
+                  <b-form-checkbox
+                    v-model="vacancy.by_agreement"
+                  >
+                    По договоренности
+                  </b-form-checkbox>
+                </b-col>
+              </b-row>
+              <b-row v-if="!vacancy.by_agreement">
+                <b-col>
+                  <b-form-group class="form-inline" label="От:" label-for="salary_min" label-cols-sm="3">
                     <b-form-input
                         id="salary_min"
                         type="number"
@@ -97,7 +106,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col>
-                  <b-form-group label="До:" label-for="salary_max" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="До:" label-for="salary_max" label-cols-sm="3">
                     <b-form-input
                       id="salary_max"
                       type="number"
@@ -108,9 +117,9 @@
                   </b-form-group>
                 </b-col>
               </b-row>
-              <b-row>
+              <b-row v-if="!vacancy.by_agreement">
                 <b-col>
-                  <b-form-group label="Валюта:" label-for="currency" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="Валюта:" label-for="currency" label-cols-sm="3">
                     <b-form-select 
                     id="currency"
                     v-model="vacancy.currency"
@@ -120,7 +129,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col>
-                  <b-form-group label="Период:" label-for="billing_period" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="Период:" label-for="billing_period" label-cols-sm="4">
                     <b-form-select 
                     id="billing_period"
                     v-model="vacancy.billing_period"
@@ -224,6 +233,7 @@ export default {
         salary_max: null,
         distant_work: false,
         is_published: false,
+        by_agreement: false,
         tags: []
       },
       tags: [],
