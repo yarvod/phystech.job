@@ -47,22 +47,22 @@
     <b-row v-if="vacancy.about">
       <b-col>
         <b class="text-underlined">О вакансии:</b>
-        <div class="text-default">{{vacancy.about}}</div>
+        <p class="linebreaks">{{vacancy.about}}</p>
       </b-col>
     </b-row>
     <b-row v-if="vacancy.duties">
       <b-col>
-        <b class="text-underlined">Обязанности: </b> <div class="text-default">{{vacancy.duties}}</div>
+        <b class="text-underlined">Обязанности: </b> <p class="linebreaks">{{vacancy.duties}}</p>
       </b-col>
     </b-row>
     <b-row v-if="vacancy.requirements">
       <b-col>
-        <b class="text-underlined">Требования: </b> <div class="text-default">{{vacancy.requirements}}</div>
+        <b class="text-underlined">Требования: </b> <p class="linebreaks">{{vacancy.requirements}}</p>
       </b-col>
     </b-row>
     <b-row v-if="vacancy.conditions">
       <b-col>
-        <b class="text-underlined">Условия: </b> <div class="text-default">{{vacancy.conditions}}</div>
+        <b class="text-underlined">Условия: </b> <p class="linebreaks">{{vacancy.conditions}}</p>
       </b-col>
     </b-row>
 
@@ -133,9 +133,6 @@ export default {
 b {
   font-weight: bold;
   font-size: larger;
-}
-.default-text {
-  font-weight: normal;
 }
 .text-underlined {
   text-decoration: underline;
