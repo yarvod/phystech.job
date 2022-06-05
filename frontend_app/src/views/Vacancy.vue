@@ -153,13 +153,13 @@
           <br>
 
           <b-form-group id="category-group" label="Категория:" label-for="category">
-            <b-form-select 
-            id="category"
-            v-model="vacancy.category"
-            :options="categories"
-            required
-            >
-            </b-form-select>
+            <CategorySelect
+              id="category"
+              :options="categories"
+              :value="vacancy.category"
+              @set_category="vacancy.category = $event"
+              required
+            />
           </b-form-group>
           
           <br>
@@ -178,7 +178,7 @@
 
           <b-row>
             <b-col cols="auto">
-               <b-button type="submit" variant="outline-primary" @click="onSubmit">Сохранить</b-button>
+               <b-button type="submit" variant="outline-primary">Сохранить</b-button>
             </b-col>
             <b-col cols="auto">
               <b-form-checkbox
@@ -210,6 +210,7 @@ import currencies_service from "@/api/currencies_service";
 import billing_periods_service from "../api/billing_periods_service";
 import vacancies_service from "@/api/vacancies_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
+import CategorySelect from "@/components/CategorySelect";
 import { mapGetters } from "vuex";
 export default {
   name: "Vacancy",
@@ -217,7 +218,8 @@ export default {
     'isVacancyEdit',
   ],
   components: {
-    TagMultiSelect
+    TagMultiSelect,
+    CategorySelect
   },
   data() {
     return {
@@ -237,7 +239,7 @@ export default {
         tags: []
       },
       tags: [],
-      categories: [{value: null, text: 'Выберете категорию'}],
+      categories: [],
       currencies: [],
       billing_periods: []
     }
@@ -246,12 +248,16 @@ export default {
     ...mapGetters(['user'])
   },
   async mounted () {
+    if (this.$route.params.vacancyId) {
+      if (this.isVacancyEdit) {
+        await vacancies_service.getVacancyDetail(this.$route.params.vacancyId)
+          .then(res => {this.vacancy = res.data})
+      }
+    }
     await tags_service.getTags()
       .then(response => {this.tags = response.data})
     await categories_service.getCategories()
-      .then(resp => {
-        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
-      })
+      .then(resp => {this.categories = resp.data})
     await currencies_service.getCurrencies()
       .then(resp => {
         this.currencies = this.currencies.concat(resp.data.map(x => ({value: x.title, text: x.title})))
@@ -260,16 +266,6 @@ export default {
       .then(resp => {
         this.billing_periods = this.billing_periods.concat(resp.data.map(x => ({value: x.title, text: x.title})))
       })
-    if (this.$route.params.vacancyId) {
-      if (this.isVacancyEdit) {
-        let {data} = await vacancies_service.getVacancyDetail(this.$route.params.vacancyId);
-        this.vacancy = data
-      }
-      else {
-        let {data} = await vacancies_service.getVacancy(this.$route.params.vacancyId);
-        this.vacancy = data
-      }
-    }
   },
   methods: {
     async onSubmit(event) {

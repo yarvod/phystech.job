@@ -9,13 +9,12 @@ class Category(MPTTModel):
     title = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', on_delete=models.PROTECT, null=True, blank=True, related_name='children',
                             db_index=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class MPTTMeta:
         order_insertion_by = ['title']
 
     class Meta:
-        unique_together = [['parent', 'slug']]
         verbose_name_plural = 'Categories'
 
     def __str__(self):

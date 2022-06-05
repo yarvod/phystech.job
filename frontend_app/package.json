@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.26.1",
     "bootstrap": "^4.6.1",
     "bootstrap-icons": "^1.8.2",
@@ -26,6 +27,7 @@
     "@vue/composition-api": "^1.6.0",
     "axios": "^0.26.1",
     "vue-multiselect": "^2.1.6",
+    "@riophae/vue-treeselect": "^0.4.0",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [

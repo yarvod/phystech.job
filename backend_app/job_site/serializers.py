@@ -1,4 +1,5 @@
 from collections import defaultdict
+from imp import source_from_cache
 from locale import currency
 import logging
 import djoser.serializers
@@ -16,6 +17,12 @@ from .models import (
 )
 
 debug = logging.getLogger(__name__).debug
+
+
+class RecursiveChildrenField(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
 
 
 class TagListSerializer(serializers.ModelSerializer):
@@ -40,9 +47,13 @@ class BillingPeriodListSerializer(serializers.ModelSerializer):
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='slug')
+    label = serializers.CharField(source='title')
+    children = RecursiveChildrenField(many=True, required=False)
+
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'label', 'children')
 
 
 class ResumeListSerializer(serializers.ModelSerializer):
