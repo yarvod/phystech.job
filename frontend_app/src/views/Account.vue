@@ -79,36 +79,36 @@
                     </b-card-text>
                   </b-card>
 
-                   <b-card v-if="!user.employee">
-                     <template #header>
-                       <b v-if="user.employer">
-                         Вы работодатель!
-                       </b>
-                       <b v-else>
-                         Вы пока не работодатель
-                       </b>
-                     </template>
-                      <b-card-text>
-                        <div>
-                          <div v-if="!user.employer">
-                            Вы пока не можете размещать вакансии и просматривать резюме
-                            <br>
-                            <b-button
-                                variant="outline-success"
-                                @click="show_modal_add_employer = !show_modal_add_employer"
-                                v-b-modal.modal-center
-                            >
-                              Стать работодателем!
-                            </b-button>
-                          </div>
-                          <div v-else>
-                            Вы можете размещать вакансии и просматривать резюме!
-                            <br>
-                            <b-button @click="$router.push({name: 'vacancy_add'})" variant="outline-success" class="m-1">Разместить вакансию!</b-button>
-                            <b-button @click="$router.push({name: 'resumes'})" variant="outline-success" class="m-1">Найти работника!</b-button>
-                          </div>
+                  <b-card v-if="!user.employee">
+                    <template #header>
+                      <b v-if="user.employer">
+                        Вы работодатель!
+                      </b>
+                      <b v-else>
+                        Вы пока не работодатель
+                      </b>
+                    </template>
+                    <b-card-text>
+                      <div>
+                        <div v-if="!user.employer">
+                          Вы пока не можете размещать вакансии и просматривать резюме
+                          <br>
+                          <b-button
+                              variant="outline-success"
+                              @click="show_modal_add_employer = !show_modal_add_employer"
+                              v-b-modal.modal-center
+                          >
+                            Стать работодателем!
+                          </b-button>
                         </div>
-                      </b-card-text>
+                        <div v-else>
+                          Вы можете размещать вакансии и просматривать резюме!
+                          <br>
+                          <b-button @click="$router.push({name: 'vacancy_add'})" variant="outline-success" class="m-1">Разместить вакансию!</b-button>
+                          <b-button @click="$router.push({name: 'resumes'})" variant="outline-success" class="m-1">Найти работника!</b-button>
+                        </div>
+                      </div>
+                    </b-card-text>
                   </b-card>
 
 <!--                  <b-card>-->
@@ -159,7 +159,7 @@
 
                 <hr>
                 <b-row>
-                  <b-button variant="outline-primary" class="m-1">Редактировать</b-button>
+                  <b-button variant="outline-primary" class="m-1" @click="$router.push({name: 'account_edit'})">Редактировать</b-button>
                 </b-row>
               </b-container>
             </b-tab>
