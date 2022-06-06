@@ -7,8 +7,7 @@
   <hr>
   <b-row>
     <b-col>
-      <b>Название: </b>
-      {{ resume.title }}
+      <h3>{{ resume.title }} </h3>
       <br>
       <b>Категоря: </b>
       {{resume.category}}
@@ -22,7 +21,7 @@
       </span>
       <br>
       <b>Опубликовано: </b>
-      {{resume.published}}
+      {{resume.published|formatDate}}
     </b-col>
   </b-row>
 
