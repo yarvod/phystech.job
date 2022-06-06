@@ -27,7 +27,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -161,9 +161,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #          'rest_framework.renderers.JSONRenderer',
-    #      )
+    'DEFAULT_RENDERER_CLASSES': (
+             'rest_framework.renderers.JSONRenderer',
+         )
 }
 
 # smtp
@@ -214,6 +214,6 @@ SIMPLE_JWT = {
 }
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    "http://phystech-job.ru:8080",
-    "http://phystech-job.ru"
+    "https://phystech-job.ru:8080",
+    "https://phystech-job.ru"
 ]
