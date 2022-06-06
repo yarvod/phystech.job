@@ -11,7 +11,7 @@
 
 <script>
 import Treeselect from 'vue-treeselect';
-import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+import 'vue-treeselect/dist/vue-treeselect.css';
 export default {
   name: "CategorySelect",
   components: { Treeselect },
