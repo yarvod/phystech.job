@@ -10,6 +10,9 @@ export default {
   async getMe () {
     return await Api().get(`/auth/users/me/`)
   },
+  async updateMe (data) {
+    return await Api().put(`/auth/users/me/`, data)
+  },
   async updateRole (data) {
     return await Api().put(`/auth/users/me/`, data)
   },

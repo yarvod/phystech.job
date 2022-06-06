@@ -1,6 +1,9 @@
 <template>
   <div>
-    <b-card class="mt-2">
+    <b-card 
+      class="mt-2"
+      :border-variant="status_background"
+    >
       <template #header>
         <b-container>
           <b-row>
@@ -42,16 +45,18 @@
             {{item.from_resume.title}}
           </b-link>
           <br>
-          <small>Вакансия:</small>
-          <b-link
-            class="small"
-          >
-            {{item.to_vacancy.title}}
-          </b-link>
+          <small>Вакансия: {{item.to_vacancy.title}}</small>
+          <br>
+          <div v-if="item.employee_message">
+            <small> Сообщение соискателя: </small>
+            {{ item.employee_message }}
+          </div>
+          
+        
         </div>
         
         <br>
-        Статус: <b>{{status}}</b>
+        Статус: <b :class="'bf-'+status_background">{{status}}</b>
       </b-card-text>
       
       <template #footer>
@@ -72,6 +77,7 @@ export default {
     return {
       new_item: {},
       new_responses: [],
+      status_background: ''
     }
   },
   mounted () {
@@ -81,14 +87,18 @@ export default {
   computed: {
     status () {
       if (this.new_item.accepted) {
+        this.status_background = 'success'
         return 'Принято'
       }
       if (this.new_item.accepted === false) {
+        this.status_background = 'danger'
         return 'Отклонено'
       }
       if (this.new_item.viewed) {
+        this.status_background = 'info'
         return 'Просмотрено'
       }
+      this.status_background = 'default'
       return 'Не просмотрено'
     }
   },
@@ -130,7 +140,6 @@ export default {
           await this.$store.dispatch('getMe')
         )
         .then(
-          this.$emit('user_update', this.$store.getters.user),
           this.$emit('item_update', this.new_item)
         )
       }

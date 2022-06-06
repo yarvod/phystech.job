@@ -7,8 +7,7 @@
   <hr>
   <b-row>
     <b-col>
-      <b>Название: </b>
-      {{ resume.title }}
+      <h3>{{ resume.title }} </h3>
       <br>
       <b>Категоря: </b>
       {{resume.category}}
@@ -22,7 +21,7 @@
       </span>
       <br>
       <b>Опубликовано: </b>
-      {{resume.published}}
+      {{resume.published|formatDate}}
     </b-col>
   </b-row>
 
@@ -38,25 +37,25 @@
   <b-row v-if="resume.about_me">
     <b-col>
       <b class="text-underlined">Обо мне:</b>
-      <div class="text-default"> {{resume.about_me}} </div>
+      <p class="linebreaks"> {{resume.about_me}} </p>
     </b-col>
   </b-row>
   <b-row v-if="resume.education">
     <b-col>
       <b class="text-underlined">Образование:</b>
-      <div class="text-default"> {{resume.education}} </div>
+      <p class="linebreaks"> {{resume.education}} </p>
     </b-col>
   </b-row>
   <b-row v-if="resume.work_experiance">
     <b-col>
       <b class="text-underlined">Опыт работы:</b>
-      <div class="text-default"> {{resume.work_experiance}} </div>
+      <p class="linebreaks"> {{resume.work_experiance}} </p>
     </b-col>
   </b-row>
   <b-row v-if="resume.skills">
     <b-col>
       <b class="text-underlined">Навыки:</b>
-      <div class="text-default"> {{resume.skills}} </div>
+      <p class="linebreaks"> {{resume.skills}} </p>
     </b-col>
   </b-row>
 
@@ -116,9 +115,6 @@ export default {
 b {
   font-weight: bold;
   font-size: larger;
-}
-.default-text {
-  font-weight: normal;
 }
 .text-underlined {
   text-decoration: underline;

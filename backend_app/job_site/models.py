@@ -9,13 +9,12 @@ class Category(MPTTModel):
     title = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', on_delete=models.PROTECT, null=True, blank=True, related_name='children',
                             db_index=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class MPTTMeta:
         order_insertion_by = ['title']
 
     class Meta:
-        unique_together = [['parent', 'slug']]
         verbose_name_plural = 'Categories'
 
     def __str__(self):
@@ -95,6 +94,7 @@ class Vacancy(models.Model):
     skills = models.TextField(null=True, blank=True)   #  навыки
     conditions = models.TextField(null=True, blank=True)  # условия
 
+    by_agreement = models.BooleanField(default=False)
     salary_min = models.PositiveIntegerField(null=True, blank=True)
     salary_max = models.PositiveIntegerField(null=True, blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)

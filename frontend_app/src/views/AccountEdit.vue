@@ -1,128 +1,120 @@
 <template>
   <b-container>
     <b-row>
-      <h4>Общая информация</h4>
+      <h2>Редактирование профиля</h2>
     </b-row>
+    <b-row>
+      <b-link @click="$router.back()">Назад</b-link>
+    </b-row>
+    
+
     <b-row>
       <b-col>
-          <b>Имя: </b> {{user.first_name}} {{user.last_name}}
-          <br>
-          <b>E-mail: </b> {{user.email}}
-          <br>
-          <b>Телефон: </b> {{user.phone_number}}
-          <br>
-          <b>Телеграм:</b> {{user.telegram}}
+
+        <b-form @submit.prevent="submit">
+
+          <b-form-group id="input-fio" label="Имя, Фамилия:" label-for="input-name" label-size="lg">
+            <b-form-checkbox
+              id="input-name"
+              v-model="form.show_name"
+            >
+              Показывать в 
+              <span v-if="form.employee"> резюме </span>
+              <span v-else-if="form.employer"> вакансиях </span>
+            </b-form-checkbox>
+            <br>
+            <b-form-input
+              id="input-name"
+              v-model="form.first_name"
+              placeholder="Имя"
+              required
+            ></b-form-input>
+            <b-form-input
+              class="mt-1"
+              id="input-name"
+              v-model="form.last_name"
+              placeholder="Фамилия"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group id="group-socials" label="Социальные сети:" label-for="input-socials" label-size="lg">
+            <b-form-checkbox
+              id="input-socials"
+              v-model="form.show_socials"
+            >
+              Показывать в 
+              <span v-if="form.employee"> резюме </span>
+              <span v-else-if="form.employer"> вакансиях </span>
+            </b-form-checkbox>
+
+            <br>
+
+            <b-form-group id="input-socials" label="Почта:" label-for="input-email">
+              <b-form-input
+                id="input-email"
+                v-model="form.email"
+                :disabled="true"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-socials" label="Телеграм:" label-for="input-telegram">
+              <b-form-input
+                id="input-telegram"
+                v-model="form.telegram"
+                placeholder="@username"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-socials" label="Номер телефона:" label-for="input-phone">
+              <b-form-input
+                id="input-phone"
+                type="tel"
+                placeholder="Example: 89991231212"
+                v-model="form.phone_number"
+              ></b-form-input>
+            </b-form-group>
+
+          </b-form-group>
+
+          <b-button type="submit" variant="primary">
+            Сохранить
+          </b-button>
+        </b-form>
+
       </b-col>
     </b-row>
-    <b-row>
-      <h4>Возможности</h4>
-    </b-row>
-
-    <b-card-group deck>
-
-      <b-card v-if="!user.employer">
-        <template #header>
-          <b v-if="user.employee">
-            Вы соискатель!
-          </b>
-          <b v-else>
-            Вы пока не соискатель
-          </b>
-        </template>
-        <b-card-text>
-           <div>
-            <div v-if="!user.employee">
-              Вы пока не можете резмещать резюме и откликаться на вакансии
-              <br>
-              <b-link @click="add_employee"> Стать соискателем! </b-link>
-            </div>
-            <div v-else>
-              Вы можете размещать резюме и откликаться на вакансии!
-            </div>
-          </div>
-        </b-card-text>
-      </b-card>
-
-       <b-card v-if="!user.employee">
-         <template #header>
-           <b v-if="user.employer">
-             Вы работодатель!
-           </b>
-           <b v-else>
-             Вы пока не работодатель
-           </b>
-         </template>
-        <b-card-text>
-          <div>
-            <div v-if="!user.employer">
-              Вы пока не можете размещать вакансии и просматривать резюме
-              <br>
-              <b-link @click="add_employer"> Стать работодателем! </b-link>
-            </div>
-            <div v-else>
-              Вы можете размещать вакансии и просматривать резюме!
-            </div>
-          </div>
-        </b-card-text>
-      </b-card>
-
-      <b-card>
-        <template #header>
-          <b v-if="user.client">
-            Вы клиент!
-          </b>
-          <b v-else>
-            Вы пока не клиент
-          </b>
-        </template>
-        <b-card-text>
-          <div v-if="!user.client">
-            Вы пока не можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров
-            <br>
-            <b-link @click="add_client"> Стать клиентом! </b-link>
-          </div>
-          <div v-else>
-            Вы можете размещать задачи для исполнения и пользоваться услугами специалистов/фрилансеров!
-          </div>
-        </b-card-text>
-      </b-card>
-
-      <b-card>
-        <template #header>
-          <b v-if="user.freelancer">
-            Вы специалист/фрилансер!
-          </b>
-          <b v-else>
-            Вы пока не специалист/фрилансер
-          </b>
-        </template>
-        <b-card-text>
-          <div v-if="!user.freelancer">
-            Вы пока не можете размещать свои услуги и выполнять задачи клиентов
-            <br>
-            <b-link @click="add_freelancer"> Стать фрилансером! </b-link>
-          </div>
-          <div v-else>
-            Вы можете размещать свои услуги для клиентов и искать задачи для исполнения!
-          </div>
-        </b-card-text>
-      </b-card>
-
-    </b-card-group>
+    
+    
 
   </b-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import user_service from '../api/user_service';
+
 export default {
   name: "AccountEdit",
+  components: {
+  },
   data () {
     return {
-      user: {}
+      form: {}
     }
   },
-  async mounted() {
-    this.user = await this.$store.getters.user;
+  computed: {
+    ...mapGetters(['user'])
+  },
+  mounted() {
+    this.form = {...this.user}
+  },
+  methods: {
+    async submit () {
+      await user_service.updateMe(this.form)
+        .then(this.$store.dispatch('getMe'))
+      this.$router.back()
+    }
   }
 }
 </script>

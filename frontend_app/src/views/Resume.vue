@@ -74,7 +74,7 @@
             <b-container>
               <b-row>
                 <b-col>
-                  <b-form-group label="От:" label-for="salary_min" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="От:" label-for="salary_min" label-cols-sm="3">
                     <b-form-input
                         id="salary_min"
                         type="number"
@@ -85,7 +85,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col>
-                  <b-form-group label="До:" label-for="salary_max" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="До:" label-for="salary_max" label-cols-sm="3">
                     <b-form-input
                       id="salary_max"
                       type="number"
@@ -98,7 +98,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <b-form-group label="Валюта:" label-for="currency" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="Валюта:" label-for="currency" label-cols-sm="3">
                     <b-form-select 
                     id="currency"
                     v-model="resume.currency"
@@ -108,7 +108,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col>
-                  <b-form-group label="Период:" label-for="billing_period" label-cols-sm="4" label-align-sm="right">
+                  <b-form-group class="form-inline" label="Период:" label-for="billing_period" label-cols-sm="4">
                     <b-form-select 
                     id="billing_period"
                     v-model="resume.billing_period"
@@ -130,13 +130,13 @@
           <br>
 
           <b-form-group id="category-group" label="Категория:" label-for="category">
-            <b-form-select 
-            id="category"
-            v-model="resume.category"
-            :options="categories"
-            required
-            >
-            </b-form-select>
+            <CategorySelect
+              id="category"
+              :options="categories"
+              :value="resume.category"
+              @set_category="resume.category = $event"
+              required
+            />
           </b-form-group>
           
           <br>
@@ -195,6 +195,7 @@ import currencies_service from "@/api/currencies_service";
 import billing_periods_service from "../api/billing_periods_service";
 import resumes_service from "@/api/resumes_service";
 import TagMultiSelect from "@/components/TagMultiSelect";
+import CategorySelect from "@/components/CategorySelect";
 import { mapGetters } from "vuex";
 export default {
   name: "Resume",
@@ -202,7 +203,8 @@ export default {
     'isResumeEdit',
   ],
   components: {
-    TagMultiSelect
+    TagMultiSelect,
+    CategorySelect
   },
   data() {
     return {
@@ -217,7 +219,7 @@ export default {
         category: null
       },
       tags: [],
-      categories: [{value: null, text: 'Выберете категорию'}],
+      categories: [],
       currencies: [],
       billing_periods: []
     }
@@ -226,12 +228,16 @@ export default {
     ...mapGetters(['user']),
   },
   async mounted () {
+    if (this.$route.params.resumeId) {
+      if (this.isResumeEdit) {
+        await resumes_service.getResumeDetail(this.$route.params.resumeId)
+          .then(res => {this.resume = res.data})
+      }
+    }
     await tags_service.getTags()
       .then(response => {this.tags = response.data})
     await categories_service.getCategories()
-      .then(resp => {
-        this.categories = this.categories.concat(resp.data.map(x => ({value: x.slug, text: x.title})))
-      })
+      .then(resp => {this.categories = resp.data})
     await currencies_service.getCurrencies()
       .then(resp => {
         this.currencies = this.currencies.concat(resp.data.map(x => ({value: x.title, text: x.title})))
@@ -240,16 +246,6 @@ export default {
       .then(resp => {
         this.billing_periods = this.billing_periods.concat(resp.data.map(x => ({value: x.title, text: x.title})))
       })
-    if (this.$route.params.resumeId) {
-      if (this.isResumeEdit) {
-        let {data} = await resumes_service.getResumeDetail(this.$route.params.resumeId);
-        this.resume = data
-      }
-      else {
-        let {data} = await resumes_service.getResume(this.$route.params.resumeId);
-        this.resume = data;
-      }
-    }
   },
   methods: {
     async onSubmit(event) {

@@ -67,4 +67,8 @@ img{vertical-align:top;}
   min-height: calc(100vh - 80px);
 }
 
+.linebreaks {
+  white-space: pre-line;
+}
+
 </style>

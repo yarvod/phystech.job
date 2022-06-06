@@ -176,6 +176,14 @@ const router = new VueRouter({
       props: true
     },
     {
+      path: '/account_edit',
+      component: () => import('@/views/AccountEdit.vue'),
+      name: 'account_edit',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/auth/users/activate/:uid/:token',
       component: () => import('@/views/Activate'),
       name: 'user_activate'

@@ -231,7 +231,7 @@ class TagDetailView(RetrieveAPIView):
 
 class CategoryListView(ListAPIView):
 
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(level=0)
     serializer_class = CategoryListSerializer
 
 
